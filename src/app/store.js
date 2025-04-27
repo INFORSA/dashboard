@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from '../features/counter/counterSlice'
+import authReducer from '../features/auth/authSlice'
+import { loginAPI } from '../services/login'
 
 export default configureStore({
   reducer: {
-    counter : counterSlice
+    authReducer: authReducer,
+    [loginAPI.reducerPath]: loginAPI.reducer, // <--- ini penting buat API slice
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(loginAPI.middleware), // <--- ini juga penting buat async query
 })

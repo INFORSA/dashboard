@@ -1,44 +1,66 @@
 import './App.css'
-import { Counter } from './features/counter/Counter'
 import Sidebars from './components/organisms/Sidebars'
 import Navbars from './components/organisms/Navbars'
-import { Card, Typography } from '@material-tailwind/react'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import Dashboard from './pages/dashboard/Dashboard'
+import Departement from './pages/dept/Departement'
+import Login from './pages/login/Login'
+import React, { useState } from 'react'
+import { Bars3Icon } from '@heroicons/react/24/solid'
+import Footers from './components/organisms/Footers'
 
 function App() {
+  React.useEffect(() => {
+    checkTokenValidity();
+    window.scrollTo(0, 0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
+  const isLoggedIn = localStorage.getItem("token") !== null;
+  const checkTokenValidity = () => {
+      const storedToken = localStorage.getItem('expiredTime');
+      if (isLoggedIn) {
+          if (storedToken && Date.now() > parseInt(storedToken)) {
+              localStorage.removeItem('token');
+              localStorage.removeItem('expiredTime');
+          }
+      }
+  };
+  const [isOpen, setIsOpen] = useState(true);
+  const location = useLocation();
+  const isLoginOrRegister = location.pathname === '/Login' || location.pathname === '/login';
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className=''>
-      <div className='flex justify-between'>
-        <Sidebars/>
-        <div>
-          <Navbars/>
-          <div className="mx-auto py-3">
-            <Card className="mb-12 overflow-hidden">
-              <img
-                alt="nature"
-                className="h-[32rem] w-full object-cover object-center"
-                src="https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2717&q=80"
-              />
-            </Card>
-            <Typography variant="h2" color="blue-gray" className="mb-2">
-              What is Material Tailwind
-            </Typography>
-            <Typography color="gray" className="font-normal">
-              Can you help me out? you will get a lot of free exposure doing this
-              can my website be in english?. There is too much white space do less
-              with more, so that will be a conversation piece can you rework to make
-              the pizza look more delicious other agencies charge much lesser can
-              you make the blue bluer?. I think we need to start from scratch can my
-              website be in english?, yet make it sexy i&apos;ll pay you in a week
-              we don&apos;t need to pay upfront i hope you understand can you make
-              it stand out more?. Make the font bigger can you help me out? you will
-              get a lot of free exposure doing this that&apos;s going to be a chunk
-              of change other agencies charge much lesser. Are you busy this
-              weekend? I have a new project with a tight deadline that&apos;s going
-              to be a chunk of change. There are more projects lined up charge extra
-              the next time.
-            </Typography>
+      <div className={`flex  ${isOpen ? '': 'justify-between '}`}>
+        {!isLoginOrRegister &&
+          <Sidebars isOpen={isOpen}/>
+        }
+        <div className='flex-1 flex flex-col'>
+          <div className='flex justify-between sticky top-0 z-10 bg-white rounded-none'>
+            <button onClick={toggleSidebar} className='mx-5'>
+              <Bars3Icon className='w-5 h-5'/>
+            </button>
+            <Navbars/>
           </div>
+          <div className='p-3'>
+            <Routes>
+              <Route index path='/' element={<Dashboard isSidebarOpen={isOpen}/>}/>
+              <Route path='/*' element={<Navigate to='/'/>}/>
+              <Route path='*' element={<Navigate to='/'/>}/>
+              {isLoggedIn ? 
+              <>
+                <Route path="/dept/:Name" element={<Departement/>}/>
+              </>
+              :
+              <>
+                <Route path="/login" element={<Login/>}/>
+              </>}
+            </Routes>
+          </div>
+          <Footers/>
         </div>
       </div>
     </div>

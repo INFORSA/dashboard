@@ -5,24 +5,22 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
 import {
-  PresentationChartBarIcon,
-  ShoppingBagIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
   InboxIcon,
-  PowerIcon,
+  UserGroupIcon,
+  FlagIcon,
+  HomeIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import inforsa from '../../assets/inforsa.png';
+import { NavLink } from "react-router-dom";
  
-export default function Sidebars() {
+export default function Sidebars({isOpen}) {
   const [open, setOpen] = React.useState(0);
  
   const handleOpen = (value) => {
@@ -30,7 +28,7 @@ export default function Sidebars() {
   };
  
   return (
-    <Card className="sticky top-0 z-10 h-[calc(100vh-2rem)] w-full min-h-screen h-auto max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card className={`sticky top-0 z-10 self-start h-[calc(100vh-2rem)] ${isOpen ? 'w-full' : 'w-0 hidden'} min-h-screen h-auto max-w-[18rem] p-4 border border-xl`}>
       <div className="w-full mb-2 p-4">
         <div className="flex justify-center">
           <img src={inforsa} alt="" className="w-36 text-center"/>
@@ -39,137 +37,128 @@ export default function Sidebars() {
           Information System Association
         </Typography>
       </div>
-      <List>
-        <Accordion
-          open={open === 1}
-          icon={
-            <ChevronDownIcon
-              strokeWidth={2.5}
-              className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
-            />
-          }
-        >
-          <ListItem className="p-0" selected={open === 1}>
-            <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+      <div className="overflow-y-auto h-[calc(100vh-16rem)]">
+        <List>
+          <ListItem >
               <ListItemPrefix>
-                <PresentationChartBarIcon className="h-5 w-5" />
+                <HomeIcon className="h-5 w-5" />
               </ListItemPrefix>
               <Typography color="blue-gray" className="mr-auto font-normal">
-                Dashboard
+                <NavLink to="/">
+                  Dashboard
+                </NavLink>
               </Typography>
-            </AccordionHeader>
           </ListItem>
-          <AccordionBody className="py-1">
-            <List className="p-0">
-              <ListItem>
+          <Accordion
+            open={open === 1}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-auto w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 1}>
+              <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
                 <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  <FlagIcon className="h-5 w-5" />
                 </ListItemPrefix>
-                Analytics
-              </ListItem>
-              <ListItem>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Departement/Bureau
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <NavLink to="/dept/hrd">
+                    HRD
+                  </NavLink>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <NavLink to="/dept/relacs">
+                    RELACS
+                  </NavLink>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <NavLink to="/dept/psd">
+                    PSD
+                  </NavLink>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <NavLink to="/dept/adwel">
+                    ADWEL
+                  </NavLink>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <NavLink to="/dept/eden">
+                    EDEN
+                  </NavLink>
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <NavLink to="/dept/cominfo">
+                    COMINFO
+                  </NavLink>
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+          <Accordion
+            open={open === 2}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-auto w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open===2}>
+              <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
                 <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  <InboxIcon className="h-5 w-5" />
                 </ListItemPrefix>
-                Reporting
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                </ListItemPrefix>
-                Projects
-              </ListItem>
-            </List>
-          </AccordionBody>
-        </Accordion>
-        <Accordion
-          open={open === 2}
-          icon={
-            <ChevronDownIcon
-              strokeWidth={2.5}
-              className={`mx-auto h-auto w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
-            />
-          }
-        >
-          <ListItem className="p-0" selected={open === 2}>
-            <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
-              <ListItemPrefix>
-                <ShoppingBagIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
-                Departement/Bureau
-              </Typography>
-            </AccordionHeader>
-          </ListItem>
-          <AccordionBody className="py-1">
-            <List className="p-0">
-              <ListItem>
-                <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
-                </ListItemPrefix>
-                HRD
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
-                </ListItemPrefix>
-                RELACS
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
-                </ListItemPrefix>
-                PSD
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
-                </ListItemPrefix>
-                ADWEL
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
-                </ListItemPrefix>
-                EDEN
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <UserCircleIcon className="h-5 w-5" />
-                </ListItemPrefix>
-                COMINFO
-              </ListItem>
-            </List>
-          </AccordionBody>
-        </Accordion>
-        <ListItem>
-          <ListItemPrefix>
-            <InboxIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Inbox
-          <ListItemSuffix>
-            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-          </ListItemSuffix>
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <UserCircleIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Profile
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Settings
-        </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <PowerIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Log Out
-        </ListItem>
-      </List>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Permissions
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserCircleIcon className="h-5 w-5"/>
+                  </ListItemPrefix>
+                  Users
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <UserGroupIcon className="h-5 w-5"/>
+                  </ListItemPrefix>
+                  Roles
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+        </List>
+      </div>
     </Card>
   );
 }

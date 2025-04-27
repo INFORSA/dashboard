@@ -1,94 +1,81 @@
 import React from "react";
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
+  Collapse,
 } from "@material-tailwind/react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { HomeIcon } from "@heroicons/react/24/solid";
+import Swal from "sweetalert2";
  
 export default function Navbars() {
   const [openNav, setOpenNav] = React.useState(false);
- 
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("token") !== null;
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false),
     );
   }, []);
- 
-  const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
-      </Typography>
-    </ul>
-  );
+  const logOut = () => {
+      Swal.fire({
+        title: "Are you sure to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Logout!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem("token");
+          navigate("/login");
+          Swal.fire({
+            title: "Logout Success",
+            icon: "success",
+          });
+        }
+      });
+    }
  
   return (
-    <Navbar variant="solid" color="light" className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+    <Navbar color="light" className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
-            as="a"
-            href="#"
             className="mr-4 cursor-pointer py-1.5 font-medium"
           >
-            Dashboard /
+            <NavLink to="/" className="w-full flex justify-start gap-1">
+              <HomeIcon className="w-5 my-0.5 h-full"/>
+              <button className="mx-3 font-mono text-md text-slate-600">..{location.pathname}</button> 
+            </NavLink>
           </Typography>
           <div className="flex items-center gap-4">
-            <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
-              <Button
-                variant="text"
-                size="sm"
-                className="hidden lg:inline-block"
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
-                variant="gradient"
-                size="sm"
-                className="hidden lg:inline-block"
-              >
-                <span>Sign in</span>
-              </Button>
+              {isLoggedIn ? 
+                <Button
+                  color="red"
+                  variant="text"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  onClick={logOut} 
+                  >
+                    <span>LogOut</span>
+                </Button> 
+                :
+                <NavLink to="/login">
+                  <Button
+                    color="green"
+                    variant="text"
+                    size="sm"
+                    className="hidden lg:inline-block"
+                  >
+                    <span>LogIn</span>
+                  </Button> 
+                </NavLink>
+              }
             </div>
             <IconButton
               variant="text"
@@ -129,17 +116,21 @@ export default function Navbars() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
-          {navList}
+        <Collapse open={openNav}>
           <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className="">
-              <span>Log In</span>
-            </Button>
-            <Button fullWidth variant="gradient" size="sm" className="">
-              <span>Sign in</span>
-            </Button>
+              {isLoggedIn ? 
+              <Button onClick={logOut} fullWidth variant="text" size="sm" className="">
+                <span>LogOut</span>
+              </Button>
+              :
+              <NavLink to="/login">
+                <Button fullWidth variant="text" size="sm" className="">
+                  <span>LogIn</span>
+                </Button>
+              </NavLink>
+              }
           </div>
-        </MobileNav>
+        </Collapse>
       </Navbar>
   );
 }
