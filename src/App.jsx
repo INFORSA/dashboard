@@ -8,6 +8,8 @@ import Login from './pages/login/Login'
 import React, { useState } from 'react'
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import Footers from './components/organisms/Footers'
+import Upload from './pages/penilaian/Upload'
+import Register from './pages/register/Register'
 
 function App() {
   React.useEffect(() => {
@@ -47,15 +49,18 @@ function App() {
           </div>
           <div className='p-3'>
             <Routes>
-              <Route index path='/' element={<Dashboard isSidebarOpen={isOpen}/>}/>
               <Route path='/*' element={<Navigate to='/'/>}/>
               <Route path='*' element={<Navigate to='/'/>}/>
+              <Route path='/register' element={<Register/>}/>
               {isLoggedIn ? 
               <>
+                <Route index path='/' element={<Dashboard isSidebarOpen={isOpen}/>}/>
                 <Route path="/dept/:Name" element={<Departement/>}/>
+                <Route path='/upload' element={<Upload/>}/>
               </>
               :
               <>
+                <Route path='/' element={<Navigate to='/login'/>}/>  
                 <Route path="/login" element={<Login/>}/>
               </>}
             </Routes>

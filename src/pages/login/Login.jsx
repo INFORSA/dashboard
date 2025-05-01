@@ -13,26 +13,17 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useLoginMutation } from '../../services/login';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 function Login(){
-    useEffect(()=>{
-        window.scrollTo(0, 0);
-    },[])
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [login, { isLoading }] = useLoginMutation();
 
-    const secretKey = import.meta.env.VITE_SECRETKEY
-    const [Username, setUsername] = useState("");
-    const [Password, setPassword] = useState("");
-
-    const generateToken = () => {
-        const timestamp = Date.now().toString();
-        const randomString = Math.random().toString(36).substring(7);
-        const expirationTime = Date.now() + 60 * 60 * 1000;
-        const tokenPayload = { timestamp, randomString, expirationTime };
-        localStorage.setItem('expiredTime', expirationTime);
-        const token = CryptoJS.HmacSHA256(JSON.stringify(tokenPayload), secretKey).toString(CryptoJS.enc.Hex);
-      
-        return token;
-      };
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     //Password show
     const [showPassword, setShowPassword] = useState(false);
@@ -41,45 +32,56 @@ function Login(){
         setShowPassword(!showPassword);
       };
 
-    const dispatch = useDispatch(); 
-    const [login, { isLoading }] = useLoginMutation();
-
-    const handleProcess = async (e) =>{
+    const handleProcess = async (e) => {
         e.preventDefault();
-        
-        const generatedToken = generateToken();
-        const Token = generatedToken;
-        // const ID = found.ID_Admin;
-
-        //Request Login Data
-        const requestData = {
-            // userId: ID,
-            userToken: Token
-          };
-        
-        try {
-            const response = await login(requestData).unwrap(); // <-- pakai Redux loginAPI
-            dispatch(loginSuccess(response)); // <-- simpan data ke authSlice
-        
-            localStorage.setItem('token', generatedToken);
-            // localStorage.setItem('ID', found.ID_Admin);
-        
-            await Swal.fire({
-                title: "Berhasil Login",
-                text: "Welcome back Admin INFORSA",
-                icon: "success"
-            });
-        
-            window.location.href = '/';
-        } catch (error) {
-            console.error('Login error:', error);
-            Swal.fire({
-                title: "Gagal Login",
-                text: "Terjadi kesalahan saat mencoba login." + error,
-                icon: "error"
-            });
+        if (!username || !password) {
+            setError("Username dan Password tidak boleh kosong");
+            return;
         }
-    }
+
+        try {
+            const response = await login({ username, password }).unwrap();
+            const { token } = response;
+
+            const decoded = jwtDecode(token);
+            const expirationTime = new Date(decoded.exp * 1000);
+
+            // Simpan di localStorage
+            localStorage.setItem("token", token);
+            localStorage.setItem("username", username);
+            localStorage.setItem("expirationTime", expirationTime);
+
+            // Simpan ke Redux
+            dispatch(loginSuccess({ username: decoded.username, token }));
+
+            // Alert & Redirect
+            await Swal.fire({
+                title: "Selamat Datang",
+                icon: "success",
+            });
+                navigate("/");
+            } catch (error) {
+            console.error("Login error:", error);
+            setError(
+                "Terjadi kesalahan. " +
+                (error?.data?.message || error?.message || "Coba lagi.")
+            );
+        }
+    };
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        const checkTokenExpiration = () => {
+        const expirationTime = localStorage.getItem("expirationTime");
+        if (expirationTime && new Date() > new Date(expirationTime)) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("expirationTime");
+            setError("Session expired. Silakan login kembali.");
+        }
+        };
+
+        checkTokenExpiration();
+    }, []);
 
     return(
     <motion.div {...scaleDown} id='/' className="w-full h-auto overflow-x-hidden overflow-y-hidden">
@@ -87,6 +89,7 @@ function Login(){
             <title>Login INFORSA 2024</title>
         </Helmet>
         <div className="lg:min-h-[80vh] min-h-[80vh] flex items-center justify-center">
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <div className='p-4 border border-4 w-96'>
                 <div className="flex justify-center">
                     <LazyLoadImage loading="lazy" className="w-24" src={image} alt="" />

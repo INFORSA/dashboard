@@ -16,7 +16,13 @@ import {
   FlagIcon,
   HomeIcon,
 } from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Adwel from '../../assets/dept/ADWEL.png';
+import HRD from '../../assets/dept/HRD.png';
+import PSD from '../../assets/dept/PSD.png';
+import COMINFO from '../../assets/dept/COMINFO.png';
+import EDEN from '../../assets/dept/EDEN.png';
+import RELACS from '../../assets/dept/RELACS.png';
 import inforsa from '../../assets/inforsa.png';
 import { NavLink } from "react-router-dom";
  
@@ -28,22 +34,22 @@ export default function Sidebars({isOpen}) {
   };
  
   return (
-    <Card className={`sticky top-0 z-10 self-start h-[calc(100vh-2rem)] ${isOpen ? 'w-full' : 'w-0 hidden'} min-h-screen h-auto max-w-[18rem] p-4 border border-xl`}>
-      <div className="w-full mb-2 p-4">
+    <Card className={`bg-[#282666] rounded-tl-none rounded-bl-none sticky top-0 z-10 self-start h-[calc(100vh-2rem)] ${isOpen ? 'w-full' : 'w-0 hidden'} min-h-screen h-auto max-w-[18rem] p-4`}>
+      <div className="w-full bg-white bg-opacity-15 rounded-xl mb-2 pb-3">
         <div className="flex justify-center">
           <img src={inforsa} alt="" className="w-36 text-center"/>
         </div>
-        <Typography variant="h5" color="blue-gray" className="text-center">
+        <Typography variant="h5" color="white" className="text-center">
           Information System Association
         </Typography>
       </div>
-      <div className="overflow-y-auto h-[calc(100vh-16rem)]">
+      <div className="overflow-y-auto scrollbar-none h-[calc(100vh-16rem)]">
         <List>
           <ListItem >
               <ListItemPrefix>
-                <HomeIcon className="h-5 w-5" />
+                <HomeIcon color="white" className="h-5 w-5" />
               </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
+              <Typography color="white" className="mr-auto font-normal">
                 <NavLink to="/">
                   Dashboard
                 </NavLink>
@@ -53,6 +59,7 @@ export default function Sidebars({isOpen}) {
             open={open === 1}
             icon={
               <ChevronDownIcon
+                color="white"
                 strokeWidth={2.5}
                 className={`mx-auto h-auto w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
               />
@@ -61,10 +68,10 @@ export default function Sidebars({isOpen}) {
             <ListItem className="p-0" selected={open === 1}>
               <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
                 <ListItemPrefix>
-                  <FlagIcon className="h-5 w-5" />
+                  <FlagIcon color="white" className="h-5 w-5" />
                 </ListItemPrefix>
-                <Typography color="blue-gray" className="mr-auto font-normal">
-                  Departement/Bureau
+                <Typography color="white" className="mr-auto font-normal">
+                  Dept/Bureau
                 </Typography>
               </AccordionHeader>
             </ListItem>
@@ -72,50 +79,62 @@ export default function Sidebars({isOpen}) {
               <List className="p-0">
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5" />
+                    <img src={HRD} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
                   <NavLink to="/dept/hrd">
-                    HRD
+                    <Typography color="white" className="mr-auto font-normal">
+                      HRD
+                    </Typography>
                   </NavLink>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5" />
+                    <img src={RELACS} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
                   <NavLink to="/dept/relacs">
-                    RELACS
+                    <Typography color="white" className="mr-auto font-normal">
+                      RELACS
+                    </Typography>
                   </NavLink>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5" />
+                    <img src={PSD} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
                   <NavLink to="/dept/psd">
-                    PSD
+                    <Typography color="white" className="mr-auto font-normal">
+                      PSD
+                    </Typography>
                   </NavLink>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5" />
+                    <img src={Adwel} className="h-5 w-5 mb-2" />
                   </ListItemPrefix>
                   <NavLink to="/dept/adwel">
-                    ADWEL
+                    <Typography color="white" className="mr-auto font-normal">
+                      ADWEL
+                    </Typography>
                   </NavLink>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5" />
+                    <img src={EDEN} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
                   <NavLink to="/dept/eden">
-                    EDEN
+                    <Typography color="white" className="mr-auto font-normal">
+                      EDEN
+                    </Typography>
                   </NavLink>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5" />
+                    <img src={COMINFO} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
                   <NavLink to="/dept/cominfo">
-                    COMINFO
+                    <Typography color="white" className="mr-auto font-normal">
+                      COMINFO
+                    </Typography>
                   </NavLink>
                 </ListItem>
               </List>
@@ -125,6 +144,7 @@ export default function Sidebars({isOpen}) {
             open={open === 2}
             icon={
               <ChevronDownIcon
+                color="white"
                 strokeWidth={2.5}
                 className={`mx-auto h-auto w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
               />
@@ -133,9 +153,9 @@ export default function Sidebars({isOpen}) {
             <ListItem className="p-0" selected={open===2}>
               <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
                 <ListItemPrefix>
-                  <InboxIcon className="h-5 w-5" />
+                  <InboxIcon color="white" className="h-5 w-5" />
                 </ListItemPrefix>
-                <Typography color="blue-gray" className="mr-auto font-normal">
+                <Typography color="white" className="mr-auto font-normal">
                   Permissions
                 </Typography>
               </AccordionHeader>
@@ -144,15 +164,19 @@ export default function Sidebars({isOpen}) {
               <List className="p-0">
                 <ListItem>
                   <ListItemPrefix>
-                    <UserCircleIcon className="h-5 w-5"/>
+                    <UserCircleIcon color="white" className="h-5 w-5"/>
                   </ListItemPrefix>
-                  Users
+                    <Typography color="white" className="mr-auto font-normal">
+                      Users
+                    </Typography>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>
-                    <UserGroupIcon className="h-5 w-5"/>
+                    <UserGroupIcon color="white" className="h-5 w-5"/>
                   </ListItemPrefix>
-                  Roles
+                    <Typography color="white" className="mr-auto font-normal">
+                      Roles
+                    </Typography>
                 </ListItem>
               </List>
             </AccordionBody>

@@ -1,4 +1,5 @@
 import withMT from '@material-tailwind/react/utils/withMT';
+import plugin from 'tailwind-scrollbar';
 
 /** @type {import('tailwindcss').Config} */
 export default withMT({
@@ -9,6 +10,8 @@ export default withMT({
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin
+  ],
 })
 

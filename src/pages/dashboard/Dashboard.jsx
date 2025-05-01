@@ -5,13 +5,20 @@ import { Helmet } from 'react-helmet';
 import GrafikCard from '../../components/atoms/GrafikCard';
 import { Tables } from '../../components/atoms/Tables';
 import LineCharts from '../../components/atoms/LineCharts';
+import { useGetDeptQuery } from '../../services/dept';
 
 export default function Dashboard({ isSidebarOpen }){
+    const { data, error, isLoading } = useGetDeptQuery();
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error</div>;
+    console.log(data.total)
+
     return(
         <div className="mx-auto w-full">
             <Helmet><title>Dashboard</title></Helmet>
             <div className='my-5 w-full grid grid-cols-3 gap-4'>
-                <CountCard Detail="Departement" Count="0"/>
+                <CountCard Detail="Departement" Count={data.total}/>
                 <CountCard Detail="Anggota" Count="0"/>
                 <CountCard Detail="Program Kerja" Count="0"/>
             </div>
