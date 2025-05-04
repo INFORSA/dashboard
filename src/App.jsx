@@ -42,12 +42,16 @@ function App() {
         }
         <div className='flex-1 flex flex-col'>
           <div className='flex justify-between sticky top-0 z-10 bg-white rounded-none'>
-            <button onClick={toggleSidebar} className='mx-5'>
-              <Bars3Icon className='w-5 h-5'/>
-            </button>
-            <Navbars/>
+            {!isLoginOrRegister && 
+            <>
+              <button onClick={toggleSidebar} className='mx-5'>
+                <Bars3Icon className='w-5 h-5'/>
+              </button>
+              <Navbars/>
+            </>
+            }
           </div>
-          <div className='p-3'>
+          <div className={isLoginOrRegister ? '' : 'p-3'}>
             <Routes>
               <Route path='/*' element={<Navigate to='/'/>}/>
               <Route path='*' element={<Navigate to='/'/>}/>
@@ -65,7 +69,9 @@ function App() {
               </>}
             </Routes>
           </div>
-          <Footers/>
+          {!isLoginOrRegister && 
+            <Footers/>
+          }
         </div>
       </div>
     </div>
