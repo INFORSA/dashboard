@@ -98,7 +98,7 @@ function Login(){
                     <div className="flex justify-center">
                         <LazyLoadImage loading="lazy" className="w-24" src={image} alt="" />
                     </div>
-                    <h1 className='text-4xl text-center font-bold font-serif text-black'>Welcome Back</h1>
+                    <h1 className='text-4xl text-center font-bold font-serif text-black mb-3'>Welcome Back</h1>
                     <form onSubmit={handleProcess}>
                         <Input
                             className="text-black"

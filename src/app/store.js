@@ -4,6 +4,7 @@ import registerReducer from '../features/register/registerSlice'
 import { loginAPI } from '../services/login'
 import { registerAPI } from '../services/regist'
 import { deptAPI } from '../services/dept'
+import { userAPI } from '../services/user'
 
 export default configureStore({
   reducer: {
@@ -14,7 +15,8 @@ export default configureStore({
     [registerAPI.reducerPath]: registerAPI.reducer, 
     
     [deptAPI.reducerPath]: deptAPI.reducer, 
+    [userAPI.reducerPath]: userAPI.reducer, 
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(registerAPI.middleware, loginAPI.middleware, deptAPI.middleware), // <--- ini juga penting buat async query
+    getDefaultMiddleware().concat(registerAPI.middleware, loginAPI.middleware, deptAPI.middleware, userAPI.middleware), // <--- ini juga penting buat async query
 })

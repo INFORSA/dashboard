@@ -9,7 +9,8 @@ import React, { useState } from 'react'
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import Footers from './components/organisms/Footers'
 import Upload from './pages/penilaian/Upload'
-import Register from './pages/register/Register'
+import Register from './pages/permission/user/Register'
+import User from './pages/permission/user/User'
 
 function App() {
   React.useEffect(() => {
@@ -45,7 +46,7 @@ function App() {
             {!isLoginOrRegister && 
             <>
               <button onClick={toggleSidebar} className='mx-5'>
-                <Bars3Icon className='w-5 h-5'/>
+                <Bars3Icon className={`w-5 h-5 transition-transform duration-300 ease-in-out ${isOpen ? "rotate-90" : ""}`}/>
               </button>
               <Navbars/>
             </>
@@ -55,12 +56,14 @@ function App() {
             <Routes>
               <Route path='/*' element={<Navigate to='/'/>}/>
               <Route path='*' element={<Navigate to='/'/>}/>
-              <Route path='/register' element={<Register/>}/>
               {isLoggedIn ? 
               <>
                 <Route index path='/' element={<Dashboard isSidebarOpen={isOpen}/>}/>
                 <Route path="/dept/:Name" element={<Departement/>}/>
                 <Route path='/upload' element={<Upload/>}/>
+                <Route path='/register' element={<Register/>}/>
+                <Route path='/permission/user' element={<User/>}/>
+                <Route path='/permission/user/add' element={<Register/>}/>
               </>
               :
               <>

@@ -34,7 +34,7 @@ export default function Sidebars({isOpen}) {
   };
  
   return (
-    <Card className={`bg-[#282666] rounded-tl-none rounded-bl-none sticky top-0 z-10 self-start h-[calc(100vh-2rem)] ${isOpen ? 'w-full' : 'w-0 hidden'} min-h-screen h-auto max-w-[18rem] p-4`}>
+    <Card className={`bg-[#282666] rounded-tl-none rounded-bl-none sticky top-0 z-10 self-start h-[calc(100vh-2rem)] transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0 w-[18rem]' : '-translate-x-full w-0 overflow-hidden'} min-h-screen max-w-[18rem] p-4`}>
       <div className="w-full bg-white bg-opacity-15 rounded-xl mb-2 pb-3">
         <div className="flex justify-center">
           <img src={inforsa} alt="" className="w-36 text-center"/>
@@ -166,9 +166,11 @@ export default function Sidebars({isOpen}) {
                   <ListItemPrefix>
                     <UserCircleIcon color="white" className="h-5 w-5"/>
                   </ListItemPrefix>
-                    <Typography color="white" className="mr-auto font-normal">
-                      Users
-                    </Typography>
+                    <NavLink to="permission/user">
+                      <Typography color="white" className="mr-auto font-normal">
+                        Users
+                      </Typography>
+                    </NavLink>
                 </ListItem>
                 <ListItem>
                   <ListItemPrefix>

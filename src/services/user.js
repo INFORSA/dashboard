@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const deptAPI = createApi({
-  reducerPath: 'deptAPI',
+export const userAPI = createApi({
+  reducerPath: 'userAPI',
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
   endpoints: (build) => ({
-    getDept: build.query({
-        query: () => "dept/get"
+    getUser: build.query({
+        query: () => "user/get"
     }), 
   }),
 })
 
-export const { useGetDeptQuery } = deptAPI
+export const { useGetUserQuery } = userAPI

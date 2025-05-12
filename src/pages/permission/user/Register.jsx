@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useRegisterMutation } from '../../services/regist'; // sesuaikan path
-import { registerSuccess } from '../../features/register/registerSlice'; // sesuaikan path
+import { useRegisterMutation } from '../../../services/regist'; // sesuaikan path
+import { registerSuccess } from '../../../features/register/registerSlice'; // sesuaikan path
 import Swal from 'sweetalert2';
 import { Input } from '@material-tailwind/react';
 

@@ -3,7 +3,7 @@ import Carousels from '../../components/organisms/Carousels';
 import CountCard from '../../components/atoms/CountCard';
 import { Helmet } from 'react-helmet';
 import GrafikCard from '../../components/atoms/GrafikCard';
-import { Tables } from '../../components/atoms/Tables';
+// import { Tables } from '../../components/atoms/Tables';
 import LineCharts from '../../components/atoms/LineCharts';
 import { useGetDeptQuery } from '../../services/dept';
 
@@ -32,7 +32,7 @@ export default function Dashboard({ isSidebarOpen }){
                 <LineCharts isSidebarOpen={isSidebarOpen}/>
             </div>
             <div className='mt-5'>
-                <Tables/>
+                {/* <Tables/> */}
             </div>
         </div>
     )
