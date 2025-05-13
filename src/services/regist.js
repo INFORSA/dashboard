@@ -1,13 +1,13 @@
 // service/register.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const registerAPI = createApi({
-  reducerPath: 'registerAPI',
+export const registerStaffAPI = createApi({
+  reducerPath: 'registerStaffAPI',
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
   endpoints: (builder) => ({
-    register: builder.mutation({
+    registerStaff: builder.mutation({
       query: (body) => ({
-        url: '/api/register',
+        url: '/api/register/staff',
         method: 'POST',
         body,
       }),
@@ -15,4 +15,20 @@ export const registerAPI = createApi({
   }),
 });
 
-export const { useRegisterMutation } = registerAPI;
+export const { useRegisterStaffMutation } = registerStaffAPI;
+
+export const registerAdminAPI = createApi({
+  reducerPath: 'registerAdminAPI',
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  endpoints: (builder) => ({
+    registerAdmin: builder.mutation({
+      query: (body) => ({
+        url: '/api/register/admin',
+        method: 'POST',
+        body,
+      }),
+    }),
+  }),
+});
+
+export const { useRegisterAdminMutation } = registerAdminAPI;

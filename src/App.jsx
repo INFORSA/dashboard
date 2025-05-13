@@ -9,8 +9,10 @@ import React, { useState } from 'react'
 import { Bars3Icon } from '@heroicons/react/24/solid'
 import Footers from './components/organisms/Footers'
 import Upload from './pages/penilaian/Upload'
-import Register from './pages/permission/user/Register'
+import AddStaff from './pages/permission/user/AddStaff'
 import User from './pages/permission/user/User'
+import { Helmet } from 'react-helmet'
+import AddAdmin from './pages/permission/user/AddAdmin'
 
 function App() {
   React.useEffect(() => {
@@ -37,6 +39,9 @@ function App() {
 
   return (
     <div className=''>
+      <Helmet>
+        <title>Dashboard INFORSA</title>
+      </Helmet>
       <div className={`flex  ${isOpen ? '': 'justify-between '}`}>
         {!isLoginOrRegister &&
           <Sidebars isOpen={isOpen}/>
@@ -52,7 +57,7 @@ function App() {
             </>
             }
           </div>
-          <div className={isLoginOrRegister ? '' : 'p-3'}>
+          <div className={`min-h-[70vh] ${isLoginOrRegister ? '' : 'p-3'}`}>
             <Routes>
               <Route path='/*' element={<Navigate to='/'/>}/>
               <Route path='*' element={<Navigate to='/'/>}/>
@@ -61,9 +66,9 @@ function App() {
                 <Route index path='/' element={<Dashboard isSidebarOpen={isOpen}/>}/>
                 <Route path="/dept/:Name" element={<Departement/>}/>
                 <Route path='/upload' element={<Upload/>}/>
-                <Route path='/register' element={<Register/>}/>
                 <Route path='/permission/user' element={<User/>}/>
-                <Route path='/permission/user/add' element={<Register/>}/>
+                <Route path='/permission/user/add-admin' element={<AddAdmin/>}/>
+                <Route path='/permission/user/add-staff' element={<AddStaff/>}/>
               </>
               :
               <>

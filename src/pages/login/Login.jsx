@@ -59,7 +59,7 @@ function Login(){
                 title: "Selamat Datang",
                 icon: "success",
             });
-                navigate("/");
+            navigate("/");
             } catch (error) {
             console.error("Login error:", error);
             setError(

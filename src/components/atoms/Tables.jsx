@@ -30,7 +30,7 @@ export function Tables({ columns = [], rows = [], title = "", description = "" }
   );
 
   return (
-    <Card className="h-full w-full">
+    <Card className="h-full w-full border border-black">
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
@@ -54,7 +54,7 @@ export function Tables({ columns = [], rows = [], title = "", description = "" }
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="overflow-scroll scrollbar-none px-0">
         <table className="min-w-full table-auto text-left">
           <thead>
             <tr>

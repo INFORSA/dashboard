@@ -11,3 +11,15 @@ export const userAPI = createApi({
 })
 
 export const { useGetUserQuery } = userAPI
+
+export const anggotaAPI = createApi({
+  reducerPath: 'anggotaAPI',
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  endpoints: (build) => ({
+    getAnggota: build.query({
+        query: () => "user/get/anggota"
+    }), 
+  }),
+})
+
+export const { useGetAnggotaQuery } = anggotaAPI
