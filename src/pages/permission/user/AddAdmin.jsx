@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useRegisterAdminMutation } from '../../../services/regist'; // sesuaikan path
 import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
-import { Helmet } from 'react-helmet';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 const AddAdmin = () => {
   const [registerAdmin] = useRegisterAdminMutation();
@@ -33,7 +33,7 @@ const AddAdmin = () => {
       const response = await registerAdmin(formData).unwrap();
       Swal.fire("Sukses", response.message, "success");
       setForm({ username: '', password: '', role:'' });
-      navigate("/");
+      navigate("/permission/user");
     } catch (err) {
       Swal.fire("Gagal", err?.data?.message || "Registrasi gagal", "error");
     }
@@ -48,9 +48,9 @@ const AddAdmin = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Helmet>
+      <HelmetProvider>
         <title>Tambah Pengguna</title>
-      </Helmet>
+      </HelmetProvider>
       <Typography className='text-3xl font-semibold text-center mb-3'>Register Admin</Typography>
       <form onSubmit={handleRegister}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3'>

@@ -3,8 +3,8 @@ import { Tables } from "../../../components/atoms/Tables";
 import { useGetAnggotaQuery, useGetUserQuery } from "../../../services/user";
 import { Button, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import { useState } from "react";
+import { HelmetProvider } from "@dr.pogodin/react-helmet";
 
 export default function User(){
     const [activeTable, setActiveTable] = useState("user");
@@ -27,9 +27,9 @@ export default function User(){
     ];
     return(
         <div>
-            <Helmet>
+            <HelmetProvider>
                 <title>Daftar Pengguna</title>
-            </Helmet>
+            </HelmetProvider>
             {isLoading ? (
                 <p>Loading....</p>
             ):(
@@ -65,7 +65,7 @@ export default function User(){
                             title="Tabel Pengguna"
                             description="List pengguna Dashboard INFORSA"
                             columns={columnsUser}
-                            rows={data || []}
+                            rows={data.data || []}
                         />
                     ):(
                        <Tables 

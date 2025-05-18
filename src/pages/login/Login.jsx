@@ -5,8 +5,7 @@ import Swal from 'sweetalert2';
 import { motion } from "framer-motion";
 import { scaleDown } from "../../framerMotion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Helmet } from "react-helmet";
-import { Button, IconButton, Input } from '@material-tailwind/react';
+import { Button, Input, Typography } from '@material-tailwind/react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { useLoginMutation } from '../../services/login';
 import { useDispatch } from 'react-redux';
@@ -15,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import loginImg from '../../assets/main-flag.png';
 import loginBg from '../../assets/family-si.png';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 function Login(){
     const navigate = useNavigate();
@@ -87,39 +87,42 @@ function Login(){
     <motion.div {...scaleDown} id='/' className="w-full min-h-screen bg-cover bg-center" 
             style={{backgroundImage: `url(${loginImg})`}}
         >
-        <Helmet>
+        <HelmetProvider>
             <title>Login INFORSA 2024</title>
-        </Helmet>
-        <div className="w-full h-screen flex items-center justify-center p-12">
+        </HelmetProvider>
+        <div className="w-full h-screen flex items-center justify-center px-7 py-20 lg:px-20 lg:py-20">
             <div className='flex items-center justify-between h-full w-full'>
-                <img src={loginBg} className='border border-4 h-96 w-2/3 object-cover' alt="" />
-                <div className='p-4 border border-4 bg-white w-1/3 h-96'>
-                    {error && <p className='text-red-400 text-center'>{error}</p>}
-                    <div className="flex justify-center">
-                        <LazyLoadImage loading="lazy" className="w-24" src={image} alt="" />
-                    </div>
-                    <h1 className='text-4xl text-center font-bold font-serif text-black mb-3'>Welcome Back</h1>
-                    <form onSubmit={handleProcess}>
-                        <Input
-                            className="text-black"
-                            label="Username"
-                            onChange={(e) => setUsername(e.target.value) }
-                            margin="normal"
-                        />
-                        <br />
-                        <Input
-                            type={`${showPassword ? "text" : "password"}`}
-                            className="text-black"
-                            label="Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            margin="normal"
-                            icon={<div type='button' className='w-5 h-auto' onClick={handleTogglePasswordVisibility}>{showPassword ? <EyeSlashIcon/> : <EyeIcon/>}</div>}
-                        />
-                        <Button type="submit" variant="contained" color='green' className="mt-5 w-full">
-                            {isLoading ? 'Loading...' : 'Login'}
-                        </Button>
-                    </form>
-                </div> 
+                <img src={loginBg} className='hidden lg:block border border-4 h-full w-2/3 object-cover' alt="" />
+                <div className='flex justify-center items-center p-4 border border-4 bg-white w-full lg:w-1/3 h-full'>
+                    <div>
+                        {error && <p className='text-red-400 text-center'>{error}</p>}
+                        <div className="flex justify-center">
+                            <LazyLoadImage loading="lazy" className="w-24" src={image} alt="" />
+                        </div>
+                        <Typography className='text-xl text-center font-base font-serif text-black'>Welcome To</Typography>
+                        <Typography className='text-3xl text-center font-bold font-serif text-black mb-3'>INFORSA DASHBOARD</Typography>
+                        <form onSubmit={handleProcess}>
+                            <Input
+                                className="text-black"
+                                label="Username"
+                                onChange={(e) => setUsername(e.target.value) }
+                                margin="normal"
+                            />
+                            <br />
+                            <Input
+                                type={`${showPassword ? "text" : "password"}`}
+                                className="text-black"
+                                label="Password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                margin="normal"
+                                icon={<div type='button' className='w-5 h-auto' onClick={handleTogglePasswordVisibility}>{showPassword ? <EyeSlashIcon/> : <EyeIcon/>}</div>}
+                            />
+                            <Button type="submit" variant="contained" color='green' className="mt-5 w-full">
+                                {isLoading ? 'Loading...' : 'Login'}
+                            </Button>
+                        </form>
+                    </div> 
+                </div>
             </div>
         </div>
     </motion.div>

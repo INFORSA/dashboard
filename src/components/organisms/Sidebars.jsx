@@ -176,9 +176,11 @@ export default function Sidebars({isOpen}) {
                   <ListItemPrefix>
                     <UserGroupIcon color="white" className="h-5 w-5"/>
                   </ListItemPrefix>
-                    <Typography color="white" className="mr-auto font-normal">
-                      Roles
-                    </Typography>
+                    <NavLink to="permission/role">
+                      <Typography color="white" className="mr-auto font-normal">
+                        Roles
+                      </Typography>
+                    </NavLink>
                 </ListItem>
               </List>
             </AccordionBody>

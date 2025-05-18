@@ -9,18 +9,15 @@ import {
   Typography,
   Button,
   CardBody,
-  Chip,
   CardFooter,
-  Avatar,
   IconButton,
-  Tooltip,
   Input,
 } from "@material-tailwind/react";
 import { useState } from "react";
 
 const ITEMS_PER_PAGE = 25;
 
-export function Tables({ columns = [], rows = [], title = "", description = "" }) {
+export function Tables({ columns = [], rows = [], title = "", description = "", onEdit = () => {}, onRemove = () => {}, }) {
 
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(rows.length / ITEMS_PER_PAGE);
@@ -107,10 +104,10 @@ export function Tables({ columns = [], rows = [], title = "", description = "" }
                     ))}
                     <td className={classes}>
                       <div className="flex gap-2">
-                        <Button color="blue" className="flex items-center gap-3 mb-3" size="sm">
+                        <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
                           <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
                         </Button>
-                        <Button color="red" className="flex items-center gap-3 mb-3" size="sm">
+                        <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
                           <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
                         </Button>
                       </div>

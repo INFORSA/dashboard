@@ -1,25 +1,24 @@
-import { Card, Typography } from '@material-tailwind/react';
 import Carousels from '../../components/organisms/Carousels';
 import CountCard from '../../components/atoms/CountCard';
-import { Helmet } from 'react-helmet';
 import GrafikCard from '../../components/atoms/GrafikCard';
 // import { Tables } from '../../components/atoms/Tables';
 import LineCharts from '../../components/atoms/LineCharts';
 import { useGetDeptQuery } from '../../services/dept';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
+import { useGetUserQuery } from '../../services/user';
 
 export default function Dashboard({ isSidebarOpen }){
-    const { data, error, isLoading } = useGetDeptQuery();
-
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error</div>;
-    console.log(data.total)
+    const { data : deptData, error : deptError, isLoading : deptLoading } = useGetDeptQuery();
+    const { data : userData, error : userError, isLoading : userLoading } = useGetUserQuery();
+    if (deptLoading || userLoading) return <div>Loading...</div>;
+    if (deptError || userError) return <div>Error</div>;
 
     return(
         <div className="mx-auto w-full">
-            <Helmet><title>Dashboard</title></Helmet>
+            <HelmetProvider><title>Dashboard</title></HelmetProvider>
             <div className='my-5 w-full grid grid-cols-3 gap-4'>
-                <CountCard Detail="Departement" Count={data.total}/>
-                <CountCard Detail="Anggota" Count="0"/>
+                <CountCard Detail="Departement" Count={deptData.total}/>
+                <CountCard Detail="Anggota" Count={userData.total}/>
                 <CountCard Detail="Program Kerja" Count="0"/>
             </div>
             <Carousels/>

@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useRegisterStaffMutation } from '../../../services/regist'; // sesuaikan path
 import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
-import { Helmet } from 'react-helmet';
 import { EyeIcon, EyeSlashIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
 import { useGetDeptQuery } from '../../../services/dept';
 import { useNavigate } from 'react-router-dom';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 const AddStaff = () => {
   const [registerStaff] = useRegisterStaffMutation();
@@ -44,7 +44,7 @@ const AddStaff = () => {
       const response = await registerStaff(formData).unwrap();
       Swal.fire("Sukses", response.message, "success");
       setForm({ username: '', nim:'', gender:'', departemen:'', gambar:'', password: '' });
-      navigate("/");
+      navigate("/permission/user");
     } catch (err) {
       Swal.fire("Gagal", err?.data?.message || "Registrasi gagal", "error");
     }
@@ -62,9 +62,9 @@ const AddStaff = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Helmet>
+      <HelmetProvider>
         <title>Tambah Pengguna</title>
-      </Helmet>
+      </HelmetProvider>
       <Typography className='text-3xl font-semibold text-center mb-3'>Register Staff</Typography>
       <div className='flex justify-end mb-3'>
           <Button color='green' className='flex items-center gap-3' size='md'>

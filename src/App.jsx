@@ -11,8 +11,10 @@ import Footers from './components/organisms/Footers'
 import Upload from './pages/penilaian/Upload'
 import AddStaff from './pages/permission/user/AddStaff'
 import User from './pages/permission/user/User'
-import { Helmet } from 'react-helmet'
 import AddAdmin from './pages/permission/user/AddAdmin'
+import Role from './pages/permission/role/Role'
+import AddRole from './pages/permission/role/AddRole'
+import EditRole from './pages/permission/role/EditRole'
 
 function App() {
   React.useEffect(() => {
@@ -22,12 +24,15 @@ function App() {
   }, []); 
   const isLoggedIn = localStorage.getItem("token") !== null;
   const checkTokenValidity = () => {
-      const storedToken = localStorage.getItem('expiredTime');
-      if (isLoggedIn) {
-          if (storedToken && Date.now() > parseInt(storedToken)) {
-              localStorage.removeItem('token');
-              localStorage.removeItem('expiredTime');
-          }
+      const storedToken = localStorage.getItem('expirationTime');
+      if (!isLoggedIn) return;
+      const expMillis =
+        storedToken && isNaN(storedToken)
+          ? new Date(storedToken).getTime()
+          : parseInt(storedToken, 10);    
+      if (storedToken && Date.now() > expMillis) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('expiredTime');
       }
   };
   const [isOpen, setIsOpen] = useState(true);
@@ -39,9 +44,6 @@ function App() {
 
   return (
     <div className=''>
-      <Helmet>
-        <title>Dashboard INFORSA</title>
-      </Helmet>
       <div className={`flex  ${isOpen ? '': 'justify-between '}`}>
         {!isLoginOrRegister &&
           <Sidebars isOpen={isOpen}/>
@@ -66,9 +68,14 @@ function App() {
                 <Route index path='/' element={<Dashboard isSidebarOpen={isOpen}/>}/>
                 <Route path="/dept/:Name" element={<Departement/>}/>
                 <Route path='/upload' element={<Upload/>}/>
+
                 <Route path='/permission/user' element={<User/>}/>
                 <Route path='/permission/user/add-admin' element={<AddAdmin/>}/>
                 <Route path='/permission/user/add-staff' element={<AddStaff/>}/>
+                
+                <Route path='/permission/role' element={<Role/>}/>
+                <Route path='/permission/role/add' element={<AddRole/>}/>
+                <Route path='/permission/role/edit/:id' element={<EditRole/>}/>
               </>
               :
               <>
