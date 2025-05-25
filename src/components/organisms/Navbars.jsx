@@ -9,8 +9,11 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
+import { useGetCurrentUserQuery, useLogoutMutation } from "../../services/login";
  
 export default function Navbars() {
+  const [logout] = useLogoutMutation();
+  const { data } = useGetCurrentUserQuery();
   const [openNav, setOpenNav] = React.useState(false);
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("token") !== null;
@@ -29,17 +32,27 @@ export default function Navbars() {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, Logout!",
-      }).then((result) => {
+      }).then(async(result) => {
         if (result.isConfirmed) {
-          localStorage.removeItem("token");
-          navigate("/login");
-          Swal.fire({
-            title: "Logout Success",
-            icon: "success",
-          });
+          try {
+            await logout().unwrap();
+          
+            Swal.fire({
+              title: "Logout Success",
+              icon: "success",
+            });
+            navigate("/login");
+
+          } catch (error) {
+            Swal.fire({
+              title: "Logout Failed",
+              text: error?.data?.message || error.message || "Please try again.",
+              icon: "error",
+            });
+          }
         }
       });
-    }
+    };
  
   return (
     <Navbar color="light" className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
@@ -54,7 +67,7 @@ export default function Navbars() {
           </Typography>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-x-1">
-              {isLoggedIn ? 
+              {data ? 
                 <Button
                   color="red"
                   variant="text"

@@ -7,18 +7,15 @@ import { scaleDown } from "../../framerMotion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { useLoginMutation } from '../../services/login';
-import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../../features/auth/authSlice';
+import { useLazyGetCurrentUserQuery, useLoginMutation } from '../../services/login';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import loginImg from '../../assets/main-flag.png';
 import loginBg from '../../assets/family-si.png';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 function Login(){
+    const [triggerGetUser] = useLazyGetCurrentUserQuery();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [login, { isLoading }] = useLoginMutation();
 
     const [username, setUsername] = useState("");
@@ -40,20 +37,8 @@ function Login(){
         }
 
         try {
-            const response = await login({ username, password }).unwrap();
-            const { token } = response;
-
-            const decoded = jwtDecode(token);
-            const expirationTime = new Date(decoded.exp * 1000);
-
-            // Simpan di localStorage
-            localStorage.setItem("token", token);
-            localStorage.setItem("username", username);
-            localStorage.setItem("expirationTime", expirationTime);
-
-            // Simpan ke Redux
-            dispatch(loginSuccess({ username: decoded.username, token }));
-
+            await login({ username, password }).unwrap();
+            await triggerGetUser();
             // Alert & Redirect
             await Swal.fire({
                 title: "Selamat Datang",
@@ -61,7 +46,6 @@ function Login(){
             });
             navigate("/");
             } catch (error) {
-            console.error("Login error:", error);
             setError(
                 "Terjadi kesalahan. " +
                 (error?.data?.message || error?.message || "Coba lagi.")
@@ -71,16 +55,6 @@ function Login(){
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        const checkTokenExpiration = () => {
-        const expirationTime = localStorage.getItem("expirationTime");
-        if (expirationTime && new Date() > new Date(expirationTime)) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("expirationTime");
-            setError("Session expired. Silakan login kembali.");
-        }
-        };
-
-        checkTokenExpiration();
     }, []);
 
     return(

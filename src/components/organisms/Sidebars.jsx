@@ -25,16 +25,18 @@ import EDEN from '../../assets/dept/EDEN.png';
 import RELACS from '../../assets/dept/RELACS.png';
 import inforsa from '../../assets/inforsa.png';
 import { NavLink } from "react-router-dom";
+import { useGetCurrentUserQuery } from "../../services/login";
  
 export default function Sidebars({isOpen}) {
   const [open, setOpen] = React.useState(0);
+  const {data} = useGetCurrentUserQuery();
  
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
  
   return (
-    <Card className={`bg-[#282666] rounded-tl-none rounded-bl-none sticky top-0 z-10 self-start h-[calc(100vh-2rem)] transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0 w-[18rem]' : '-translate-x-full w-0 overflow-hidden'} min-h-screen max-w-[18rem] p-4`}>
+    <Card className={`bg-[#282666] hidden lg:block rounded-tl-none rounded-bl-none sticky top-0 z-10 self-start h-[calc(100vh-2rem)] transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0 w-[18rem]' : '-translate-x-full w-0 overflow-hidden'} min-h-screen max-w-[18rem] p-4`}>
       <div className="w-full bg-white bg-opacity-15 rounded-xl mb-2 pb-3">
         <div className="flex justify-center">
           <img src={inforsa} alt="" className="w-36 text-center"/>
@@ -55,6 +57,8 @@ export default function Sidebars({isOpen}) {
                 </NavLink>
               </Typography>
           </ListItem>
+          { data && data.role === "superadmin" && 
+          <>
           <Accordion
             open={open === 1}
             icon={
@@ -185,6 +189,8 @@ export default function Sidebars({isOpen}) {
               </List>
             </AccordionBody>
           </Accordion>
+          </>
+          }
         </List>
       </div>
     </Card>

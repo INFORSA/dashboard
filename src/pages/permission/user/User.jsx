@@ -34,7 +34,7 @@ export default function User(){
                 <p>Loading....</p>
             ):(
                 <div className="">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 mb-3">
                         <Button color="blue" size="sm" className="mb-3">
                             <Link className="flex items-center gap-3" to='/permission/user/add-admin'>
                                 <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
@@ -48,6 +48,14 @@ export default function User(){
                                 <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                                 <Typography className="text-md">
                                     Tambah Anggota
+                                </Typography>
+                            </Link>
+                        </Button>
+                        <Button color="yellow" size="sm" className="mb-3">
+                            <Link className="flex items-center gap-3" to='/permission/user/import'>
+                                <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                                <Typography className="text-md">
+                                    Import Anggota
                                 </Typography>
                             </Link>
                         </Button>
