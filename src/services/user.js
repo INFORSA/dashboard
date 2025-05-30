@@ -2,14 +2,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const userAPI = createApi({
   reducerPath: 'userAPI',
+  tagTypes: ['User', 'Anggota'],
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
   endpoints: (build) => ({
     getUser: build.query({
-        query: () => "user/get"
-    }), 
+        query: () => "user/get",
+      }), 
     getAnggota: build.query({
         query: () => "user/get/anggota"
     }), 
+    providesTags: ["User", "Anggota"],
   }),
 })
 

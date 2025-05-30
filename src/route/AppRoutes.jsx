@@ -26,7 +26,8 @@ const AppRoutes = ({ isSidebarOpen }) => (
       <Route path="/dept/:Name" element={<Departement />} />
       <Route path="/upload" element={<Upload />} />
       <Route path="/permission/user" element={<User />} />
-      <Route path="/permission/user/import" element={<UploadAnggota />} />
+      <Route path="/permission/user/import" element={<UploadAnggota dataImport="user"/>} />
+      <Route path="/permission/anggota/import" element={<UploadAnggota dataImport="anggota" />} />
       <Route path="/permission/user/add-admin" element={<AddAdmin />} />
       <Route path="/permission/user/add-staff" element={<AddStaff />} />
       <Route path="/permission/role" element={<Role />} />
