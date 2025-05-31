@@ -10,12 +10,15 @@ export const userAPI = createApi({
       }), 
     getAnggota: build.query({
         query: () => "user/get/anggota"
+    }),
+    getAnggotaByDepart: build.query({
+      query: (depart) => `user/get/anggota/${depart}`
     }), 
     providesTags: ["User", "Anggota"],
   }),
 })
 
-export const { useGetUserQuery, useGetAnggotaQuery } = userAPI
+export const { useGetUserQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery } = userAPI
 
 export const roleAPI = createApi({
   reducerPath: 'roleAPI',

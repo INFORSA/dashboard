@@ -23,7 +23,7 @@ const AppRoutes = ({ isSidebarOpen }) => (
     {/* Protected Routes */}
     <Route element={<ProtectedRoute />}>
       <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} />
-      <Route path="/dept/:Name" element={<Departement />} />
+      <Route path="/dept/:name" element={<Departement />} />
       <Route path="/upload" element={<Upload />} />
       <Route path="/permission/user" element={<User />} />
       <Route path="/permission/user/import" element={<UploadAnggota dataImport="user"/>} />

@@ -5,6 +5,7 @@ import { registerAPI } from '../services/regist'
 import { deptAPI } from '../services/dept'
 import { roleAPI, userAPI } from '../services/user'
 import { excelAPI } from '../services/excel'
+import { penilaianAPI } from '../services/penilaian'
 
 export default configureStore({
   reducer: {
@@ -18,7 +19,8 @@ export default configureStore({
 
     [roleAPI.reducerPath]: roleAPI.reducer, 
     [excelAPI.reducerPath]: excelAPI.reducer, 
+    [penilaianAPI.reducerPath]: penilaianAPI.reducer, 
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat( roleAPI.middleware, registerAPI.middleware, loginAPI.middleware, deptAPI.middleware, userAPI.middleware, excelAPI.middleware ), 
+    getDefaultMiddleware().concat( roleAPI.middleware, registerAPI.middleware, loginAPI.middleware, deptAPI.middleware, userAPI.middleware, excelAPI.middleware, penilaianAPI.middleware ), 
 })

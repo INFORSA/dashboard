@@ -1,4 +1,4 @@
-import { PencilIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
@@ -51,73 +51,75 @@ export function Tables({ columns = [], rows = [], title = "", description = "", 
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll scrollbar-none px-0">
-        <table className="min-w-full table-auto text-left">
-          <thead>
-            <tr>
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 ${col.className}`}
-                >
+      <CardBody className="overflow-y-hidden overflow-x-auto px-0 w-full">
+        <div className="w-[1000px]">
+          <table className="min-w-full table-auto text-left">
+            <thead>
+              <tr>
+                {columns.map((col) => (
+                  <th
+                    key={col.key}
+                    className={`border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 ${col.className}`}
+                  >
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-semibold leading-none opacity-70"
+                    >
+                      {col.label}
+                    </Typography>
+                  </th>
+                ))}
+                <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
                   <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-semibold leading-none opacity-70"
-                  >
-                    {col.label}
-                  </Typography>
+                      variant="small"
+                      color="blue-gray"
+                      className="font-semibold leading-none opacity-70"
+                    >
+                      Action
+                    </Typography>
                 </th>
-              ))}
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-semibold leading-none opacity-70"
-                  >
-                    Action
-                  </Typography>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedRows.map((row, index) => {
-                const isLast = index === rows.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 whitespace-nowrap border-b border-blue-gray-50";
- 
-                return (
-                  <tr key={index}>
-                    {columns.map((col)=>(
-                      <td className={classes} key={col.key}>
-                        <div className="flex items-center gap-3">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-base"
-                          >
-                            {col.key === "no" ? index + 1 : row[col.key]}
-                          </Typography>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedRows.map((row, index) => {
+                  const isLast = index === rows.length - 1;
+                  const classes = isLast
+                    ? "p-4"
+                    : "p-4 whitespace-nowrap border-b border-blue-gray-50";
+  
+                  return (
+                    <tr key={index}>
+                      {columns.map((col)=>(
+                        <td className={classes} key={col.key}>
+                          <div className="flex items-center gap-3">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-base"
+                            >
+                              {col.key === "no" ? index + 1 : row[col.key]}
+                            </Typography>
+                          </div>
+                        </td>
+                      ))}
+                      <td className={classes}>
+                        <div className="flex gap-2">
+                          <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
+                            <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
+                          </Button>
+                          <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
+                            <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
+                          </Button>
                         </div>
                       </td>
-                    ))}
-                    <td className={classes}>
-                      <div className="flex gap-2">
-                        <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
-                          <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
-                        </Button>
-                        <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
-                          <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
-          </tbody>
-        </table>
+                    </tr>
+                  );
+                },
+              )}
+            </tbody>
+          </table>
+        </div>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Button 
