@@ -15,6 +15,7 @@ import {
   UserGroupIcon,
   FlagIcon,
   HomeIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Adwel from '../../assets/dept/ADWEL.png';
@@ -191,6 +192,16 @@ export default function Sidebars({isOpen}) {
           </Accordion>
           </>
           }
+          <ListItem >
+              <ListItemPrefix>
+                <ChartBarIcon color="white" className="h-5 w-5" />
+              </ListItemPrefix>
+              <Typography color="white" className="mr-auto font-normal">
+                <NavLink to="/penilaian">
+                  Penilaian
+                </NavLink>
+              </Typography>
+          </ListItem>
         </List>
       </div>
     </Card>

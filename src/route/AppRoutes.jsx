@@ -11,6 +11,7 @@ import AddRole from "../pages/permission/role/AddRole";
 import EditRole from "../pages/permission/role/EditRole";
 import Login from "../pages/login/Login";
 import ProtectedRoute from "./ProtectedRoute ";
+import Penilaian from "../pages/penilaian/Penilaian";
 
 const AppRoutes = ({ isSidebarOpen }) => (
   <Routes>
@@ -23,7 +24,7 @@ const AppRoutes = ({ isSidebarOpen }) => (
     {/* Protected Routes */}
     <Route element={<ProtectedRoute />}>
       <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} />
-      <Route path="/dept/:name" element={<Departement />} />
+      <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
       <Route path="/upload" element={<Upload />} />
       <Route path="/permission/user" element={<User />} />
       <Route path="/permission/user/import" element={<UploadAnggota dataImport="user"/>} />
@@ -33,6 +34,8 @@ const AppRoutes = ({ isSidebarOpen }) => (
       <Route path="/permission/role" element={<Role />} />
       <Route path="/permission/role/add" element={<AddRole />} />
       <Route path="/permission/role/edit/:id" element={<EditRole />} />
+
+      <Route path="/penilaian" element={<Penilaian />} />
     </Route>
   </Routes>
 );

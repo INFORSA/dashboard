@@ -28,7 +28,7 @@ function App() {
           </div>
         )}
 
-        <div className={`min-h-[70vh] ${isLoginPage ? '' : 'p-3'}`}>
+        <div className={`max-w-[900px] lg:max-w-[1060px] min-w-full min-h-[70vh] ${isLoginPage ? '' : 'p-3'}`}>
           <AppRoutes isSidebarOpen={isOpen} />
         </div>
 

@@ -51,9 +51,9 @@ export function Tables({ columns = [], rows = [], title = "", description = "", 
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-y-hidden overflow-x-auto px-0 w-full">
-        <div className="w-[1000px]">
-          <table className="min-w-full table-auto text-left">
+      <CardBody className="overflow-x-auto px-0">
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto whitespace-nowrap text-left">
             <thead>
               <tr>
                 {columns.map((col) => (

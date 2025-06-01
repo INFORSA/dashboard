@@ -6,21 +6,22 @@ import {
   } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
    
-  // If you're using Next.js please use the dynamic import for react-apexcharts and remove the import from the top for the react-apexcharts
-  // import dynamic from "next/dynamic";
-  // const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-   
-  const chartConfig = {
+  export default function LineCharts({ isSidebarOpen, data, detail }) {
+    const categories = data.map((d)=> d.bulan);
+
+    const series = useMemo(() => {
+      return detail.map((col) => ({
+        name: col.label,
+        data: data.map((item) => item[col.key])
+      }));
+    }, [data, detail]);
+
+    const chartConfig = {
     type: "line",
     height: 240,
-    series: [
-      {
-        name: "Sales",
-        data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-      },
-    ],
+    series,
     options: {
       chart: {
         toolbar: {
@@ -56,17 +57,7 @@ import { useEffect } from "react";
             fontWeight: 400,
           },
         },
-        categories: [
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
+        categories
       },
       yaxis: {
         labels: {
@@ -100,8 +91,6 @@ import { useEffect } from "react";
       },
     },
   };
-   
-  export default function LineCharts({ isSidebarOpen }) {
     useEffect(() => {
         const timeout = setTimeout(() => {
           window.dispatchEvent(new Event("resize"));
@@ -111,7 +100,7 @@ import { useEffect } from "react";
       }, [isSidebarOpen]);
 
     return (
-      <Card className="">
+      <Card className="border border-md border-black">
         <CardHeader
           floated={false}
           shadow={false}
@@ -123,15 +112,14 @@ import { useEffect } from "react";
           </div>
           <div>
             <Typography variant="h6" color="blue-gray">
-              Line Chart
+              Grafik Performa
             </Typography>
             <Typography
               variant="small"
               color="gray"
               className="max-w-sm font-normal"
             >
-              Visualize your data in a simple way using the
-              @material-tailwind/react chart plugin.
+              Rata-Rata Performa Anggota INFORSA
             </Typography>
           </div>
         </CardHeader>

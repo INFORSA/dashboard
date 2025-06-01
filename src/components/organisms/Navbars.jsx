@@ -62,7 +62,7 @@ export default function Navbars() {
           >
             <NavLink to="/" className="w-full flex justify-start gap-1">
               <HomeIcon className="w-5 my-0.5 h-full"/>
-              <button className="mx-3 font-mono text-md text-slate-600">..{location.pathname}</button> 
+              <button className="mx-3 font-thin font-mono text-md text-slate-600">..{(location.pathname).toUpperCase()}</button> 
             </NavLink>
           </Typography>
           <div className="flex items-center gap-4">

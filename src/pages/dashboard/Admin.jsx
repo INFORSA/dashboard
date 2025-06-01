@@ -13,12 +13,12 @@ export default function Admin(){
     return(
         <div className="mx-auto w-full">
             <HelmetProvider><title>Dashboard</title></HelmetProvider>
-            <div className='my-5 w-full grid grid-cols-3 gap-4'>
+            <div className='my-5 w-full grid grid-cols-3 gap-4 h-24'>
                 <CountCard Detail="Departement" Count={deptData.total}/>
                 <CountCard Detail="Anggota" Count={userData.total}/>
                 <CountCard Detail="Program Kerja" Count="0"/>
             </div>
-            <div className='mt-5 grid grid-cols-2 gap-4'>
+            <div className='mt-5 grid grid-cols-2 gap-4 h-60'>
                 <GrafikCard Detail="Departemen" Count="0"/>
                 <GrafikCard Detail="Staff" Count="0"/>
             </div>

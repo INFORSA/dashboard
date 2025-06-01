@@ -142,10 +142,10 @@ export default function User(){
                                 </Select>
                             </div>
                             <Tables 
-                                 title="Tabel Anggota"
-                                 description="List Anggota INFORSA"
-                                 columns={columnsAnggota}
-                                 rows={filteredData || []}
+                                title="Tabel Anggota"
+                                description="List Anggota INFORSA"
+                                columns={columnsAnggota}
+                                rows={filteredData || []}
                              /> 
                         </div>
                     )}
