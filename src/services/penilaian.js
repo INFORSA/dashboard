@@ -9,11 +9,11 @@ export const penilaianAPI = createApi({
    }),
   endpoints: (build) => ({
     getAllNilai: build.query({
-        query: () => `penilaian/get/all/nilai`,
+        query: (month) => `penilaian/get/all/nilai/${month}`,
         providesTags: ["All Nilai"],
       }), 
     getNilai: build.query({
-        query: (depart) => `penilaian/get/nilai/${depart}`,
+        query: ({depart, month}) => `penilaian/get/nilai/${depart}/${month}`,
         providesTags: ["Penilaian"],
       }), 
     getLineChartValue: build.query({

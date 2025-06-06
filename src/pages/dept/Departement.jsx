@@ -1,10 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import Carousels from "../../components/organisms/Carousels";
 import { useState } from "react";
-import { Button, Typography } from "@material-tailwind/react";
+import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import CountCard from "../../components/atoms/CountCard";
 import { useGetAnggotaByDepartQuery } from "../../services/user";
-import { useGetNilaiQuery, useGetLineChartValueDepartQuery, useGetBarChartValueQuery, useGetRadarChartValueQuery } from "../../services/penilaian";
+import { useGetNilaiQuery, useGetLineChartValueDepartQuery, 
+    // useGetBarChartValueQuery, useGetRadarChartValueQuery 
+} from "../../services/penilaian";
 import { Tables } from "../../components/atoms/Tables";
 import DepartCard from "../../components/atoms/DepartCard";
 import LineCharts from "../../components/atoms/LineCharts";
@@ -13,18 +15,36 @@ import RadarChart from "../../components/atoms/RadarCharts";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 export default function Departement({isSidebarOpen}){
+
+    // Array nama bulan
+    const monthOptions = [
+        { label: "January", value: "01" },
+        { label: "February", value: "02" },
+        { label: "March", value: "03" },
+        { label: "April", value: "04" },
+        { label: "May", value: "05" },
+        { label: "June", value: "06" },
+        { label: "July", value: "07" },
+        { label: "August", value: "08" },
+        { label: "September", value: "09" },
+        { label: "October", value: "10" },
+        { label: "November", value: "11" },
+        { label: "December", value: "12" },
+    ];
+
     const { name } = useParams();
     const depart = name.toUpperCase();
-    const [activeTable, setActiveTable] = useState("grafik");
+    const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
+    const [ activeTable, setActiveTable ] = useState("grafik");
     const { data: departData, isLoading: departLoading, isError: departError } = useGetAnggotaByDepartQuery(depart);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(depart);
-    const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
-    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
-    const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery(depart);
-    // console.log(radarChartData)
+    // const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
+    // const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
+    const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
+        { className:"", key: "penilai", label: "Penilai" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "waktu", label: "Waktu" },
@@ -38,21 +58,24 @@ export default function Departement({isSidebarOpen}){
         { className:"", key: "total_nilai", label: "Total" },
     ];
 
-    const labelPenilaian = [
-        { key: "nilai_matriks_1", label: "Kinerja" },
-        { key: "nilai_matriks_2", label: "Kemampuan Kerja Tim" },
-        { key: "nilai_matriks_3", label: "Inisiatif" },
-        { key: "nilai_matriks_4", label: "Keterampilan Komunikasi" },
-        { key: "nilai_matriks_5", label: "Kreativitas dan Inovasi" },
-        { key: "nilai_matriks_6", label: "Kepemimpinan" },
-        { key: "nilai_matriks_7", label: "Kepatuhan dan Etika Kerja" },
-    ];
+    // const labelPenilaian = [
+    //     { key: "nilai_matriks_1", label: "Kinerja" },
+    //     { key: "nilai_matriks_2", label: "Kemampuan Kerja Tim" },
+    //     { key: "nilai_matriks_3", label: "Inisiatif" },
+    //     { key: "nilai_matriks_4", label: "Keterampilan Komunikasi" },
+    //     { key: "nilai_matriks_5", label: "Kreativitas dan Inovasi" },
+    //     { key: "nilai_matriks_6", label: "Kepemimpinan" },
+    //     { key: "nilai_matriks_7", label: "Kepatuhan dan Etika Kerja" },
+    // ];
 
     const summaryPenilaian = [
         { key: "total_nilai", label: depart },
     ];
 
-    if (departLoading || nilaiLoading || lineChartLoading || barChartLoading || radarChartLoading) return <p>Loading data anggota...</p>;
+    if (departLoading || nilaiLoading || lineChartLoading 
+        // || barChartLoading 
+        // || radarChartLoading
+    ) return <p>Loading data anggota...</p>;
     if (departError) return <p>Gagal mengambil data anggota.</p>;
 
     return(
@@ -94,8 +117,8 @@ export default function Departement({isSidebarOpen}){
                     <div className="flex gap-2">
                         <div className="flex flex-col gap-2 w-full">
                             <div className="flex justify-between gap-2 w-full">
-                                <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
-                                <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
+                                {/* <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
+                                <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/> */}
                                 {/* <RadarChart isSidebarOpen={isSidebarOpen} /> */}
                             </div>
                             <div className="h-96">
@@ -106,8 +129,23 @@ export default function Departement({isSidebarOpen}){
                     </div>
                 ):(
                     <div className="w-full overflow-x-auto">
-                        <div className="flex justify-end">
-                            
+                        <div className="my-3">
+                            <Select
+                                name="month"
+                                label="Pilih Bulan"
+                                value={month}
+                                onChange={(val) => setMonth(val)}
+                                animate={{
+                                    mount: { y: 0 },
+                                    unmount: { y: 25 },
+                                }}
+                                >
+                                {monthOptions.map((item) => (
+                                    <Option key={item.value} value={item.value}>
+                                        {item.label ?? month}
+                                    </Option>
+                                ))}
+                                </Select>
                         </div>
                         <div className="max-w-full">
                             <Tables

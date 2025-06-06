@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Departement from "../pages/dept/Departement";
 import Upload from "../pages/penilaian/Upload";
-import UploadAnggota from "../pages/permission/user/Upload";
 import AddStaff from "../pages/permission/user/AddStaff";
 import AddAdmin from "../pages/permission/user/AddAdmin";
 import User from "../pages/permission/user/User";
@@ -12,6 +11,8 @@ import EditRole from "../pages/permission/role/EditRole";
 import Login from "../pages/login/Login";
 import ProtectedRoute from "./ProtectedRoute ";
 import Penilaian from "../pages/penilaian/Penilaian";
+import GuestRoute from "./GuestRoute";
+import ImportExcel from "../app/import/Import";
 
 const AppRoutes = ({ isSidebarOpen }) => (
   <Routes>
@@ -19,7 +20,7 @@ const AppRoutes = ({ isSidebarOpen }) => (
     <Route path="*" element={<Navigate to="/" />} />
 
     {/* Login tetap terbuka */}
-    <Route path="/login" element={<Login />} />
+    <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
 
     {/* Protected Routes */}
     <Route element={<ProtectedRoute />}>
@@ -27,8 +28,8 @@ const AppRoutes = ({ isSidebarOpen }) => (
       <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
       <Route path="/upload" element={<Upload />} />
       <Route path="/permission/user" element={<User />} />
-      <Route path="/permission/user/import" element={<UploadAnggota dataImport="user"/>} />
-      <Route path="/permission/anggota/import" element={<UploadAnggota dataImport="anggota" />} />
+      <Route path="/permission/user/import" element={<ImportExcel dataImport="user"/>} />
+      <Route path="/permission/anggota/import" element={<ImportExcel dataImport="anggota" />} />
       <Route path="/permission/user/add-admin" element={<AddAdmin />} />
       <Route path="/permission/user/add-staff" element={<AddStaff />} />
       <Route path="/permission/role" element={<Role />} />
@@ -36,6 +37,7 @@ const AppRoutes = ({ isSidebarOpen }) => (
       <Route path="/permission/role/edit/:id" element={<EditRole />} />
 
       <Route path="/penilaian" element={<Penilaian />} />
+      <Route path="/penilaian/import" element={<ImportExcel dataImport="penilaian" />} />
     </Route>
   </Routes>
 );

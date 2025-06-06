@@ -16,7 +16,7 @@ export default function SuperAdmin({ isSidebarOpen }){
     const { data : deptData, error : deptError, isLoading : deptLoading } = useGetDeptQuery();
     const { data : userData, error : userError, isLoading : userLoading } = useGetUserQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueQuery();
-    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery();
+    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(5);
     
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -60,8 +60,10 @@ export default function SuperAdmin({ isSidebarOpen }){
                     <DepartCard Head="EDEN" Detail="A"/>
                 </div>
             </div>
-            <div className='mt-5 flex gap-2 max-w-full'>
+            <div className='mt-5'>
                 <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
+            </div>
+            <div className='mt-5 flex gap-2 max-w-full'>
                 <div className='w-full overflow-x-auto'>
                     <Tables
                         title="Tabel Penilaian"

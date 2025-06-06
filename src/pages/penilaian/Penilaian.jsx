@@ -1,14 +1,32 @@
-import { Button, Typography } from "@material-tailwind/react";
+import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import { Tables } from "../../components/atoms/Tables";
 import { useGetAllNilaiQuery } from "../../services/penilaian";
 import { Link } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 
 export default function Penilaian(){
-    const { data, isLoading, isError } = useGetAllNilaiQuery();
+    // Array nama bulan
+    const monthOptions = [
+        { label: "January", value: "01" },
+        { label: "February", value: "02" },
+        { label: "March", value: "03" },
+        { label: "April", value: "04" },
+        { label: "May", value: "05" },
+        { label: "June", value: "06" },
+        { label: "July", value: "07" },
+        { label: "August", value: "08" },
+        { label: "September", value: "09" },
+        { label: "October", value: "10" },
+        { label: "November", value: "11" },
+        { label: "December", value: "12" },
+    ];
+    const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
+    const { data, isLoading, isError } = useGetAllNilaiQuery(month);
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
+        { className:"", key: "penilai", label: "Penilai" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "waktu", label: "Waktu" },
@@ -27,14 +45,42 @@ export default function Penilaian(){
     
     return(
          <div className="w-full overflow-x-auto">
-            <Button color="blue" size="sm" className="mb-3">
-                <Link className="flex items-center gap-3" to='/permission/user/add-admin'>
-                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                    <Typography className="text-md">
-                        Isi Penilaian
-                    </Typography>
-                </Link>
-            </Button>
+            <div className="flex gap-2">
+                <Button color="blue" size="sm" className="mb-3">
+                    <Link className="flex items-center gap-3" to='/permission/user/add-admin'>
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">
+                            Isi Penilaian
+                        </Typography>
+                    </Link>
+                </Button>
+                <Button color="blue" size="sm" className="mb-3">
+                    <Link className="flex items-center gap-3" to='/penilaian/import'>
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">
+                            Import Data
+                        </Typography>
+                    </Link>
+                </Button>
+            </div>
+            <div className="my-3">
+                <Select
+                    name="month"
+                    label="Pilih Bulan"
+                    value={month}
+                    onChange={(val) => setMonth(val)}
+                    animate={{
+                        mount: { y: 0 },
+                        unmount: { y: 25 },
+                    }}
+                    >
+                    {monthOptions.map((item) => (
+                        <Option key={item.value} value={item.value}>
+                            {item.label ?? month}
+                        </Option>
+                    ))}
+                    </Select>
+            </div>
             <div className="w-full">
                 <Tables
                     title="Tabel Penilaian"

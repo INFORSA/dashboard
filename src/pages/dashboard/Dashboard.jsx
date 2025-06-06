@@ -4,6 +4,7 @@ import SuperAdmin from './SuperAdmin';
 
 export default function Dashboard({isSidebarOpen}){
     const {data} = useGetCurrentUserQuery();
+    console.log(data);
 
     return(
         <div className="mx-auto w-full">

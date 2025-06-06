@@ -6,7 +6,7 @@ export const excelAPI = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: "include",
   }),
-  tagTypes: ['User', 'Anggota'],
+  tagTypes: ['User', 'Anggota', 'Penilaian'],
   endpoints: (builder) => ({
     importAnggota: builder.mutation({
       query: (file) => {
@@ -34,7 +34,20 @@ export const excelAPI = createApi({
       },
       invalidatesTags: ['User'],
     }),
+    importPenilaian: builder.mutation({
+      query: (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return {
+          url: "import/excel/penilaian",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ['Penilaian'],
+    }),
   }),
 });
 
-export const { useImportAnggotaMutation, useImportUserMutation } = excelAPI;
+export const { useImportAnggotaMutation, useImportUserMutation, useImportPenilaianMutation } = excelAPI;

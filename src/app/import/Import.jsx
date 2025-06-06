@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useImportAnggotaMutation, useImportUserMutation } from "../../../services/excel";
+import { useImportAnggotaMutation, useImportPenilaianMutation, useImportUserMutation } from "../../services/excel";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -15,16 +15,22 @@ export default function ImportExcel({dataImport}) {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,  
   });
+  const [importPenilaian] = useImportPenilaianMutation(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,  
+  });
 
   const handleUpload = async () => {
     if (!file) return;
     try {
-      dataImport === "user" ? (await importUser(file).unwrap()) : (await importAnggota(file).unwrap());
+      dataImport === "penilaian" ? (await importPenilaian(file).unwrap()) 
+      : 
+      (dataImport === "user" ? (await importUser(file).unwrap()) : (await importAnggota(file).unwrap()));
       await Swal.fire({
           title: "Sukses Import Data",
           icon: "success",
       });
-      navigate("/permission/user");
+      dataImport === "penilaian" ? navigate("/penilaian") : navigate("/permission/user");
     } catch (err) {
       console.error("Gagal import:", err);
       alert("Gagal import");
@@ -41,7 +47,7 @@ export default function ImportExcel({dataImport}) {
       />
       <div className="flex justify-end">
           <Button size="sm" color="yellow" className="my-3" onClick={handleUpload} disabled={isLoading}>
-              {isLoading ? "Mengupload..." : (dataImport === "user" ? "Upload User" : "Upload Anggota")}
+              {isLoading ? "Mengupload..." : "Upload"}
           </Button>
       </div>
 
