@@ -26,7 +26,6 @@ export default function Penilaian(){
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
-        { className:"", key: "penilai", label: "Penilai" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "waktu", label: "Waktu" },

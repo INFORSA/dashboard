@@ -6,7 +6,7 @@ import {
   IconButton,
   Collapse,
 } from "@material-tailwind/react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
 import { useGetCurrentUserQuery, useLogoutMutation } from "../../services/login";
@@ -15,7 +15,6 @@ export default function Navbars() {
   const [logout] = useLogoutMutation();
   const { data } = useGetCurrentUserQuery();
   const [openNav, setOpenNav] = React.useState(false);
-  const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("token") !== null;
 
   React.useEffect(() => {
@@ -40,8 +39,9 @@ export default function Navbars() {
             Swal.fire({
               title: "Logout Success",
               icon: "success",
-            });
-            navigate("/login");
+            }).then(()=>{
+              window.location.href = "/login";
+            })
 
           } catch (error) {
             Swal.fire({

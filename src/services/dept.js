@@ -6,8 +6,11 @@ export const deptAPI = createApi({
   endpoints: (build) => ({
     getDept: build.query({
         query: () => "dept/get"
+    }),
+    getPengurus: build.query({
+        query: () => `dept/get/pengurus`
     }), 
   }),
 })
 
-export const { useGetDeptQuery } = deptAPI
+export const { useGetDeptQuery, useGetPengurusQuery } = deptAPI

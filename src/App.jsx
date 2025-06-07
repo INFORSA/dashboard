@@ -6,11 +6,14 @@ import Navbars from './components/organisms/Navbars';
 import Footers from './components/organisms/Footers';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import AppRoutes from './route/AppRoutes';
+import { useGetCurrentUserQuery } from './services/login';
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
+  const {data} = useGetCurrentUserQuery();
+  
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -29,7 +32,7 @@ function App() {
         )}
 
         <div className={`max-w-[900px] lg:max-w-[1060px] min-w-full min-h-[70vh] ${isLoginPage ? '' : 'p-3'}`}>
-          <AppRoutes isSidebarOpen={isOpen} />
+          <AppRoutes isSidebarOpen={isOpen} login={data} />
         </div>
 
         {!isLoginPage && <Footers />}

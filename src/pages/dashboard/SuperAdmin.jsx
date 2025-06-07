@@ -7,7 +7,7 @@ import { useGetDeptQuery } from '../../services/dept';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { useGetUserQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/DepartCard';
-import { useGetAllNilaiQuery, useGetLineChartValueQuery } from '../../services/penilaian';
+import { useGetAllNilaiQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery } from '../../services/penilaian';
 import Penilaian from '../penilaian/Penilaian';
 import { Tables } from '../../components/atoms/Tables';
 import Banner from '../../components/atoms/Banner';
@@ -17,6 +17,7 @@ export default function SuperAdmin({ isSidebarOpen }){
     const { data : userData, error : userError, isLoading : userLoading } = useGetUserQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueQuery();
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(5);
+    const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
     
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -33,7 +34,7 @@ export default function SuperAdmin({ isSidebarOpen }){
         { className:"", key: "total_nilai", label: "Total" },
     ];
     
-    if (deptLoading || userLoading || lineChartLoading || nilaiLoading) return <div>Loading...</div>;
+    if (deptLoading || userLoading || lineChartLoading || nilaiLoading || maxNilaiLoading) return <div>Loading...</div>;
     if (deptError || userError || nilaiError) return <div>Error</div>;
 
     const summaryPenilaian = [
@@ -52,12 +53,9 @@ export default function SuperAdmin({ isSidebarOpen }){
             <div className='mt-5'>
                 <h3 className='text-2xl font-semibold mb-2'>Staff Of The Month</h3>
                 <div className='grid grid-cols-3 gap-4'>
-                    <DepartCard Head="HRD" Detail="A"/>
-                    <DepartCard Head="RELACS" Detail="A"/>
-                    <DepartCard Head="PSD" Detail="A"/>
-                    <DepartCard Head="ADWEL" Detail="A"/>
-                    <DepartCard Head="COMINFO" Detail="A"/>
-                    <DepartCard Head="EDEN" Detail="A"/>
+                    {maxNilaiData.map((item) => (
+                        <DepartCard key={item.nama_departemen} Head={`${item.nama_departemen} : `} Detail={item.nama_anggota}/>
+                    ))}
                 </div>
             </div>
             <div className='mt-5'>
@@ -66,6 +64,7 @@ export default function SuperAdmin({ isSidebarOpen }){
             <div className='mt-5 flex gap-2 max-w-full'>
                 <div className='w-full overflow-x-auto'>
                     <Tables
+                        maxRow={10}
                         title="Tabel Penilaian"
                         description={`List Nilai Anggota`}
                         columns={columnsPenilaian}

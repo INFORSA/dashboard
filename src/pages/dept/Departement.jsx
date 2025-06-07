@@ -1,10 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 import Carousels from "../../components/organisms/Carousels";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import CountCard from "../../components/atoms/CountCard";
 import { useGetAnggotaByDepartQuery } from "../../services/user";
-import { useGetNilaiQuery, useGetLineChartValueDepartQuery, 
+import { useGetNilaiQuery, useGetLineChartValueDepartQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, 
     // useGetBarChartValueQuery, useGetRadarChartValueQuery 
 } from "../../services/penilaian";
 import { Tables } from "../../components/atoms/Tables";
@@ -13,9 +13,9 @@ import LineCharts from "../../components/atoms/LineCharts";
 import BarChart from "../../components/atoms/BarCharts";
 import RadarChart from "../../components/atoms/RadarCharts";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { useGetPengurusQuery } from "../../services/dept";
 
-export default function Departement({isSidebarOpen}){
-
+export default function Departement({isSidebarOpen, departemen}){
     // Array nama bulan
     const monthOptions = [
         { label: "January", value: "01" },
@@ -33,18 +33,27 @@ export default function Departement({isSidebarOpen}){
     ];
 
     const { name } = useParams();
-    const depart = name.toUpperCase();
+    const depart = departemen ?? name?.toUpperCase();
     const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
     const [ activeTable, setActiveTable ] = useState("grafik");
+    const [ penilai, setPenilai ] = useState(null);
     const { data: departData, isLoading: departLoading, isError: departError } = useGetAnggotaByDepartQuery(depart);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(depart);
     // const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
     // const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
     const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
+    const { data: detailData, isLoading: detailLoading } = useGetNilaiDetailQuery({depart, month, penilai});
+    const { data: pengurusData } = useGetPengurusQuery();    
+    const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
+
+    useEffect(() => {
+        setPenilai(null);
+    }, [name]);
+
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
-        { className:"", key: "penilai", label: "Penilai" },
+        // { className:"", key: "penilai", label: "Penilai" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "waktu", label: "Waktu" },
@@ -72,12 +81,12 @@ export default function Departement({isSidebarOpen}){
         { key: "total_nilai", label: depart },
     ];
 
-    if (departLoading || nilaiLoading || lineChartLoading 
+    if (departLoading || nilaiLoading || lineChartLoading || detailLoading || maxNilaiLoading
         // || barChartLoading 
         // || radarChartLoading
     ) return <p>Loading data anggota...</p>;
     if (departError) return <p>Gagal mengambil data anggota.</p>;
-
+    
     return(
         <div className="h-full">
             <div>
@@ -89,9 +98,15 @@ export default function Departement({isSidebarOpen}){
                     <Typography className="text-4xl font-bold">{departData[0].depart}</Typography>
                 </div>
                 <div className="w-2/3 flex gap-2 h-24">
-                    <CountCard Detail="Anggota" Count="0"/>
-                    <CountCard Detail="Rata-Rata Penilaian" Count="50"/>
-                    <DepartCard Head="Top Staff" Detail="A"/>
+                    <div className="w-full flex gap-2">
+                        <CountCard Detail="Anggota" Count="0"/>
+                        <CountCard Detail="Rata-Rata Penilaian" Count="50"/>
+                    </div>
+                    {maxNilaiData
+                    ?.filter((item) => item.nama_departemen === depart)
+                    .map((item, index) => (
+                        <DepartCard key={index} Head="SOTM :" Detail={item.nama_anggota}/>
+                    ))}
                 </div>
             </div>
             <section className="w-full">
@@ -129,7 +144,7 @@ export default function Departement({isSidebarOpen}){
                     </div>
                 ):(
                     <div className="w-full overflow-x-auto">
-                        <div className="my-3">
+                        <div className="flex gap-2 my-3">
                             <Select
                                 name="month"
                                 label="Pilih Bulan"
@@ -145,14 +160,32 @@ export default function Departement({isSidebarOpen}){
                                         {item.label ?? month}
                                     </Option>
                                 ))}
-                                </Select>
+                            </Select>
+                            <Select
+                                name="penilai"
+                                label="Pilih Penilai"
+                                value={penilai}
+                                onChange={(val) => setPenilai(val)}
+                                animate={{
+                                    mount: { y: 0 },
+                                    unmount: { y: 25 },
+                                }}
+                                >
+                                {pengurusData?.data.map((item) => (
+                                    <Option
+                                        hidden={item.dept !== depart}
+                                        key={item?.id_pengurus} value={item?.keterangan}>
+                                        {item?.keterangan}
+                                    </Option>
+                                ))}
+                            </Select>
                         </div>
                         <div className="max-w-full">
                             <Tables
                                 title="Tabel Penilaian"
                                 description={`List Nilai Anggota ${departData[0].nama_departemen} (${departData[0].depart})`}
                                 columns={columnsPenilaian}
-                                rows={nilaiData || []}
+                                rows={penilai === null ? nilaiData : detailData || []}
                             />
                         </div>
                     </div>
