@@ -27,15 +27,26 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
 
       {/* Login tetap terbuka */}
       <Route path="/login" element={
-      <GuestRoute>
+        <GuestRoute>
         <Login />
       </GuestRoute>} />
+      <Route path="/" element={
+        login ? (
+          role === "superadmin" ? <Dashboard isSidebarOpen={isSidebarOpen} /> :
+          role === "admin" ? <Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/> :
+          role === "staff" ? <Profile nama={username} isSidebarOpen={isSidebarOpen}/> :
+          <Navigate to="/login" />
+        ) : (
+          <Navigate to="/login" />
+        )
+      } />
+
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         {role === "superadmin" && (
           <>
-            <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} />
+            {/* <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} /> */}
             <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/permission/user" element={<User />} />
@@ -53,12 +64,12 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
         )}
         {depart && role === "admin" && (
           <>
-            <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} />
+            {/* <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} /> */}
           </>
         )}
         {role === "staff" && (
           <>
-            <Route path="/" element={<Profile nama={username} isSidebarOpen={isSidebarOpen}/>} />
+            {/* <Route path="/" element={<Profile nama={username} isSidebarOpen={isSidebarOpen}/>} /> */}
           </>
         )}
       </Route>

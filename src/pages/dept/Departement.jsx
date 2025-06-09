@@ -100,7 +100,7 @@ export default function Departement({isSidebarOpen, departemen}){
                 <div className="w-2/3 flex gap-2 h-24">
                     <div className="w-full flex gap-2">
                         <CountCard Detail="Anggota" Count="0"/>
-                        <CountCard Detail="Rata-Rata Penilaian" Count="50"/>
+                        <CountCard Detail="Performa" Count="50"/>
                     </div>
                     {maxNilaiData
                     ?.filter((item) => item.nama_departemen === depart)

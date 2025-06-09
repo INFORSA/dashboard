@@ -55,7 +55,7 @@ export default function Navbars() {
     };
  
   return (
-    <Navbar color="light" className="h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+    <div className="h-max w-full px-4 py-2 lg:px-5 lg:py-4">
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
             className="mr-4 cursor-pointer py-1.5 font-medium"
@@ -144,6 +144,6 @@ export default function Navbars() {
               }
           </div>
         </Collapse>
-      </Navbar>
+      </div>
   );
 }

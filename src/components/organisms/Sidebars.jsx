@@ -37,7 +37,10 @@ export default function Sidebars({isOpen}) {
   };
  
   return (
-    <Card className={`bg-[#282666] hidden lg:block rounded-tl-none rounded-bl-none sticky top-0 z-10 self-start h-[calc(100vh-2rem)] transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0 w-[18rem]' : '-translate-x-full w-0 overflow-hidden'} min-h-screen max-w-[18rem] p-4`}>
+    <Card className={`bg-[#282666] hidden lg:block rounded-tl-none rounded-bl-none sticky top-0 z-10 
+                      self-start h-[calc(100vh-2rem)] transition-all duration-300 ease-in-out 
+                      ${isOpen ? 'translate-x-0 w-[18rem]' : '-translate-x-full w-0 overflow-hidden'} 
+                      min-h-screen max-w-[18rem] p-4`}>
       <div className="w-full bg-white bg-opacity-15 rounded-xl mb-2 pb-3">
         <div className="flex justify-center">
           <img src={inforsa} alt="" className="w-36 text-center"/>
@@ -82,7 +85,7 @@ export default function Sidebars({isOpen}) {
             </ListItem>
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <img src={HRD} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
@@ -92,7 +95,7 @@ export default function Sidebars({isOpen}) {
                     </Typography>
                   </NavLink>
                 </ListItem>
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <img src={RELACS} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
@@ -102,7 +105,7 @@ export default function Sidebars({isOpen}) {
                     </Typography>
                   </NavLink>
                 </ListItem>
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <img src={PSD} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
@@ -112,7 +115,7 @@ export default function Sidebars({isOpen}) {
                     </Typography>
                   </NavLink>
                 </ListItem>
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <img src={Adwel} className="h-5 w-5 mb-2" />
                   </ListItemPrefix>
@@ -122,7 +125,7 @@ export default function Sidebars({isOpen}) {
                     </Typography>
                   </NavLink>
                 </ListItem>
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <img src={EDEN} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
@@ -132,7 +135,7 @@ export default function Sidebars({isOpen}) {
                     </Typography>
                   </NavLink>
                 </ListItem>
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <img src={COMINFO} className="h-5 w-5 mb-1" />
                   </ListItemPrefix>
@@ -167,7 +170,7 @@ export default function Sidebars({isOpen}) {
             </ListItem>
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <UserCircleIcon color="white" className="h-5 w-5"/>
                   </ListItemPrefix>
@@ -177,7 +180,7 @@ export default function Sidebars({isOpen}) {
                       </Typography>
                     </NavLink>
                 </ListItem>
-                <ListItem>
+                <ListItem className="pl-7">
                   <ListItemPrefix>
                     <UserGroupIcon color="white" className="h-5 w-5"/>
                   </ListItemPrefix>
