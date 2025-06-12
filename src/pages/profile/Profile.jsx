@@ -1,4 +1,4 @@
-import LineCharts from "../../components/atoms/LineCharts";
+import LineCharts from "../../components/atoms/charts/LineCharts";
 import { Tables } from "../../components/atoms/Tables";
 import { useGetLineChartPersonalQuery, useGetNilaiPersonalQuery } from "../../services/penilaian";
 import { useGetAnggotaByNamaQuery } from "../../services/user"
@@ -31,9 +31,9 @@ export default function Profile({ nama, isSidebarOpen }){
     if(personalError || nilaiError || chartError) return <p>Error...</p>
     return(
         <div className="my-3">
-            <div className="flex justify-between border border-black rounded-md p-5">
-                <div className="flex gap-2">
-                    <div>
+            <div className="flex justify-between border border-black rounded-md p-5 hover:bg-white">
+                <div className="flex gap-3">
+                    <div className="font-semibold text-md">
                         <h3>Nama</h3>
                         <h3>Departemen</h3>
                         <h3>NIM</h3>
@@ -43,7 +43,7 @@ export default function Profile({ nama, isSidebarOpen }){
                         <h3>:</h3>
                         <h3>:</h3>
                     </div>
-                    <div>
+                    <div className="font-base text-md">
                         <h3>{personalData[0].nama_staff}</h3>
                         <h3>{personalData[0].nama_departemen}</h3>
                         <h3>{personalData[0].nim}</h3>

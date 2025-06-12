@@ -100,7 +100,7 @@ import { useEffect, useMemo } from "react";
       }, [isSidebarOpen]);
 
     return (
-      <Card className="border border-md border-black">
+      <Card className="border border-md border-black bg-white/30 backdrop-blur-md hover:bg-white">
         <CardHeader
           floated={false}
           shadow={false}

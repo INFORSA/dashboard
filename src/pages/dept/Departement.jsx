@@ -2,18 +2,20 @@ import { Link, useParams } from "react-router-dom";
 import Carousels from "../../components/organisms/Carousels";
 import { useEffect, useState } from "react";
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
-import CountCard from "../../components/atoms/CountCard";
+import CountCard from "../../components/atoms/cards/CountCard";
 import { useGetAnggotaByDepartQuery } from "../../services/user";
 import { useGetNilaiQuery, useGetLineChartValueDepartQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, 
-    // useGetBarChartValueQuery, useGetRadarChartValueQuery 
+    // useGetBarChartValueQuery, 
+    useGetRadarChartValueQuery 
 } from "../../services/penilaian";
 import { Tables } from "../../components/atoms/Tables";
-import DepartCard from "../../components/atoms/DepartCard";
-import LineCharts from "../../components/atoms/LineCharts";
-import BarChart from "../../components/atoms/BarCharts";
-import RadarChart from "../../components/atoms/RadarCharts";
+import DepartCard from "../../components/atoms/cards/DepartCard";
+import LineCharts from "../../components/atoms/charts/LineCharts";
+import BarChart from "../../components/atoms/charts/BarCharts";
+import RadarChart from "../../components/atoms/charts/RadarCharts";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useGetPengurusQuery } from "../../services/dept";
+import Loading from "../loading/Loading";
 
 export default function Departement({isSidebarOpen, departemen}){
     // Array nama bulan
@@ -40,11 +42,12 @@ export default function Departement({isSidebarOpen, departemen}){
     const { data: departData, isLoading: departLoading, isError: departError } = useGetAnggotaByDepartQuery(depart);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(depart);
     // const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
-    // const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
+    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
     const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
     const { data: detailData, isLoading: detailLoading } = useGetNilaiDetailQuery({depart, month, penilai});
     const { data: pengurusData } = useGetPengurusQuery();    
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
+    console.log(radarChartData);
 
     useEffect(() => {
         setPenilai(null);
@@ -67,15 +70,15 @@ export default function Departement({isSidebarOpen, departemen}){
         { className:"", key: "total_nilai", label: "Total" },
     ];
 
-    // const labelPenilaian = [
-    //     { key: "nilai_matriks_1", label: "Kinerja" },
-    //     { key: "nilai_matriks_2", label: "Kemampuan Kerja Tim" },
-    //     { key: "nilai_matriks_3", label: "Inisiatif" },
-    //     { key: "nilai_matriks_4", label: "Keterampilan Komunikasi" },
-    //     { key: "nilai_matriks_5", label: "Kreativitas dan Inovasi" },
-    //     { key: "nilai_matriks_6", label: "Kepemimpinan" },
-    //     { key: "nilai_matriks_7", label: "Kepatuhan dan Etika Kerja" },
-    // ];
+    const labelPenilaian = [
+        { key: "nilai_matriks_1", label: "Kinerja" },
+        { key: "nilai_matriks_2", label: "Kemampuan Kerja Tim" },
+        { key: "nilai_matriks_3", label: "Inisiatif" },
+        { key: "nilai_matriks_4", label: "Keterampilan Komunikasi" },
+        { key: "nilai_matriks_5", label: "Kreativitas dan Inovasi" },
+        { key: "nilai_matriks_6", label: "Kepemimpinan" },
+        { key: "nilai_matriks_7", label: "Kepatuhan dan Etika Kerja" },
+    ];
 
     const summaryPenilaian = [
         { key: "total_nilai", label: depart },
@@ -83,8 +86,8 @@ export default function Departement({isSidebarOpen, departemen}){
 
     if (departLoading || nilaiLoading || lineChartLoading || detailLoading || maxNilaiLoading
         // || barChartLoading 
-        // || radarChartLoading
-    ) return <p>Loading data anggota...</p>;
+        || radarChartLoading
+    ) return <Loading/>;
     if (departError) return <p>Gagal mengambil data anggota.</p>;
     
     return(
@@ -132,8 +135,8 @@ export default function Departement({isSidebarOpen, departemen}){
                     <div className="flex gap-2">
                         <div className="flex flex-col gap-2 w-full">
                             <div className="flex justify-between gap-2 w-full">
-                                {/* <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
-                                <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/> */}
+                                {/* <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/> */}
+                                <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
                                 {/* <RadarChart isSidebarOpen={isSidebarOpen} /> */}
                             </div>
                             <div className="h-96">

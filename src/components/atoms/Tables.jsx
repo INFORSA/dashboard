@@ -27,8 +27,8 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
   );
 
   return (
-    <Card className="h-full w-full border border-black">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
+    <Card className="h-full w-full border border-black bg-white/30 backdrop-blur-md hover:bg-white">
+      <CardHeader floated={false} shadow={false} className="rounded-none bg-transparent">
         <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
             <Typography variant="h5" color="blue-gray">

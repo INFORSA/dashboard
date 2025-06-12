@@ -56,7 +56,7 @@ export default function BarChart({ isSidebarOpen, data, detail }) {
   }, [isSidebarOpen]);
 
   return (
-    <Card className="w-full border border-md border-black">
+    <Card className="w-full border border-md border-black bg-white/30 backdrop-blur-md hover:bg-white">
       <CardHeader
         floated={false}
         shadow={false}

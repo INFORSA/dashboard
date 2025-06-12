@@ -5,6 +5,7 @@ import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
+import Loading from "../../loading/Loading";
 
 export default function User(){
     const [activeTable, setActiveTable] = useState("user");
@@ -59,7 +60,7 @@ export default function User(){
                 <title>Daftar Pengguna</title>
             </HelmetProvider>
             {isLoading ? (
-                <p>Loading....</p>
+                <Loading/>
             ):(
                 <div className="">
                     <div className="flex items-center gap-3 mb-3">

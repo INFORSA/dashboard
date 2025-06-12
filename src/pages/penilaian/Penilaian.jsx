@@ -4,6 +4,8 @@ import { useGetAllNilaiQuery } from "../../services/penilaian";
 import { Link } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import Loading from "../loading/Loading";
+import Error from "../error/Error";
 
 export default function Penilaian(){
     // Array nama bulan
@@ -39,8 +41,8 @@ export default function Penilaian(){
         { className:"", key: "total_nilai", label: "Total" },
     ];
 
-    if ( isLoading ) return <p>Loading data nilai...</p>;
-    if ( isError ) return <p>Gagal mengambil data nilai.</p>;
+    if ( isLoading ) return <Loading/>;
+    if ( isError ) return <Error/>;
     
     return(
          <div className="w-full overflow-x-auto">

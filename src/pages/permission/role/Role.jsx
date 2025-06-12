@@ -6,6 +6,7 @@ import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../loading/Loading";
 
 export default function Role(){
     const { data = [], isLoading, refetch } = useGetRoleQuery();
@@ -81,7 +82,7 @@ export default function Role(){
                 <title>Daftar Role</title>
             </HelmetProvider>
             {isLoading ? (
-                <p>Loading....</p>
+                <Loading/>
             ):(
                 <div className="">
                     <div className="flex items-center gap-3">
