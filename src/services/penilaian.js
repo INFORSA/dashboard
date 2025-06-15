@@ -5,7 +5,10 @@ export const penilaianAPI = createApi({
   tagTypes: ['Penilaian'],
   baseQuery: fetchBaseQuery({ 
     baseUrl: import.meta.env.VITE_API,
-    credentials: 'include'
+    credentials: 'include',
+    validateStatus: (response) => {
+      return response.status === 200 || response.status === 304;
+    }
    }),
   endpoints: (build) => ({
     getAllNilai: build.query({
@@ -15,7 +18,14 @@ export const penilaianAPI = createApi({
     getNilai: build.query({
         query: ({depart, month}) => `penilaian/get/nilai/${depart}/${month}`,
         providesTags: ["Penilaian"],
-      }), 
+      }),
+    editNilai: build.mutation({
+      query: (data) => ({
+        url: `penilaian/update-nilai`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
     getMaxNilai: build.query({
         query: (month) => `penilaian/get/max-nilai/${month}`,
         providesTags: ["Maks Penilaian"],
@@ -52,4 +62,46 @@ export const penilaianAPI = createApi({
 })
 
 export const { useGetNilaiQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, useGetLineChartValueQuery, useGetLineChartValueDepartQuery, 
-              useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,useGetLineChartPersonalQuery } = penilaianAPI
+              useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,
+              useGetLineChartPersonalQuery, useEditNilaiMutation } = penilaianAPI
+
+export const matriksAPI = createApi({
+  reducerPath: 'matriksAPI',
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: import.meta.env.VITE_API,
+    credentials: 'include',
+    validateStatus: (response) => {
+      return response.status === 200 || response.status === 304;
+    }
+  }),
+  endpoints: (build) => ({
+    getMatriks: build.query({
+      query: () => "penilaian/get/all/matriks"
+    }), 
+    storeMatriks: build.query({
+      query: (id) => `penilaian/get/matriks/${id}`
+    }),
+    addMatriks: build.mutation({
+      query: (body) => ({
+        url: 'penilaian/add/matriks',
+        method: 'POST',
+        body,
+      }),
+    }),
+    updateMatriks: build.mutation({
+      query: ({ ...body }) => ({
+        url: `penilaian/update/matriks`, 
+        method: 'PUT',
+        body,   
+      }),
+    }),
+    deleteMatriks: build.mutation({
+      query: (id) => ({
+        url: `penilaian/remove/matriks/${id}`, 
+        method: 'DELETE',
+      }),
+    }),
+  }),
+})
+
+export const { useGetMatriksQuery, useAddMatriksMutation, useDeleteMatriksMutation, useUpdateMatriksMutation, useStoreMatriksQuery } = matriksAPI

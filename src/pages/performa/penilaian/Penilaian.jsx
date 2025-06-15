@@ -1,11 +1,11 @@
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
-import { Tables } from "../../components/atoms/Tables";
-import { useGetAllNilaiQuery } from "../../services/penilaian";
+import { Tables } from "../../../components/atoms/Tables";
+import { useGetAllNilaiQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import Loading from "../loading/Loading";
-import Error from "../error/Error";
+import Loading from "../../loading/Loading";
+import Error from "../../error/Error";
 
 export default function Penilaian(){
     // Array nama bulan
@@ -31,13 +31,13 @@ export default function Penilaian(){
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "waktu", label: "Waktu" },
-        { className:"", key: "nilai_matriks_1", label: "KN" },
-        { className:"", key: "nilai_matriks_2", label: "KKT" },
-        { className:"", key: "nilai_matriks_3", label: "INS" },
-        { className:"", key: "nilai_matriks_4", label: "KK" },
-        { className:"", key: "nilai_matriks_5", label: "KI" },
-        { className:"", key: "nilai_matriks_6", label: "KP" },
-        { className:"", key: "nilai_matriks_7", label: "KEK" },
+        { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KN" },
+        { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "KKT" },
+        { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "INS" },
+        { className:"", idKey: "id_detail_matriks_4", key: "nilai_matriks_4", label: "KK" },
+        { className:"", idKey: "id_detail_matriks_5", key: "nilai_matriks_5", label: "KI" },
+        { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KP" },
+        { className:"", idKey: "id_detail_matriks_7", key: "nilai_matriks_7", label: "KEK" },
         { className:"", key: "total_nilai", label: "Total" },
     ];
 
@@ -48,14 +48,14 @@ export default function Penilaian(){
          <div className="w-full overflow-x-auto">
             <div className="flex gap-2">
                 <Button color="blue" size="sm" className="mb-3">
-                    <Link className="flex items-center gap-3" to='/permission/user/add-admin'>
+                    <Link className="flex items-center gap-3" to='/penilaian/add'>
                         <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                         <Typography className="text-md">
                             Isi Penilaian
                         </Typography>
                     </Link>
                 </Button>
-                <Button color="blue" size="sm" className="mb-3">
+                <Button color="blue-gray" size="sm" className="mb-3">
                     <Link className="flex items-center gap-3" to='/penilaian/import'>
                         <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                         <Typography className="text-md">
@@ -88,6 +88,7 @@ export default function Penilaian(){
                     description={`List Nilai Anggota`}
                     columns={columnsPenilaian}
                     rows={data || []}
+                    actionHidden={true}
                 />
             </div>
          </div>

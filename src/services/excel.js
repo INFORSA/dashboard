@@ -5,6 +5,9 @@ export const excelAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API,
     credentials: "include",
+    validateStatus: (response) => {
+      return response.status === 200 || response.status === 304;
+    }
   }),
   tagTypes: ['User', 'Anggota', 'Penilaian'],
   endpoints: (builder) => ({

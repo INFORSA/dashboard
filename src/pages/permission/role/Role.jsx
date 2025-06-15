@@ -19,11 +19,11 @@ export default function Role(){
 
     const handleRemove = async (row) => {
         const ok = await Swal.fire({
-        title: "Hapus role?",
-        text: `Yakin hapus role ${row.nama_role}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Ya, hapus!",
+            title: "Hapus role?",
+            text: `Yakin hapus role ${row.nama_role}?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, hapus!",
         }).then((r) => r.isConfirmed);
 
         if (!ok) return;

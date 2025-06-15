@@ -3,7 +3,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const userAPI = createApi({
   reducerPath: 'userAPI',
   tagTypes: ['User', 'Anggota'],
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  baseQuery: fetchBaseQuery({ 
+      baseUrl: import.meta.env.VITE_API,
+      credentials: "include",
+      validateStatus: (response) => {
+        return response.status === 200 || response.status === 304;
+      }
+   }),
   endpoints: (build) => ({
     getUser: build.query({
         query: () => "user/get",
@@ -25,7 +31,13 @@ export const { useGetUserQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, 
 
 export const roleAPI = createApi({
   reducerPath: 'roleAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API }),
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: import.meta.env.VITE_API,
+    credentials: "include",
+    validateStatus: (response) => {
+      return response.status === 200 || response.status === 304;
+    }
+  }),
   endpoints: (build) => ({
     getRole: build.query({
       query: () => "user/get/role"

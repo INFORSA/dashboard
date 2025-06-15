@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Departement from "../pages/dept/Departement";
-import Upload from "../pages/penilaian/Upload";
+import Upload from "../pages/performa/penilaian/Upload";
 import AddStaff from "../pages/permission/user/AddStaff";
 import AddAdmin from "../pages/permission/user/AddAdmin";
 import User from "../pages/permission/user/User";
@@ -10,15 +10,17 @@ import AddRole from "../pages/permission/role/AddRole";
 import EditRole from "../pages/permission/role/EditRole";
 import Login from "../pages/login/Login";
 import ProtectedRoute from "./ProtectedRoute ";
-import Penilaian from "../pages/penilaian/Penilaian";
+import Penilaian from "../pages/performa/penilaian/Penilaian";
 import Profile from "../pages/profile/Profile";
 import GuestRoute from "./GuestRoute";
 import ImportExcel from "../app/import/Import";
+import Matriks from "../pages/performa/matriks/Matriks";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
   const role = login?.role;
   const username = login?.username;
+  const keterangan = login?.keterangan;
 
   return(
     <Routes>
@@ -32,8 +34,8 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
       </GuestRoute>} />
       <Route path="/" element={
         login ? (
-          role === "superadmin" ? <Dashboard isSidebarOpen={isSidebarOpen} /> :
-          role === "admin" ? <Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/> :
+          role === "superadmin" || role === "dosen" ? <Dashboard isSidebarOpen={isSidebarOpen} /> :
+          role === "admin" ? <Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen} nama={keterangan}/> :
           role === "staff" ? <Profile nama={username} isSidebarOpen={isSidebarOpen}/> :
           <Navigate to="/login" />
         ) : (
@@ -58,8 +60,17 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             <Route path="/permission/role/add" element={<AddRole />} />
             <Route path="/permission/role/edit/:id" element={<EditRole />} />
 
-            <Route path="/penilaian" element={<Penilaian />} />
+            <Route path="/hasil-penilaian" element={<Penilaian />} />
             <Route path="/penilaian/import" element={<ImportExcel dataImport="penilaian" />} />
+            
+            <Route path="/matriks-penilaian" element={<Matriks />} />
+          </>
+        )}
+        {role === "dosen" && (
+          <>
+            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
+
+            <Route path="/hasil-penilaian" element={<Penilaian />} />
           </>
         )}
         {depart && role === "admin" && (

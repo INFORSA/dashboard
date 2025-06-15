@@ -1,4 +1,4 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
@@ -14,17 +14,43 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { useState } from "react";
+import { useEditNilaiMutation } from "../../services/penilaian";
 
-
-export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", onEdit = () => {}, onRemove = () => {}, actionHidden}) {
-  const ITEMS_PER_PAGE = maxRow ?? 25;  
-
+export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", 
+                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch }) {
+  const ITEMS_PER_PAGE = maxRow ?? 25;
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(rows.length / ITEMS_PER_PAGE);
-  const paginatedRows = rows.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
+  const paginatedRows = rows.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+
+  const [editingCell, setEditingCell] = useState(null);
+  const [editValue, setEditValue] = useState("");
+
+  const [editNilai] = useEditNilaiMutation();
+
+  const handleEdit = (rowId, colKey, value) => {
+    setEditingCell({ rowId, colKey });
+    setEditValue(value);
+  };
+
+
+  const handleSave = async (rowId, colKey, value) => {
+    try {
+      const data = {
+        id: rowId,
+        nilai: value,
+      };
+      await editNilai(data).unwrap();
+      onRefetch();
+      setEditingCell(null);
+    } catch (error) {
+      console.error("Update gagal", error);
+    }
+  };
+
+  const handleFieldChange = (value) => {
+    setEditValue(value);
+  };
 
   return (
     <Card className="h-full w-full border border-black bg-white/30 backdrop-blur-md hover:bg-white">
@@ -45,9 +71,9 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
               />
             </div>
-            <Button className="flex items-center gap-3" size="sm">
-              <ArrowDownTrayIcon strokeWidth={2} className="h-4 w-4" /> Download
-            </Button>
+            {/* <Button color="yellow" className="flex items-center gap-3" size="sm">
+              <PencilIcon strokeWidth={2} className="h-4 w-4" /> Edit Matriks
+            </Button> */}
           </div>
         </div>
       </CardHeader>
@@ -72,57 +98,76 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                 ))}
                 <th hidden={actionHidden} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
                   <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-semibold leading-none opacity-70"
-                    >
-                      Action
-                    </Typography>
+                    variant="small"
+                    color="blue-gray"
+                    className="font-semibold leading-none opacity-70"
+                  >
+                    Action
+                  </Typography>
                 </th>
               </tr>
             </thead>
             <tbody>
               {paginatedRows.map((row, index) => {
-                  const isLast = index === rows.length - 1;
-                  const classes = isLast
-                    ? "p-4"
-                    : "p-4 whitespace-nowrap border-b border-blue-gray-50";
-  
-                  return (
-                    <tr key={index}>
-                      {columns.map((col)=>(
-                        <td className={classes} key={col.key}>
-                          <div className="flex items-center gap-3">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-base"
-                            >
-                              {col.key === "no" ? index + 1 : row[col.key]}
-                            </Typography>
-                          </div>
+                const isLast = index === rows.length - 1;
+                const classes = isLast ? "p-4" : "p-4 whitespace-nowrap border-b border-blue-gray-50";
+
+                return (
+                  <tr key={index}>
+                    {columns.map((col) => {
+                      const idKey = col.idKey;
+                      const value = row[col.key];
+                      const detailId = idKey ? row[idKey] : null;
+                      const isEditing = editingCell?.rowId === detailId && editingCell?.colKey === col.key;
+                      return (
+                        <td className={classes} key={col.key} 
+                            onClick={() => {
+                              if (!inlineEdit) return; // ✅ Kalau inlineEdit false, klik tidak ngapa-ngapain
+                              if (detailId) {
+                                handleEdit(detailId, col.key, value);
+                              } else {
+                                console.warn("❗ Tidak untuk diedit", col.key);
+                              }
+                            }}
+                          >
+                          {isEditing ? (
+                            <input
+                              className="border rounded px-2 py-1 w-8"
+                              value={editValue}
+                              onChange={(e) => handleFieldChange(e.target.value)}
+                              onBlur={() => handleSave(detailId, col.key, editValue)}
+                              onKeyDown={(e) => e.key === "Enter" && handleSave(detailId, col.key, editValue)}
+                              autoFocus
+                            />
+                          ) : (
+                            <div className="flex items-center gap-3">
+                              <Typography variant="small" color="blue-gray" className="font-base">
+                                {col.key === "no" ? index + 1 : row[col.key]}
+                              </Typography>
+                            </div>
+                          )}
                         </td>
-                      ))}
-                      <td className={classes} hidden={actionHidden}>
-                        <div className="flex gap-2">
-                          <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
-                            <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
-                          </Button>
-                          <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
-                            <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                },
-              )}
+                      );
+                    })}
+                    <td className={classes} hidden={actionHidden}>
+                      <div className="flex gap-2">
+                        <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
+                          <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
+                        </Button>
+                        <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
+                          <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Button 
+        <Button
           variant="outlined"
           size="sm"
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -142,7 +187,7 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
             </IconButton>
           ))}
         </div>
-        <Button 
+        <Button
           variant="outlined"
           size="sm"
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}

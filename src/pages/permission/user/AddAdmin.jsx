@@ -84,6 +84,8 @@ const AddAdmin = () => {
             unmount: { y: 25 },
             }}
         >
+            <Option value='Dosen'>Dosen</Option>
+            <Option value='MPKO'>MPKO</Option>
             <Option value='BPI'>BPI</Option>
             <Option value='BPH'>BPH</Option>
         </Select>

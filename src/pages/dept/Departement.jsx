@@ -16,8 +16,9 @@ import RadarChart from "../../components/atoms/charts/RadarCharts";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useGetPengurusQuery } from "../../services/dept";
 import Loading from "../loading/Loading";
+import Error from "../error/Error";
 
-export default function Departement({isSidebarOpen, departemen}){
+export default function Departement({isSidebarOpen, departemen, nama}){
     // Array nama bulan
     const monthOptions = [
         { label: "January", value: "01" },
@@ -44,10 +45,9 @@ export default function Departement({isSidebarOpen, departemen}){
     // const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
     const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
     const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
-    const { data: detailData, isLoading: detailLoading } = useGetNilaiDetailQuery({depart, month, penilai});
+    const { data: detailData, isLoading: detailLoading, refetch } = useGetNilaiDetailQuery({depart, month, penilai});
     const { data: pengurusData } = useGetPengurusQuery();    
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
-    console.log(radarChartData);
 
     useEffect(() => {
         setPenilai(null);
@@ -60,13 +60,13 @@ export default function Departement({isSidebarOpen, departemen}){
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "waktu", label: "Waktu" },
-        { className:"", key: "nilai_matriks_1", label: "KN" },
-        { className:"", key: "nilai_matriks_2", label: "KKT" },
-        { className:"", key: "nilai_matriks_3", label: "INS" },
-        { className:"", key: "nilai_matriks_4", label: "KK" },
-        { className:"", key: "nilai_matriks_5", label: "KI" },
-        { className:"", key: "nilai_matriks_6", label: "KP" },
-        { className:"", key: "nilai_matriks_7", label: "KEK" },
+        { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KN" },
+        { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "KKT" },
+        { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "INS" },
+        { className:"", idKey: "id_detail_matriks_4", key: "nilai_matriks_4", label: "KK" },
+        { className:"", idKey: "id_detail_matriks_5", key: "nilai_matriks_5", label: "KI" },
+        { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KP" },
+        { className:"", idKey: "id_detail_matriks_7", key: "nilai_matriks_7", label: "KEK" },
         { className:"", key: "total_nilai", label: "Total" },
     ];
 
@@ -88,7 +88,7 @@ export default function Departement({isSidebarOpen, departemen}){
         // || barChartLoading 
         || radarChartLoading
     ) return <Loading/>;
-    if (departError) return <p>Gagal mengambil data anggota.</p>;
+    if (departError) return <Error/>;
     
     return(
         <div className="h-full">
@@ -126,7 +126,7 @@ export default function Departement({isSidebarOpen, departemen}){
                         <Link className="flex items-center gap-3" to='/permission/user/add-admin'>
                             <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                             <Typography className="text-md">
-                                Isi Penilaian
+                                Tambah Penilaian
                             </Typography>
                         </Link>
                     </Button>
@@ -189,6 +189,8 @@ export default function Departement({isSidebarOpen, departemen}){
                                 description={`List Nilai Anggota ${departData[0].nama_departemen} (${departData[0].depart})`}
                                 columns={columnsPenilaian}
                                 rows={penilai === null ? nilaiData : detailData || []}
+                                inlineEdit={penilai === nama ? true : false}
+                                onRefetch={refetch}
                             />
                         </div>
                     </div>

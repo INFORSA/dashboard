@@ -8,7 +8,7 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { useGetUserQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/cards/DepartCard';
 import { useGetAllNilaiQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery } from '../../services/penilaian';
-import Penilaian from '../penilaian/Penilaian';
+import Penilaian from '../performa/penilaian/Penilaian';
 import { Tables } from '../../components/atoms/Tables';
 import Banner from '../../components/atoms/Banner';
 import Loading from '../loading/Loading';

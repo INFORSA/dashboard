@@ -4,7 +4,10 @@ export const loginAPI = createApi({
   reducerPath: 'loginAPI',
   baseQuery: fetchBaseQuery({ 
     baseUrl: import.meta.env.VITE_API,
-    credentials : 'include'
+    credentials : 'include',
+    validateStatus: (response) => {
+      return response.status === 200 || response.status === 304;
+    }
   }),
   endpoints: (build) => ({
     login: build.mutation({
