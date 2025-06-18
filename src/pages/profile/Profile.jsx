@@ -2,6 +2,8 @@ import LineCharts from "../../components/atoms/charts/LineCharts";
 import { Tables } from "../../components/atoms/Tables";
 import { useGetLineChartPersonalQuery, useGetNilaiPersonalQuery } from "../../services/penilaian";
 import { useGetAnggotaByNamaQuery } from "../../services/user"
+import Error from "../error/Error";
+import Loading from "../loading/Loading";
 
 export default function Profile({ nama, isSidebarOpen }){
     const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(nama);
@@ -12,7 +14,7 @@ export default function Profile({ nama, isSidebarOpen }){
         { className:"w-10", key: "no", label: "No" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
-        { className:"", key: "waktu", label: "Waktu" },
+        { className:"", key: "bulan", label: "Waktu" },
         { className:"", key: "nilai_matriks_1", label: "KN" },
         { className:"", key: "nilai_matriks_2", label: "KKT" },
         { className:"", key: "nilai_matriks_3", label: "INS" },
@@ -21,14 +23,16 @@ export default function Profile({ nama, isSidebarOpen }){
         { className:"", key: "nilai_matriks_6", label: "KP" },
         { className:"", key: "nilai_matriks_7", label: "KEK" },
         { className:"", key: "total_nilai", label: "Total" },
+        { className:"", key: "total_akhir", label: "Hasil" },
     ];
 
     const summaryPenilaian = [
         { key: "total_nilai", label: nama },
     ];
 
-    if(personalLoading || nilaiLoading || chartLoading) return <p>Loading...</p>
-    if(personalError || nilaiError || chartError) return <p>Error...</p>
+    if(personalLoading || nilaiLoading || chartLoading) return <Loading/>
+    if(personalError || nilaiError || chartError) return <Error/>
+    
     return(
         <div className="my-3">
             <div className="flex justify-between border border-black rounded-md p-5 hover:bg-white">

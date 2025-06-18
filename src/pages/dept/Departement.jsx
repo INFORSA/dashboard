@@ -48,6 +48,9 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     const { data: detailData, isLoading: detailLoading, refetch } = useGetNilaiDetailQuery({depart, month, penilai});
     const { data: pengurusData } = useGetPengurusQuery();    
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
+    const now = new Date();
+    const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
+    const lastPerformance = lineChartData?.filter((item) => item.bulan === currentMonthStr);
 
     useEffect(() => {
         setPenilai(null);
@@ -58,8 +61,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
         { className:"w-10", key: "no", label: "No" },
         // { className:"", key: "penilai", label: "Penilai" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
-        { className:"", key: "nama_departemen", label: "Departemen" },
-        { className:"", key: "waktu", label: "Waktu" },
+        { className:"", key: "bulan", label: "Waktu" },
         { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KN" },
         { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "KKT" },
         { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "INS" },
@@ -67,8 +69,14 @@ export default function Departement({isSidebarOpen, departemen, nama}){
         { className:"", idKey: "id_detail_matriks_5", key: "nilai_matriks_5", label: "KI" },
         { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KP" },
         { className:"", idKey: "id_detail_matriks_7", key: "nilai_matriks_7", label: "KEK" },
-        { className:"", key: "total_nilai", label: "Total" },
+        { className:"", key: "total_nilai", label: "Total" }
     ];
+    
+    if(penilai === null){
+        columnsPenilaian.push(
+            { className:"", key: "total_akhir", label: "Hasil" }
+        );
+    }
 
     const labelPenilaian = [
         { key: "nilai_matriks_1", label: "Kinerja" },
@@ -97,13 +105,13 @@ export default function Departement({isSidebarOpen, departemen, nama}){
             </div>
             <div className="flex w-full justify-between my-3 gap-2">
                 <div className="w-1/3">
-                    <Typography className="text-xl font-bold">{departData[0].nama_departemen}</Typography>
-                    <Typography className="text-4xl font-bold">{departData[0].depart}</Typography>
+                    <Typography className="text-xl font-bold">{departData.data[0].nama_departemen}</Typography>
+                    <Typography className="text-4xl font-bold">{departData.data[0].depart}</Typography>
                 </div>
                 <div className="w-2/3 flex gap-2 h-24">
                     <div className="w-full flex gap-2">
-                        <CountCard Detail="Anggota" Count="0"/>
-                        <CountCard Detail="Performa" Count="50"/>
+                        <CountCard Detail="Anggota" Count={departData.total}/>
+                        <CountCard Detail="Performa" Count={lastPerformance[0]?.total_nilai ?? 0}/>
                     </div>
                     {maxNilaiData
                     ?.filter((item) => item.nama_departemen === depart)
@@ -186,11 +194,12 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                         <div className="max-w-full">
                             <Tables
                                 title="Tabel Penilaian"
-                                description={`List Nilai Anggota ${departData[0].nama_departemen} (${departData[0].depart})`}
+                                description={`List Nilai Anggota ${departData.data[0].nama_departemen} (${departData.data[0].depart})`}
                                 columns={columnsPenilaian}
                                 rows={penilai === null ? nilaiData : detailData || []}
                                 inlineEdit={penilai === nama ? true : false}
                                 onRefetch={refetch}
+                                actionHidden={true}
                             />
                         </div>
                     </div>

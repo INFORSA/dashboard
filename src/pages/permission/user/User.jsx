@@ -18,7 +18,7 @@ export default function User(){
 
     const dataArray = activeTable === "user"
         ? (userData?.data ?? [])
-        : (anggotaData ?? []);
+        : (anggotaData?.data ?? []);
     const isLoading = activeTable === "user" ? isLoadingUser : isLoadingAnggota;
 
     const yearOptions = [...new Set(

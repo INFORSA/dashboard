@@ -5,7 +5,7 @@ import GrafikCard from '../../components/atoms/cards/GrafikCard';
 import LineCharts from '../../components/atoms/charts/LineCharts';
 import { useGetDeptQuery } from '../../services/dept';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { useGetUserQuery } from '../../services/user';
+import { useGetAnggotaQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/cards/DepartCard';
 import { useGetAllNilaiQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery } from '../../services/penilaian';
 import Penilaian from '../performa/penilaian/Penilaian';
@@ -16,7 +16,7 @@ import Error from '../error/Error';
 
 export default function SuperAdmin({ isSidebarOpen }){
     const { data : deptData, error : deptError, isLoading : deptLoading } = useGetDeptQuery();
-    const { data : userData, error : userError, isLoading : userLoading } = useGetUserQuery();
+    const { data : userData, error : userError, isLoading : userLoading } = useGetAnggotaQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueQuery();
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(5);
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
@@ -54,7 +54,7 @@ export default function SuperAdmin({ isSidebarOpen }){
             <div className='my-5 w-full grid grid-cols-3 gap-4 h-24'>
                 <CountCard Detail="Departement" Count={deptData.total}/>
                 <CountCard Detail="Anggota" Count={userData.total}/>
-                <CountCard Detail="Performa" Count={lastPerformance[0].total_nilai}/>
+                <CountCard Detail="Performa" Count={lastPerformance[0]?.total_nilai ?? 0}/>
             </div>
             <Carousels/>
             <div className='mt-5'>
