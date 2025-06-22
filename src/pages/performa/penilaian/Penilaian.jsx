@@ -30,7 +30,7 @@ export default function Penilaian(){
         { className:"w-10", key: "no", label: "No" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
-        { className:"", key: "waktu", label: "Waktu" },
+        { className:"", key: "bulan", label: "Waktu" },
         { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KN" },
         { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "KKT" },
         { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "INS" },
@@ -39,6 +39,7 @@ export default function Penilaian(){
         { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KP" },
         { className:"", idKey: "id_detail_matriks_7", key: "nilai_matriks_7", label: "KEK" },
         { className:"", key: "total_nilai", label: "Total" },
+        { className:"", key: "total_akhir", label: "Hasil" }
     ];
 
     if ( isLoading ) return <Loading/>;

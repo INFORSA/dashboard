@@ -23,11 +23,23 @@ export const userAPI = createApi({
     getAnggotaByDepart: build.query({
       query: (depart) => `user/get/anggota/dept/${depart}`
     }), 
+    storeUser: build.query({
+      query: (id) => `user/store/${id}`
+    }),
+    storeAnggota: build.query({
+      query: (id) => `user/store/anggota/${id}`
+    }),
+    deleteUser: build.mutation({
+      query: (id) => ({
+        url: `user/remove/${id}`, 
+        method: 'DELETE',
+      }),
+    }),
     providesTags: ["User", "Anggota"],
   }),
 })
 
-export const { useGetUserQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery } = userAPI
+export const { useGetUserQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery, useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery } = userAPI
 
 export const roleAPI = createApi({
   reducerPath: 'roleAPI',

@@ -30,11 +30,12 @@ const AddAdmin = () => {
     formData.append('role', form.role);
 
     try {
-      const response = await registerAdmin(formData).unwrap();
+      const response = await registerAdmin(formData);
       Swal.fire("Sukses", response.message, "success");
       setForm({ username: '', password: '', role:'' });
       navigate("/permission/user");
     } catch (err) {
+      console.log(err)
       Swal.fire("Gagal", err?.data?.message || "Registrasi gagal", "error");
     }
   };

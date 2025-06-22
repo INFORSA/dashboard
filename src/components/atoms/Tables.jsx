@@ -13,18 +13,29 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditNilaiMutation } from "../../services/penilaian";
 
 export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", 
                         onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch }) {
   const ITEMS_PER_PAGE = maxRow ?? 25;
   const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(rows.length / ITEMS_PER_PAGE);
-  const paginatedRows = rows.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
-
+  
   const [editingCell, setEditingCell] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const filteredRows = rows.filter((row) =>
+    columns.some((col) => {
+      const cellValue = row[col.key];
+      return (
+        typeof cellValue === "string" &&
+        cellValue.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    })
+  );
+  const totalPages = Math.ceil(filteredRows.length / ITEMS_PER_PAGE);
+  const paginatedRows = filteredRows.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   const [editNilai] = useEditNilaiMutation();
 
@@ -32,7 +43,6 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
     setEditingCell({ rowId, colKey });
     setEditValue(value);
   };
-
 
   const handleSave = async (rowId, colKey, value) => {
     try {
@@ -52,6 +62,10 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
     setEditValue(value);
   };
 
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm]);
+
   return (
     <Card className="h-full w-full border border-black bg-white/30 backdrop-blur-md hover:bg-white">
       <CardHeader floated={false} shadow={false} className="rounded-none bg-transparent">
@@ -69,11 +83,10 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
               <Input
                 label="Search"
                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            {/* <Button color="yellow" className="flex items-center gap-3" size="sm">
-              <PencilIcon strokeWidth={2} className="h-4 w-4" /> Edit Matriks
-            </Button> */}
           </div>
         </div>
       </CardHeader>

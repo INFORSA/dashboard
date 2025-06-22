@@ -37,15 +37,17 @@ const AddStaff = () => {
     formData.append('password', form.password);
     formData.append('nim', form.nim);
     formData.append('gender', form.gender);
-    formData.append('depart_id', form.departemen); // ← pastikan `form.departemen` isinya `id`
-    formData.append('gambar', form.gambar); // ← file object, bukan string
+    formData.append('depart_id', form.departemen); 
+    formData.append('gambar', form.gambar);
 
     try {
-      const response = await registerStaff(formData).unwrap();
+      const response = await registerStaff(formData);
+      console.log("Response:", response);
       Swal.fire("Sukses", response.message, "success");
       setForm({ username: '', nim:'', gender:'', departemen:'', gambar:'', password: '' });
       navigate("/permission/user");
     } catch (err) {
+      console.error("Register error:", err);
       Swal.fire("Gagal", err?.data?.message || "Registrasi gagal", "error");
     }
   };

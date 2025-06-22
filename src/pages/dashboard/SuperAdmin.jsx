@@ -29,7 +29,7 @@ export default function SuperAdmin({ isSidebarOpen }){
         { className:"w-10", key: "no", label: "No" },
         { className:"", key: "nama_anggota", label: "Nama Staff" },
         { className:"", key: "nama_departemen", label: "Departemen" },
-        { className:"", key: "waktu", label: "Waktu" },
+        { className:"", key: "bulan", label: "Waktu" },
         { className:"", key: "nilai_matriks_1", label: "KN" },
         { className:"", key: "nilai_matriks_2", label: "KKT" },
         { className:"", key: "nilai_matriks_3", label: "INS" },
@@ -38,6 +38,7 @@ export default function SuperAdmin({ isSidebarOpen }){
         { className:"", key: "nilai_matriks_6", label: "KP" },
         { className:"", key: "nilai_matriks_7", label: "KEK" },
         { className:"", key: "total_nilai", label: "Total" },
+        { className:"", key: "total_akhir", label: "Hasil" }
     ];
     
     if (deptLoading || userLoading || lineChartLoading || nilaiLoading || maxNilaiLoading) return <Loading/>;

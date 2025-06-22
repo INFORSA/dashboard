@@ -15,6 +15,8 @@ import Profile from "../pages/profile/Profile";
 import GuestRoute from "./GuestRoute";
 import ImportExcel from "../app/import/Import";
 import Matriks from "../pages/performa/matriks/Matriks";
+import EditUser from "../pages/permission/user/EditUser";
+import EditStaff from "../pages/permission/user/EditStaff";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
@@ -51,11 +53,15 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             {/* <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} /> */}
             <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
             <Route path="/upload" element={<Upload />} />
+
             <Route path="/permission/user" element={<User />} />
             <Route path="/permission/user/import" element={<ImportExcel dataImport="user"/>} />
             <Route path="/permission/anggota/import" element={<ImportExcel dataImport="anggota" />} />
             <Route path="/permission/user/add-admin" element={<AddAdmin />} />
             <Route path="/permission/user/add-staff" element={<AddStaff />} />
+            <Route path="/permission/user/edit-admin/:id" element={<EditUser />} />
+            <Route path="/permission/user/edit-staff/:id" element={<EditStaff />} />
+
             <Route path="/permission/role" element={<Role />} />
             <Route path="/permission/role/add" element={<AddRole />} />
             <Route path="/permission/role/edit/:id" element={<EditRole />} />

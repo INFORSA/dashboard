@@ -1,20 +1,62 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Tables } from "../../../components/atoms/Tables";
-import { useGetAnggotaQuery, useGetUserQuery } from "../../../services/user";
+import { useDeleteUserMutation, useGetAnggotaQuery, useGetUserQuery } from "../../../services/user";
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import Loading from "../../loading/Loading";
+import Swal from "sweetalert2";
 
 export default function User(){
     const [activeTable, setActiveTable] = useState("user");
-    const { data: userData, isLoading: isLoadingUser } = useGetUserQuery(undefined, {
+    const { data: userData, isLoading: isLoadingUser, refetch: refetchUser, } = useGetUserQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
-    const { data: anggotaData, isLoading: isLoadingAnggota } = useGetAnggotaQuery(undefined, {
+    const { data: anggotaData, isLoading: isLoadingAnggota, refetch: refetchAnggota, } = useGetAnggotaQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
+     const [deleteUser] = useDeleteUserMutation();
+    const navigate = useNavigate();
+
+    const handleEditAdmin = (row) => {
+        if (row.nama_role?.toLowerCase() === "staff") {
+            navigate(`/permission/user/edit-staff/${row.id_user}`)
+        } else {
+            navigate(`/permission/user/edit-admin/${row.id_user}`)
+        }
+    };
+    const handleEditStaff = (row) => {
+        navigate(`/permission/user/edit-staff/${row.user_id}`)
+    };
+
+    const handleRemove = async (row) => {
+        const isUser = activeTable === "user";
+        const confirmTitle = isUser ? "Hapus user?" : "Hapus anggota?";
+        const confirmText = isUser
+        ? `Yakin hapus user ${row.username || ""}?`
+        : `Yakin hapus anggota ${row.nama_staff || ""}?`;
+
+        const ok = await Swal.fire({
+            title: confirmTitle,
+            text: confirmText,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, hapus!",
+        }).then((r) => r.isConfirmed);
+
+
+        if (!ok) return;
+
+        try {
+            const res = await deleteUser(row.id_user).unwrap();
+            Swal.fire("Terhapus", res.message, "success");
+            activeTable === "user" ? refetchUser() : refetchAnggota();
+        } catch (err) {
+            console.log("RTK error →", err);  
+            Swal.fire("Gagal", err?.data?.message || "Proses gagal", "error");
+        }
+    };
 
     const dataArray = activeTable === "user"
         ? (userData?.data ?? [])
@@ -52,7 +94,17 @@ export default function User(){
         if (!selectedYear && yearOptions.length > 0) {
             setSelectedYear(yearOptions[0]);
         }
-    }, [yearOptions, selectedYear]);
+         const handleFocus = () => {
+            if (activeTable === "user") {
+                refetchUser();
+            } else {
+                refetchAnggota();
+            }
+        };
+
+        window.addEventListener("focus", handleFocus);
+        return () => window.removeEventListener("focus", handleFocus);
+    }, [yearOptions, selectedYear, activeTable, refetchAnggota, refetchUser]);
 
     return(
         <div>
@@ -118,6 +170,8 @@ export default function User(){
                             description="List pengguna Dashboard INFORSA"
                             columns={columnsUser}
                             rows={userData.data || []}
+                            onEdit={handleEditAdmin}
+                            onRemove={handleRemove}
                         />
                     ):(
                         <div>
@@ -147,6 +201,8 @@ export default function User(){
                                 description="List Anggota INFORSA"
                                 columns={columnsAnggota}
                                 rows={filteredData || []}
+                                onEdit={handleEditStaff}
+                                onRemove={handleRemove}
                              /> 
                         </div>
                     )}
