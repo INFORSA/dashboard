@@ -8,18 +8,18 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { useGetAnggotaQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/cards/DepartCard';
 import { useGetAllNilaiQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery } from '../../services/penilaian';
-import Penilaian from '../performa/penilaian/Penilaian';
 import { Tables } from '../../components/atoms/Tables';
 import Banner from '../../components/atoms/Banner';
 import Loading from '../loading/Loading';
 import Error from '../error/Error';
 
 export default function SuperAdmin({ isSidebarOpen }){
+    const month = new Date().getMonth().toString().padStart(2, "0");
     const { data : deptData, error : deptError, isLoading : deptLoading } = useGetDeptQuery();
     const { data : userData, error : userError, isLoading : userLoading } = useGetAnggotaQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueQuery();
-    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(5);
-    const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
+    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(month);
+    const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(month);
     const now = new Date();
     const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
 

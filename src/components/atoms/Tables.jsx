@@ -1,6 +1,5 @@
-import { PencilIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
-  ArrowDownTrayIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import {

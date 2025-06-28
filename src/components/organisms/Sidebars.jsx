@@ -53,7 +53,7 @@ export default function Sidebars({isOpen}) {
       </div>
       <div className="overflow-y-auto scrollbar-none h-[calc(100vh-16rem)]">
         <List>
-          <ListItem >
+          <ListItem>
               <ListItemPrefix>
                 <HomeIcon color="white" className="h-5 w-5" />
               </ListItemPrefix>

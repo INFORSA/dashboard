@@ -17,6 +17,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { useGetPengurusQuery } from "../../services/dept";
 import Loading from "../loading/Loading";
 import Error from "../error/Error";
+import { HelmetProvider } from "@dr.pogodin/react-helmet";
 
 export default function Departement({isSidebarOpen, departemen, nama}){
     // Array nama bulan
@@ -100,6 +101,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     
     return(
         <div className="h-full">
+            <HelmetProvider><title>{departData.data[0].depart}</title></HelmetProvider>
             <div>
                 <Carousels/>
             </div>

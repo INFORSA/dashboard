@@ -6,6 +6,7 @@ import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Loading from "../../loading/Loading";
 import Error from "../../error/Error";
+import { HelmetProvider } from "@dr.pogodin/react-helmet";
 
 export default function Penilaian(){
     // Array nama bulan
@@ -47,6 +48,7 @@ export default function Penilaian(){
     
     return(
          <div className="w-full overflow-x-auto">
+            <HelmetProvider><title>Daftar Penilaian</title></HelmetProvider>
             <div className="flex gap-2">
                 <Button color="blue" size="sm" className="mb-3">
                     <Link className="flex items-center gap-3" to='/penilaian/add'>

@@ -16,7 +16,7 @@ export default function User(){
     const { data: anggotaData, isLoading: isLoadingAnggota, refetch: refetchAnggota, } = useGetAnggotaQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
-     const [deleteUser] = useDeleteUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
     const navigate = useNavigate();
 
     const handleEditAdmin = (row) => {
@@ -49,7 +49,7 @@ export default function User(){
         if (!ok) return;
 
         try {
-            const res = await deleteUser(row.id_user).unwrap();
+            const res = await deleteUser(activeTable === "user" ? row.id_user : row.user_id).unwrap();
             Swal.fire("Terhapus", res.message, "success");
             activeTable === "user" ? refetchUser() : refetchAnggota();
         } catch (err) {

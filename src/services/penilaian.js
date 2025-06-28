@@ -58,12 +58,16 @@ export const penilaianAPI = createApi({
         query: (depart) => `penilaian/get/radarchart/${depart}`,
         providesTags: ["Nilai Radar"],
       }), 
+    getRadarChartPersonal: build.query({
+        query: () => `penilaian/get/personal/radarchart`,
+        providesTags: ["Radarchart Personal"],
+      }),
   }),
 })
 
 export const { useGetNilaiQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, useGetLineChartValueQuery, useGetLineChartValueDepartQuery, 
               useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,
-              useGetLineChartPersonalQuery, useEditNilaiMutation } = penilaianAPI
+              useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery } = penilaianAPI
 
 export const matriksAPI = createApi({
   reducerPath: 'matriksAPI',

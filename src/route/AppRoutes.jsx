@@ -11,12 +11,12 @@ import EditRole from "../pages/permission/role/EditRole";
 import Login from "../pages/login/Login";
 import ProtectedRoute from "./ProtectedRoute ";
 import Penilaian from "../pages/performa/penilaian/Penilaian";
-import Profile from "../pages/profile/Profile";
 import GuestRoute from "./GuestRoute";
 import ImportExcel from "../app/import/Import";
 import Matriks from "../pages/performa/matriks/Matriks";
 import EditUser from "../pages/permission/user/EditUser";
 import EditStaff from "../pages/permission/user/EditStaff";
+import Profile from "../pages/Profile/Profile";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
