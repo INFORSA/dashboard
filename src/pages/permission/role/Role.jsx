@@ -60,7 +60,7 @@ export default function Role(){
         formData.append('nama_role', form.nama_role);
     
         try {
-          const response = await registerAdmin(formData).unwrap();
+          const response = await registerAdmin(formData);
           Swal.fire("Sukses", response.message, "success");
           setForm({ nama_role:'' });
           setOpen(false);

@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { useEditNilaiMutation } from "../../services/penilaian";
 
 export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", 
-                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch }) {
+                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch, removeHidden }) {
   const ITEMS_PER_PAGE = maxRow ?? 25;
   const [page, setPage] = useState(1);
   
@@ -166,9 +166,11 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                         <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
                           <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
                         </Button>
-                        <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
-                          <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
-                        </Button>
+                        <div hidden={removeHidden}>
+                          <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
+                            <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
+                          </Button>
+                        </div>
                       </div>
                     </td>
                   </tr>

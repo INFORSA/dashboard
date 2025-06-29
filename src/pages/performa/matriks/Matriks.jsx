@@ -68,7 +68,7 @@ export default function Matriks(){
         formData.append('bobot', form.bobot);
         
         try {
-            const response = await addMatriks(formData).unwrap();
+            const response = await addMatriks(formData);
             Swal.fire("Sukses", response.message, "success");
             setForm({ nama:'', bobot:1 });
             setOpen(false);
