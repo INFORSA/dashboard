@@ -132,14 +132,14 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                             Detail
                         </Button>
                     </div>
-                    <Button color="blue" size="sm" className="px-4 py-2 rounded-bl-none rounded-br-none">
+                    {/* <Button color="blue" size="sm" className="px-4 py-2 rounded-bl-none rounded-br-none">
                         <Link className="flex items-center gap-3" to='/permission/user/add-admin'>
                             <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                             <Typography className="text-md">
                                 Tambah Penilaian
                             </Typography>
                         </Link>
-                    </Button>
+                    </Button> */}
                 </div>
                 {activeTable === "grafik" ? (
                     <div className="flex gap-2">
