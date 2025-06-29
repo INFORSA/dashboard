@@ -16,7 +16,7 @@ import ImportExcel from "../app/import/Import";
 import Matriks from "../pages/performa/matriks/Matriks";
 import EditUser from "../pages/permission/user/EditUser";
 import EditStaff from "../pages/permission/user/EditStaff";
-import Profile from "../pages/Profile/Profile";
+import Profile from "../pages/profile/Profile";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
