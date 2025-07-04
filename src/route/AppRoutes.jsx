@@ -76,7 +76,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
           <>
             <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
 
-            <Route path="/hasil-penilaian" element={<Penilaian />} />
+            <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen} />} />
           </>
         )}
         {depart && role === "admin" && (

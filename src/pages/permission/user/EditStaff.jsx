@@ -88,7 +88,7 @@ const EditStaff = () => {
                         <Option value='Perempuan'>Perempuan</Option>
                     </Select>
                     <Select
-                        name='depart_id'
+                        name='id_depart'
                         label="Pilih Departemen"
                         value={form.departemen}
                         onChange={(val) => setForm({ ...form, departemen: val })}

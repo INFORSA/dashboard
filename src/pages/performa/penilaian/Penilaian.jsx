@@ -1,14 +1,16 @@
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import { Tables } from "../../../components/atoms/Tables";
-import { useGetAllNilaiQuery } from "../../../services/penilaian";
+import { useGetAllNilaiQuery, useGetLineChartValueDepartQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Loading from "../../loading/Loading";
 import Error from "../../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
+import { useGetDeptQuery } from "../../../services/dept";
+import LineCharts from "../../../components/atoms/charts/LineCharts";
 
-export default function Penilaian(){
+export default function Penilaian(isSidebarOpen){
     // Array nama bulan
     const monthOptions = [
         { label: "January", value: "01" },
@@ -26,6 +28,12 @@ export default function Penilaian(){
     ];
     const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
     const { data, isLoading, isError } = useGetAllNilaiQuery(month);
+    const { data:deptData } = useGetDeptQuery();
+    const [form, setForm] = useState({
+            departemen:1,
+        });
+    const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
+    const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -43,21 +51,25 @@ export default function Penilaian(){
         { className:"", key: "total_akhir", label: "Hasil" }
     ];
 
-    if ( isLoading ) return <Loading/>;
+    const summaryPenilaian = [
+        { key: "total_nilai", label: dept.nama },
+    ];
+
+    if ( isLoading || lineChartLoading ) return <Loading/>;
     if ( isError ) return <Error/>;
     
     return(
          <div className="w-full overflow-x-auto">
             <HelmetProvider><title>Daftar Penilaian</title></HelmetProvider>
             <div className="flex gap-2">
-                <Button color="blue" size="sm" className="mb-3">
+                {/* <Button color="blue" size="sm" className="mb-3">
                     <Link className="flex items-center gap-3" to='/penilaian/add'>
                         <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                         <Typography className="text-md">
                             Isi Penilaian
                         </Typography>
                     </Link>
-                </Button>
+                </Button> */}
                 <Button color="blue-gray" size="sm" className="mb-3">
                     <Link className="flex items-center gap-3" to='/penilaian/import'>
                         <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
@@ -66,6 +78,52 @@ export default function Penilaian(){
                         </Typography>
                     </Link>
                 </Button>
+            </div>
+            <div className="my-3">
+                    <div className="grid grid-cols-2 gap-3">
+                        <Select
+                            name='id_depart'
+                            label="Pilih Departemen"
+                            value={form.departemen}
+                            onChange={(val) => setForm({ ...form, departemen: val })}
+                            animate={{
+                                mount: { y: 0 },
+                                unmount: { y: 25 },
+                            }}
+                            >
+                            {isLoading ? 
+                                (<Option disabled>Loading...</Option>)
+                                :
+                                (
+                                deptData.data.map((item, index)=>(
+                                    <Option key={index} value={item.id_depart}>{item.nama}</Option>
+                                ))
+                                )}
+                        </Select>
+                            <Select
+                            name='id_depart'
+                            label="Pilih Departemen"
+                            value={form.departemen}
+                            onChange={(val) => setForm({ ...form, departemen: val })}
+                            animate={{
+                                mount: { y: 0 },
+                                unmount: { y: 25 },
+                            }}
+                            >
+                            {isLoading ? 
+                                (<Option disabled>Loading...</Option>)
+                                :
+                                (
+                                deptData.data.map((item, index)=>(
+                                    <Option key={index} value={item.id_depart}>{item.nama}</Option>
+                                ))
+                                )}
+                        </Select>
+                </div>
+                <div className="my-3 grid grid-cols-2 gap-3">
+                    <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
+                    <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
+                </div>
             </div>
             <div className="my-3">
                 <Select
@@ -83,7 +141,7 @@ export default function Penilaian(){
                             {item.label ?? month}
                         </Option>
                     ))}
-                    </Select>
+                </Select>
             </div>
             <div className="w-full">
                 <Tables
