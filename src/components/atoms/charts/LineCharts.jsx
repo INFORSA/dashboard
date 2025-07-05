@@ -8,7 +8,7 @@ import Chart from "react-apexcharts";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo } from "react";
    
-  export default function LineCharts({ isSidebarOpen, data, detail }) {
+  export default function LineCharts({ isSidebarOpen, data, title, detail }) {
     const categories = data.map((d)=> d.bulan);
 
     const series = useMemo(() => {
@@ -119,7 +119,7 @@ import { useEffect, useMemo } from "react";
               color="gray"
               className="max-w-sm font-normal"
             >
-              Rata-Rata Performa Anggota INFORSA
+              {title}
             </Typography>
           </div>
         </CardHeader>

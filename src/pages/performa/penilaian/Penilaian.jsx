@@ -1,6 +1,6 @@
-import { Button, Option, Select, Typography } from "@material-tailwind/react";
+import { Button, Card, Option, Select, Typography } from "@material-tailwind/react";
 import { Tables } from "../../../components/atoms/Tables";
-import { useGetAllNilaiQuery, useGetLineChartValueDepartQuery } from "../../../services/penilaian";
+import { useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -9,31 +9,37 @@ import Error from "../../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useGetDeptQuery } from "../../../services/dept";
 import LineCharts from "../../../components/atoms/charts/LineCharts";
+import BarChartDept from "../../../components/atoms/charts/BarCharts";
 
 export default function Penilaian(isSidebarOpen){
     // Array nama bulan
-    const monthOptions = [
-        { label: "January", value: "01" },
-        { label: "February", value: "02" },
-        { label: "March", value: "03" },
-        { label: "April", value: "04" },
-        { label: "May", value: "05" },
-        { label: "June", value: "06" },
-        { label: "July", value: "07" },
-        { label: "August", value: "08" },
-        { label: "September", value: "09" },
-        { label: "October", value: "10" },
-        { label: "November", value: "11" },
-        { label: "December", value: "12" },
-    ];
-    const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
-    const { data, isLoading, isError } = useGetAllNilaiQuery(month);
-    const { data:deptData } = useGetDeptQuery();
+    // const monthOptions = [
+    //     { label: "January", value: "01" },
+    //     { label: "February", value: "02" },
+    //     { label: "March", value: "03" },
+    //     { label: "April", value: "04" },
+    //     { label: "May", value: "05" },
+    //     { label: "June", value: "06" },
+    //     { label: "July", value: "07" },
+    //     { label: "August", value: "08" },
+    //     { label: "September", value: "09" },
+    //     { label: "October", value: "10" },
+    //     { label: "November", value: "11" },
+    //     { label: "December", value: "12" },
+    // ];
+
+    const now = new Date();
+    const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
+    // const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
     const [form, setForm] = useState({
             departemen:1,
+            waktu:currentMonthStr
         });
+    const { data:deptData } = useGetDeptQuery();
     const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
+    const { data, isLoading, isError } = useGetAllNilaiQuery(form.waktu);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
+    const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(form.waktu);
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -51,16 +57,30 @@ export default function Penilaian(isSidebarOpen){
         { className:"", key: "total_akhir", label: "Hasil" }
     ];
 
+    const labelPenilaian = [
+        { key: "total_nilai", label: "Nilai" },
+    ];
+
     const summaryPenilaian = [
         { key: "total_nilai", label: dept.nama },
     ];
 
-    if ( isLoading || lineChartLoading ) return <Loading/>;
+    if ( isLoading || lineChartLoading || barChartLoading ) return <Loading/>;
     if ( isError ) return <Error/>;
     
     return(
          <div className="w-full overflow-x-auto">
             <HelmetProvider><title>Daftar Penilaian</title></HelmetProvider>
+            <div className="my-3 border-b-4 border-gray-500 pb-4 flex justify-between items-end">
+                <div>
+                    <h1 className="text-4xl font-semibold text-gray-800">
+                        INFORMASI <span className="font-thin">PERFORMA</span>
+                    </h1>
+                </div>
+                <div className="bg-gray-100 px-4 py-2 rounded-xl shadow-sm">
+                    <p className="text-sm text-gray-700 font-medium">Semoga Bermanfaat 👋</p>
+                </div>
+            </div> 
             <div className="flex gap-2">
                 {/* <Button color="blue" size="sm" className="mb-3">
                     <Link className="flex items-center gap-3" to='/penilaian/add'>
@@ -80,78 +100,64 @@ export default function Penilaian(isSidebarOpen){
                 </Button>
             </div>
             <div className="my-3">
-                    <div className="grid grid-cols-2 gap-3">
+                <Card className="p-4 mb-3 border border-md border-black bg-white/5 backdrop-blur-md">
+                    <Typography variant="h5" className="mb-2 text-gray-700">Filter Data Penilaian</Typography>
+                    <Typography variant="small" className="mb-4 text-black">
+                        Pilih Departemen dan Waktu untuk menampilkan grafik berdasarkan data yang diinginkan.
+                    </Typography>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <Select
-                            name='id_depart'
                             label="Pilih Departemen"
                             value={form.departemen}
                             onChange={(val) => setForm({ ...form, departemen: val })}
-                            animate={{
-                                mount: { y: 0 },
-                                unmount: { y: 25 },
-                            }}
-                            >
-                            {isLoading ? 
-                                (<Option disabled>Loading...</Option>)
-                                :
-                                (
-                                deptData.data.map((item, index)=>(
-                                    <Option key={index} value={item.id_depart}>{item.nama}</Option>
-                                ))
-                                )}
+                        >
+                            {deptData?.data?.map((item, index) => (
+                                <Option key={index} value={item.id_depart}>{item.nama}</Option>
+                            ))}
                         </Select>
-                            <Select
-                            name='id_depart'
-                            label="Pilih Departemen"
-                            value={form.departemen}
-                            onChange={(val) => setForm({ ...form, departemen: val })}
-                            animate={{
-                                mount: { y: 0 },
-                                unmount: { y: 25 },
-                            }}
-                            >
-                            {isLoading ? 
-                                (<Option disabled>Loading...</Option>)
-                                :
-                                (
-                                deptData.data.map((item, index)=>(
-                                    <Option key={index} value={item.id_depart}>{item.nama}</Option>
-                                ))
-                                )}
+
+                        <Select
+                            label="Pilih Waktu"
+                            value={form.waktu}
+                            onChange={(val) => setForm({ ...form, waktu: val })}
+                        >
+                            {lineChartData?.map((item, index) => (
+                                <Option key={index} value={item.bulan}>{item.bulan}</Option>
+                            ))}
                         </Select>
-                </div>
-                <div className="my-3 grid grid-cols-2 gap-3">
-                    <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
-                    <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
-                </div>
+                    </div>
+                    <div className="my-3 grid grid-cols-2 gap-3">
+                        <LineCharts title="Penilaian Anggota" isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
+                        <BarChartDept isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
+                    </div>
+                </Card>
             </div>
-            <div className="my-3">
-                <Select
-                    name="month"
-                    label="Pilih Bulan"
-                    value={month}
-                    onChange={(val) => setMonth(val)}
-                    animate={{
-                        mount: { y: 0 },
-                        unmount: { y: 25 },
-                    }}
+             <Card className="p-4 border border-md border-black bg-white/5 backdrop-blur-md">
+                <Typography variant="h5" className="mb-2 text-gray-700">Tabel Detail Penilaian</Typography>
+                <Typography variant="small" className="mb-4 text-black">
+                    Tabel ini berisi daftar lengkap hasil penilaian tiap anggota berdasarkan bulan yang dipilih.
+                </Typography>
+                <div className="my-3">
+                    <Select
+                        label="Pilih Waktu"
+                        value={form.waktu}
+                        onChange={(val) => setForm({ ...form, waktu: val })}
                     >
-                    {monthOptions.map((item) => (
-                        <Option key={item.value} value={item.value}>
-                            {item.label ?? month}
-                        </Option>
-                    ))}
-                </Select>
-            </div>
-            <div className="w-full">
-                <Tables
-                    title="Tabel Penilaian"
-                    description={`List Nilai Anggota`}
-                    columns={columnsPenilaian}
-                    rows={data || []}
-                    actionHidden={true}
-                />
-            </div>
+                        {lineChartData?.map((item, index) => (
+                            <Option key={index} value={item.bulan}>{item.bulan}</Option>
+                        ))}
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <Tables
+                        title="Tabel Penilaian"
+                        description={`List Nilai Anggota`}
+                        columns={columnsPenilaian}
+                        rows={data || []}
+                        actionHidden={true}
+                    />
+                </div>
+             </Card>
          </div>
     )
 }

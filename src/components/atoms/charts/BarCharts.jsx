@@ -10,7 +10,7 @@ import { useEffect, useMemo } from "react";
 
 export default function BarChart({ isSidebarOpen, data, detail }) {
 
-  const categories = data.map((d) => d.nama_anggota);
+  const categories = data.map((d) => d.nama_anggota || d.nama_departemen);
 
   const series = useMemo(() => {
     return detail.map((col) => ({

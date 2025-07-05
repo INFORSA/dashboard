@@ -46,6 +46,10 @@ export const penilaianAPI = createApi({
         query: (depart) => `penilaian/get/linechart/${depart}`,
         providesTags: ["Nilai Line"],
       }), 
+    getLineChartDepart: build.query({
+        query: (waktu) => `penilaian/get/departemen/linechart/${waktu}`,
+        providesTags: ["Nilai Depart"],
+      }), 
     getLineChartPersonal: build.query({
         query: () => `penilaian/get/personal/linechart`,
         providesTags: ["Linechart Personal"],
@@ -67,7 +71,7 @@ export const penilaianAPI = createApi({
 
 export const { useGetNilaiQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, useGetLineChartValueQuery, useGetLineChartValueDepartQuery, 
               useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,
-              useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery } = penilaianAPI
+              useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery, useGetLineChartDepartQuery } = penilaianAPI
 
 export const matriksAPI = createApi({
   reducerPath: 'matriksAPI',

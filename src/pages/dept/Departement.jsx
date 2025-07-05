@@ -5,7 +5,7 @@ import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import CountCard from "../../components/atoms/cards/CountCard";
 import { useGetAnggotaByDepartQuery } from "../../services/user";
 import { useGetNilaiQuery, useGetLineChartValueDepartQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, 
-    // useGetBarChartValueQuery, 
+    useGetBarChartValueQuery, 
     useGetRadarChartValueQuery 
 } from "../../services/penilaian";
 import { Tables } from "../../components/atoms/Tables";
@@ -13,7 +13,6 @@ import DepartCard from "../../components/atoms/cards/DepartCard";
 import LineCharts from "../../components/atoms/charts/LineCharts";
 import BarChart from "../../components/atoms/charts/BarCharts";
 import RadarChart from "../../components/atoms/charts/RadarCharts";
-import { PlusIcon } from "@heroicons/react/24/solid";
 import { useGetPengurusQuery } from "../../services/dept";
 import Loading from "../loading/Loading";
 import Error from "../error/Error";
@@ -43,7 +42,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     const [ penilai, setPenilai ] = useState(null);
     const { data: departData, isLoading: departLoading, isError: departError } = useGetAnggotaByDepartQuery(depart);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(depart);
-    // const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
+    const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
     const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
     const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
     const { data: detailData, isLoading: detailLoading, refetch } = useGetNilaiDetailQuery({depart, month, penilai});
@@ -94,7 +93,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     ];
 
     if (departLoading || nilaiLoading || lineChartLoading || detailLoading || maxNilaiLoading
-        // || barChartLoading 
+        || barChartLoading 
         || radarChartLoading
     ) return <Loading/>;
     if (departError) return <Error/>;
@@ -145,7 +144,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                     <div className="flex gap-2">
                         <div className="flex flex-col gap-2 w-full">
                             <div className="flex justify-between gap-2 w-full">
-                                {/* <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/> */}
+                                <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
                                 <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
                                 {/* <RadarChart isSidebarOpen={isSidebarOpen} /> */}
                             </div>
