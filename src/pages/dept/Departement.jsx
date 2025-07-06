@@ -19,25 +19,18 @@ import Error from "../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 
 export default function Departement({isSidebarOpen, departemen, nama}){
-    // Array nama bulan
-    const monthOptions = [
-        { label: "January", value: "01" },
-        { label: "February", value: "02" },
-        { label: "March", value: "03" },
-        { label: "April", value: "04" },
-        { label: "May", value: "05" },
-        { label: "June", value: "06" },
-        { label: "July", value: "07" },
-        { label: "August", value: "08" },
-        { label: "September", value: "09" },
-        { label: "October", value: "10" },
-        { label: "November", value: "11" },
-        { label: "December", value: "12" },
-    ];
-
     const { name } = useParams();
     const depart = departemen ?? name?.toUpperCase();
-    const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
+    const now = new Date();
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const currentMonthStr = monthNames[now.getMonth()-1];
+    const [form, setForm] = useState({
+        waktu:currentMonthStr,
+    });
+    const month = form.waktu;
     const [ activeTable, setActiveTable ] = useState("grafik");
     const [ penilai, setPenilai ] = useState(null);
     const { data: departData, isLoading: departLoading, isError: departError } = useGetAnggotaByDepartQuery(depart);
@@ -47,9 +40,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
     const { data: detailData, isLoading: detailLoading, refetch } = useGetNilaiDetailQuery({depart, month, penilai});
     const { data: pengurusData } = useGetPengurusQuery();    
-    const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(5);
-    const now = new Date();
-    const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
+    const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(month);
     const lastPerformance = lineChartData?.filter((item) => item.bulan === currentMonthStr);
 
     useEffect(() => {
@@ -160,16 +151,16 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                             <Select
                                 name="month"
                                 label="Pilih Bulan"
-                                value={month}
-                                onChange={(val) => setMonth(val)}
+                                value={form.waktu}
+                                onChange={(val) => setForm({ ...form, waktu: val })}
                                 animate={{
                                     mount: { y: 0 },
                                     unmount: { y: 25 },
                                 }}
                                 >
-                                {monthOptions.map((item) => (
-                                    <Option key={item.value} value={item.value}>
-                                        {item.label ?? month}
+                                {lineChartData?.map((item, index) => (
+                                    <Option key={index} value={item.bulan}>
+                                        {item.bulan}
                                     </Option>
                                 ))}
                             </Select>
@@ -201,6 +192,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                                 inlineEdit={penilai === nama ? true : false}
                                 onRefetch={refetch}
                                 actionHidden={true}
+                                maxRow={10}
                             />
                         </div>
                     </div>

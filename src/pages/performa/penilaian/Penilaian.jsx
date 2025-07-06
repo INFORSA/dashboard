@@ -10,36 +10,40 @@ import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useGetDeptQuery } from "../../../services/dept";
 import LineCharts from "../../../components/atoms/charts/LineCharts";
 import BarChartDept from "../../../components/atoms/charts/BarCharts";
+import RadialChart from "../../../components/atoms/charts/RadialCharts";
 
 export default function Penilaian(isSidebarOpen){
-    // Array nama bulan
-    // const monthOptions = [
-    //     { label: "January", value: "01" },
-    //     { label: "February", value: "02" },
-    //     { label: "March", value: "03" },
-    //     { label: "April", value: "04" },
-    //     { label: "May", value: "05" },
-    //     { label: "June", value: "06" },
-    //     { label: "July", value: "07" },
-    //     { label: "August", value: "08" },
-    //     { label: "September", value: "09" },
-    //     { label: "October", value: "10" },
-    //     { label: "November", value: "11" },
-    //     { label: "December", value: "12" },
-    // ];
-
     const now = new Date();
-    const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
-    // const [ month, setMonth ] = useState(new Date().getMonth().toString().padStart(2, "0"));
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const currentMonthStr = monthNames[now.getMonth()-1];
     const [form, setForm] = useState({
-            departemen:1,
-            waktu:currentMonthStr
-        });
+        departemen:1,
+        waktu:currentMonthStr
+    });
     const { data:deptData } = useGetDeptQuery();
     const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
     const { data, isLoading, isError } = useGetAllNilaiQuery(form.waktu);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
     const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(form.waktu);
+    let dotm = null;
+    // eslint-disable-next-line no-unused-vars
+    let maxIndex = -1;
+
+    if (barChartData && barChartData.length > 0) {
+        dotm = barChartData.reduce((prev, current, index) => {
+            const currentValue = parseFloat(current.total_nilai || 0);
+            const prevValue = parseFloat(prev.total_nilai || 0);
+
+            if (currentValue > prevValue) {
+                maxIndex = index; // Simpan index-nya
+                return current;
+            }
+            return prev;
+        });
+    }
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -59,6 +63,12 @@ export default function Penilaian(isSidebarOpen){
 
     const labelPenilaian = [
         { key: "total_nilai", label: "Nilai" },
+    ];
+
+    const dataPenilaian = [
+        { nama: "Zaki Fauzan Rabbani", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
+        { nama: "Bayu Purnama Aji", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
+        { nama: "Nurul Vita Azizah", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" }
     ];
 
     const summaryPenilaian = [
@@ -131,6 +141,15 @@ export default function Penilaian(isSidebarOpen){
                         <BarChartDept isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
                     </div>
                 </Card>
+            </div>
+            <div className="my-3">
+                <RadialChart 
+                    isSidebarOpen={isSidebarOpen} 
+                    data={dataPenilaian} 
+                    value={dotm.total_nilai}
+                    departmentName={dotm.nama_departemen} 
+                    month={dotm.bulan}
+                />
             </div>
              <Card className="p-4 border border-md border-black bg-white/5 backdrop-blur-md">
                 <Typography variant="h5" className="mb-2 text-gray-700">Tabel Detail Penilaian</Typography>
