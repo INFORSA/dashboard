@@ -44,9 +44,9 @@ export default function Matriks(){
     const [addMatriks] = useAddMatriksMutation();
     const [editMatriks] = useUpdateMatriksMutation();
 
-    const [open, setOpen] = React.useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [editForm, setEditForm] = useState({ id: "", nama: "", bobot: 1 });
+    const [open, setOpen] = React.useState(false);
  
     const handleOpen = () => setOpen(!open);
     

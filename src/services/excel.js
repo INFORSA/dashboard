@@ -37,13 +37,26 @@ export const excelAPI = createApi({
       },
       invalidatesTags: ['User'],
     }),
-    importPenilaian: builder.mutation({
+    importPenilaianStaff: builder.mutation({
       query: (file) => {
         const formData = new FormData();
         formData.append("file", file);
 
         return {
-          url: "import/excel/penilaian",
+          url: "import/excel/penilaian/staff",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ['Penilaian'],
+    }),
+    importPenilaianDepartemen: builder.mutation({
+      query: (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return {
+          url: "import/excel/penilaian/departemen",
           method: "POST",
           body: formData,
         };
@@ -53,4 +66,4 @@ export const excelAPI = createApi({
   }),
 });
 
-export const { useImportAnggotaMutation, useImportUserMutation, useImportPenilaianMutation } = excelAPI;
+export const { useImportAnggotaMutation, useImportUserMutation, useImportPenilaianStaffMutation, useImportPenilaianDepartemenMutation } = excelAPI;

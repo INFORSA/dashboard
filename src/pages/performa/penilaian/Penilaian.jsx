@@ -1,6 +1,6 @@
-import { Button, Card, Option, Select, Typography } from "@material-tailwind/react";
+import { Button, Card, Dialog, DialogBody, DialogFooter, DialogHeader, Option, Select, Typography } from "@material-tailwind/react";
 import { Tables } from "../../../components/atoms/Tables";
-import { useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery } from "../../../services/penilaian";
+import { useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery, useGetNilaiDeptQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -23,9 +23,13 @@ export default function Penilaian(isSidebarOpen){
         departemen:1,
         waktu:currentMonthStr
     });
+    const [open, setOpen] = useState(false);
+     
+    const handleOpen = () => setOpen(!open);
     const { data:deptData } = useGetDeptQuery();
     const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
     const { data, isLoading, isError } = useGetAllNilaiQuery(form.waktu);
+    const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(form.waktu);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
     const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(form.waktu);
     let dotm = null;
@@ -61,6 +65,20 @@ export default function Penilaian(isSidebarOpen){
         { className:"", key: "total_akhir", label: "Hasil" }
     ];
 
+    const columnsPenilaianDept = [
+        { className:"w-10", key: "no", label: "No" },
+        { className:"", key: "nama_departemen", label: "Departemen" },
+        { className:"", key: "bulan", label: "Waktu" },
+        { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KN" },
+        { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "KKT" },
+        { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "INS" },
+        { className:"", idKey: "id_detail_matriks_4", key: "nilai_matriks_4", label: "KK" },
+        { className:"", idKey: "id_detail_matriks_5", key: "nilai_matriks_5", label: "KI" },
+        { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KP" },
+        { className:"", key: "total_nilai", label: "Total" },
+        { className:"", key: "total_akhir", label: "Hasil" }
+    ];
+
     const labelPenilaian = [
         { key: "total_nilai", label: "Nilai" },
     ];
@@ -75,8 +93,8 @@ export default function Penilaian(isSidebarOpen){
         { key: "total_nilai", label: dept.nama },
     ];
 
-    if ( isLoading || lineChartLoading || barChartLoading ) return <Loading/>;
-    if ( isError ) return <Error/>;
+    if ( isLoading || lineChartLoading || barChartLoading || deptLoading ) return <Loading/>;
+    if ( isError || deptError ) return <Error/>;
     
     return(
          <div className="w-full overflow-x-auto">
@@ -90,7 +108,47 @@ export default function Penilaian(isSidebarOpen){
                 <div className="bg-gray-100 px-4 py-2 rounded-xl shadow-sm">
                     <p className="text-sm text-gray-700 font-medium">Semoga Bermanfaat 👋</p>
                 </div>
-            </div> 
+            </div>
+            <Dialog
+                open={open}
+                handler={handleOpen}
+                animate={{
+                mount: { scale: 1, y: 0 },
+                unmount: { scale: 0.9, y: -100 },
+                }}
+            >
+                <DialogHeader>
+                    <Typography className='text-3xl font-semibold text-center mb-3'>Import Data</Typography>
+                </DialogHeader>
+                    <DialogBody className="flex justify-center items-center gap-4">
+                        <Button color="blue-gray" size="sm" className="mb-3">
+                            <Link className="flex items-center gap-3" to='/penilaian/import/staff'>
+                                <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                                <Typography className="text-md">
+                                    Import Penilaian Staff
+                                </Typography>
+                            </Link>
+                        </Button>
+                        <Button color="blue-gray" size="sm" className="mb-3">
+                            <Link className="flex items-center gap-3" to='/penilaian/import/departemen'>
+                                <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                                <Typography className="text-md">
+                                    Import Penilaian Departemen
+                                </Typography>
+                            </Link>
+                        </Button>
+                    </DialogBody>
+                    <DialogFooter>
+                        <Button
+                            variant="text"
+                            color="red"
+                            onClick={handleOpen}
+                            className="mr-1"
+                        >
+                            <span>Cancel</span>
+                        </Button>   
+                    </DialogFooter>
+            </Dialog>
             <div className="flex gap-2">
                 {/* <Button color="blue" size="sm" className="mb-3">
                     <Link className="flex items-center gap-3" to='/penilaian/add'>
@@ -100,13 +158,11 @@ export default function Penilaian(isSidebarOpen){
                         </Typography>
                     </Link>
                 </Button> */}
-                <Button color="blue-gray" size="sm" className="mb-3">
-                    <Link className="flex items-center gap-3" to='/penilaian/import'>
-                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                        <Typography className="text-md">
-                            Import Data
-                        </Typography>
-                    </Link>
+                <Button onClick={handleOpen}  color="blue-gray" size="sm" className="mb-3 flex items-center gap-3">
+                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                    <Typography className="text-md">
+                        Import Data
+                    </Typography>
                 </Button>
             </div>
             <div className="my-3">
@@ -169,8 +225,17 @@ export default function Penilaian(isSidebarOpen){
                 </div>
                 <div className="w-full">
                     <Tables
+                        title="Tabel Penilaian Departemen"
+                        description={`List Nilai Departemen Bulan ${form.waktu}`}
+                        columns={columnsPenilaianDept}
+                        rows={deptNilai || []}
+                        actionHidden={true}
+                    />
+                </div>
+                <div className="w-full my-3">
+                    <Tables
                         title="Tabel Penilaian"
-                        description={`List Nilai Anggota`}
+                        description={`List Nilai Anggota Bulan ${form.waktu}`}
                         columns={columnsPenilaian}
                         rows={data || []}
                         actionHidden={true}

@@ -19,6 +19,10 @@ export const penilaianAPI = createApi({
         query: ({depart, month}) => `penilaian/get/nilai/${depart}/${month}`,
         providesTags: ["Penilaian"],
       }),
+    getNilaiDept: build.query({
+        query: (month) => `penilaian/get/nilai-dept/${month}`,
+        providesTags: ["Penilaian Departemen"],
+      }),
     editNilai: build.mutation({
       query: (data) => ({
         url: `penilaian/update-nilai`,
@@ -71,7 +75,8 @@ export const penilaianAPI = createApi({
 
 export const { useGetNilaiQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, useGetLineChartValueQuery, useGetLineChartValueDepartQuery, 
               useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,
-              useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery, useGetLineChartDepartQuery } = penilaianAPI
+              useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery, useGetLineChartDepartQuery,
+              useGetNilaiDeptQuery } = penilaianAPI
 
 export const matriksAPI = createApi({
   reducerPath: 'matriksAPI',

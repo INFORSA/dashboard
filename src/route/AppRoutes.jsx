@@ -67,7 +67,8 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             <Route path="/permission/role/edit/:id" element={<EditRole />} />
 
             <Route path="/hasil-penilaian" element={<Penilaian />} />
-            <Route path="/penilaian/import" element={<ImportExcel dataImport="penilaian" />} />
+            <Route path="/penilaian/import/staff" element={<ImportExcel dataImport="penilaian" jenisPenilaian="staff" />} />
+            <Route path="/penilaian/import/departemen" element={<ImportExcel dataImport="penilaian" jenisPenilaian="departemen" />} />
             
             <Route path="/matriks-penilaian" element={<Matriks />} />
           </>
