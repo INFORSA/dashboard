@@ -135,7 +135,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                     <div className="flex gap-2">
                         <div className="flex flex-col gap-2 w-full">
                             <div className="flex justify-between gap-2 w-full">
-                                <BarChart isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
+                                <BarChart isSidebarOpen={isSidebarOpen} header="Komposisi Penilaian Tiap Anggota" data={barChartData || []} detail={labelPenilaian}/>
                                 <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
                                 {/* <RadarChart isSidebarOpen={isSidebarOpen} /> */}
                             </div>
@@ -193,6 +193,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                                 onRefetch={refetch}
                                 actionHidden={true}
                                 maxRow={10}
+                                type="staff"
                             />
                         </div>
                     </div>

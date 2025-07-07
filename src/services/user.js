@@ -23,6 +23,9 @@ export const userAPI = createApi({
     getAnggotaByDepart: build.query({
       query: (depart) => `user/get/anggota/dept/${depart}`
     }), 
+    getInti: build.query({
+        query: () => "user/get/bpi",
+      }), 
     storeUser: build.query({
       query: (id) => `user/store/${id}`
     }),
@@ -39,7 +42,7 @@ export const userAPI = createApi({
   }),
 })
 
-export const { useGetUserQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery, useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery } = userAPI
+export const { useGetUserQuery, useGetIntiQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery, useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery } = userAPI
 
 export const roleAPI = createApi({
   reducerPath: 'roleAPI',

@@ -8,7 +8,7 @@ import Chart from "react-apexcharts";
 import { Bars3BottomLeftIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo } from "react";
 
-export default function BarChart({ isSidebarOpen, data, detail }) {
+export default function BarChart({ isSidebarOpen, data, header, detail }) {
 
   const categories = data.map((d) => d.nama_anggota || d.nama_departemen);
 
@@ -68,7 +68,7 @@ export default function BarChart({ isSidebarOpen, data, detail }) {
         </div>
         <div>
           <Typography variant="h6" color="blue-gray">
-            Komposisi Penilaian Tiap Anggota
+            {header}
           </Typography>
           <Typography variant="small" color="gray" className="max-w-sm font-normal">
             Visualisasi stacked bar untuk melihat komposisi nilai per anggota.

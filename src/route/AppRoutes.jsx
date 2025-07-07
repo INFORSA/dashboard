@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Departement from "../pages/dept/Departement";
-import Upload from "../pages/performa/penilaian/Upload";
 import AddStaff from "../pages/permission/user/AddStaff";
 import AddAdmin from "../pages/permission/user/AddAdmin";
 import User from "../pages/permission/user/User";
@@ -52,7 +51,6 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
           <>
             {/* <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} /> */}
             <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
-            <Route path="/upload" element={<Upload />} />
 
             <Route path="/permission/user" element={<User />} />
             <Route path="/permission/user/import" element={<ImportExcel dataImport="user"/>} />
@@ -66,7 +64,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             <Route path="/permission/role/add" element={<AddRole />} />
             <Route path="/permission/role/edit/:id" element={<EditRole />} />
 
-            <Route path="/hasil-penilaian" element={<Penilaian />} />
+            <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen} nama={username} />} />
             <Route path="/penilaian/import/staff" element={<ImportExcel dataImport="penilaian" jenisPenilaian="staff" />} />
             <Route path="/penilaian/import/departemen" element={<ImportExcel dataImport="penilaian" jenisPenilaian="departemen" />} />
             
@@ -77,7 +75,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
           <>
             <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
 
-            <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen} />} />
+            <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen}/>} />
           </>
         )}
         {depart && role === "admin" && (

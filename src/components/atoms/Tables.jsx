@@ -13,10 +13,11 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { useEditNilaiMutation } from "../../services/penilaian";
+import { useEditNilaiDeptMutation, useEditNilaiMutation } from "../../services/penilaian";
 
 export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", 
-                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch, removeHidden }) {
+                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch, 
+                        removeHidden, type }) {
   const ITEMS_PER_PAGE = maxRow ?? 25;
   const [page, setPage] = useState(1);
   
@@ -37,6 +38,7 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
   const paginatedRows = filteredRows.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   const [editNilai] = useEditNilaiMutation();
+  const [editNilaiDept] = useEditNilaiDeptMutation();
 
   const handleEdit = (rowId, colKey, value) => {
     setEditingCell({ rowId, colKey });
@@ -49,7 +51,7 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
         id: rowId,
         nilai: value,
       };
-      await editNilai(data).unwrap();
+      type === "staff" ? await editNilai(data).unwrap() : await editNilaiDept(data).unwrap();
       onRefetch();
       setEditingCell(null);
     } catch (error) {
