@@ -1,8 +1,8 @@
-import { Button, Card, Dialog, DialogBody, DialogFooter, DialogHeader, Option, Select, Typography } from "@material-tailwind/react";
+import { Button, Card, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Select, Typography } from "@material-tailwind/react";
 import { Tables } from "../../../components/atoms/Tables";
-import { useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery, useGetNilaiDeptDetailQuery, useGetNilaiDeptQuery } from "../../../services/penilaian";
+import { useGenerateTemplateStaffMutation, useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery, useGetNilaiDeptDetailQuery, useGetNilaiDeptQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
-import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Loading from "../../loading/Loading";
 import Error from "../../error/Error";
@@ -12,6 +12,7 @@ import LineCharts from "../../../components/atoms/charts/LineCharts";
 import BarChartDept from "../../../components/atoms/charts/BarCharts";
 import RadialChart from "../../../components/atoms/charts/RadialCharts";
 import { useGetIntiQuery } from "../../../services/user";
+import Swal from "sweetalert2";
 
 export default function Penilaian({isSidebarOpen, nama}){
     const now = new Date();
@@ -24,6 +25,10 @@ export default function Penilaian({isSidebarOpen, nama}){
         departemen:1,
         waktu:currentMonthStr
     });
+    const [templateModal, setTemplateModal] = useState(false);
+    const [templateRange, setTemplateRange] = useState({ start: '', end: '' });
+    const toggleTemplateModal = () => setTemplateModal(!templateModal);
+
     const month = form.waktu;
     const [open, setOpen] = useState(false);
     const [ penilai, setPenilai ] = useState(null);
@@ -31,7 +36,8 @@ export default function Penilaian({isSidebarOpen, nama}){
     const handleOpen = () => setOpen(!open);
     const { data:deptData } = useGetDeptQuery();
     const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
-    const { data, isLoading, isError } = useGetAllNilaiQuery(month);
+    const { data, isLoading, isError, refetch:refetchPenilaianStaff } = useGetAllNilaiQuery(month);
+    const [generateTemplateStaff, { isLoading: isGenerating }] = useGenerateTemplateStaffMutation();
     const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(month);
     const { data: deptDetailNilai, isLoading: deptDetailLoading, isError: deptDetailError, refetch } = useGetNilaiDeptDetailQuery({month, penilai});
     const { data: bpiData, isLoading: bpiLoading, isError: bpiError } = useGetIntiQuery();
@@ -53,6 +59,33 @@ export default function Penilaian({isSidebarOpen, nama}){
             return prev;
         });
     }
+
+    const handleGenerateTemplate = async () => {
+        try {
+            await generateTemplateStaff({
+                startMonth: parseInt(templateRange.start),
+                endMonth: parseInt(templateRange.end),
+            }).unwrap();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Template berhasil dibuat',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            refetchPenilaianStaff();
+            setTemplateModal(false);
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal membuat template',
+                text: error?.response?.data?.message || 'Terjadi kesalahan',
+            });
+
+            setTemplateModal(false);
+        }
+    };
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -103,7 +136,7 @@ export default function Penilaian({isSidebarOpen, nama}){
         { key: "total_nilai", label: dept.nama },
     ];
 
-    if ( isLoading || lineChartLoading || barChartLoading || deptLoading || bpiLoading || deptDetailLoading) return <Loading/>;
+    if ( isLoading || lineChartLoading || barChartLoading || deptLoading || bpiLoading || deptDetailLoading || isGenerating) return <Loading/>;
     if ( isError || deptError || bpiError || deptDetailError) return <Error/>;
     
     return(
@@ -168,13 +201,40 @@ export default function Penilaian({isSidebarOpen, nama}){
                         </Typography>
                     </Link>
                 </Button> */}
-                <Button onClick={handleOpen}  color="blue-gray" size="sm" className="mb-3 flex items-center gap-3">
-                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                    <Typography className="text-md">
-                        Import Data
-                    </Typography>
-                </Button>
+                <div className="flex gap-4">
+                    <Button onClick={handleOpen}  color="blue-gray" size="sm" className="mb-3 flex items-center gap-3">
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">
+                            Import Data
+                        </Typography>
+                    </Button>
+                    <Button onClick={toggleTemplateModal} color="blue" size="sm" className="mb-3 flex items-center gap-3">
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">Buat Template</Typography>
+                    </Button>
+                </div>
             </div>
+            <Dialog open={templateModal} handler={toggleTemplateModal} size="sm">
+                <DialogHeader>Buat Template Penilaian</DialogHeader>
+                <DialogBody className="flex flex-col gap-4">
+                    <Input
+                        type="number"
+                        label="Dari Bulan (1-12)"
+                        value={templateRange.start}
+                        onChange={(e) => setTemplateRange({ ...templateRange, start: e.target.value })}
+                    />
+                    <Input
+                        type="number"
+                        label="Sampai Bulan (1-12)"
+                        value={templateRange.end}
+                        onChange={(e) => setTemplateRange({ ...templateRange, end: e.target.value })}
+                    />
+                </DialogBody>
+                <DialogFooter>
+                    <Button variant="text" color="red" onClick={toggleTemplateModal}>Cancel</Button>
+                    <Button variant="gradient" color="green" onClick={handleGenerateTemplate}>Submit</Button>
+                </DialogFooter>
+            </Dialog>
             <div className="my-3">
                 <Card className="p-4 mb-3 border border-md border-black bg-white/5 backdrop-blur-md">
                     <Typography variant="h5" className="mb-2 text-gray-700">Filter Data Penilaian</Typography>
@@ -212,9 +272,9 @@ export default function Penilaian({isSidebarOpen, nama}){
                 <RadialChart 
                     isSidebarOpen={isSidebarOpen} 
                     data={dataPenilaian} 
-                    value={dotm.total_akhir}
-                    departmentName={dotm.nama_departemen} 
-                    month={dotm.bulan}
+                    value={deptNilai.length > 0 ? dotm.total_akhir : 0}
+                    departmentName={deptNilai.length > 0 ? dotm.nama_departemen : ""} 
+                    month={deptNilai.length > 0 ? dotm.bulan : ""}
                 />
             </div>
              <Card className="p-4 border border-md border-black bg-white/5 backdrop-blur-md">

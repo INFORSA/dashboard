@@ -37,6 +37,14 @@ export const penilaianAPI = createApi({
         body: data,
       }),
     }),
+    generateTemplateStaff: build.mutation({
+      query: (body) => ({
+        url: `penilaian/add/template-staff`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ["Penilaian"], // atau sesuaikan tag jika ingin refetch otomatis
+    }),
     getMaxNilai: build.query({
         query: (month) => `penilaian/get/max-nilai/${month}`,
         providesTags: ["Maks Penilaian"],
@@ -87,7 +95,7 @@ export const penilaianAPI = createApi({
 export const { useGetNilaiQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, useGetLineChartValueQuery, useGetLineChartValueDepartQuery, 
               useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,
               useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery, useGetLineChartDepartQuery,
-              useGetNilaiDeptQuery, useGetNilaiDeptDetailQuery, useEditNilaiDeptMutation } = penilaianAPI
+              useGetNilaiDeptQuery, useGetNilaiDeptDetailQuery, useEditNilaiDeptMutation, useGenerateTemplateStaffMutation } = penilaianAPI
 
 export const matriksAPI = createApi({
   reducerPath: 'matriksAPI',

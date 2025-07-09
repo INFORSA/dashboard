@@ -7,7 +7,7 @@ import { useGetDeptQuery } from '../../services/dept';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { useGetAnggotaQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/cards/DepartCard';
-import { useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery } from '../../services/penilaian';
+import { useGetAllNilaiQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery, useGetNilaiDeptQuery } from '../../services/penilaian';
 import { Tables } from '../../components/atoms/Tables';
 import Banner from '../../components/atoms/Banner';
 import Loading from '../loading/Loading';
@@ -25,19 +25,19 @@ export default function SuperAdmin({ isSidebarOpen }){
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueQuery();
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(month);
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(month);
+    const { data: deptNilai, isLoading: deptNilaiLoading, isError: deptNilaiError } = useGetNilaiDeptQuery(month);
     const now = new Date();
     const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth()).padStart(2, "0")}`;
-    const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(month);
     const lastPerformance = lineChartData?.filter((item) => item.bulan === currentMonthStr);
 
     let dotm = null;
     // eslint-disable-next-line no-unused-vars
     let maxIndex = -1;
 
-    if (barChartData && barChartData.length > 0) {
-        dotm = barChartData.reduce((prev, current, index) => {
-            const currentValue = parseFloat(current.total_nilai || 0);
-            const prevValue = parseFloat(prev.total_nilai || 0);
+    if (deptNilai && deptNilai.length > 0) {
+        dotm = deptNilai.reduce((prev, current, index) => {
+            const currentValue = parseFloat(current.total_akhir || 0);
+            const prevValue = parseFloat(prev.total_akhir || 0);
 
             if (currentValue > prevValue) {
                 maxIndex = index; // Simpan index-nya
@@ -69,8 +69,8 @@ export default function SuperAdmin({ isSidebarOpen }){
         { nama: "Nurul Vita Azizah", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" }
     ];
     
-    if (deptLoading || userLoading || lineChartLoading || nilaiLoading || maxNilaiLoading || barChartLoading) return <Loading/>;
-    if (deptError || userError || nilaiError) return <Error/>;
+    if (deptLoading || userLoading || lineChartLoading || nilaiLoading || maxNilaiLoading || deptNilaiLoading) return <Loading/>;
+    if (deptError || userError || nilaiError || deptNilaiError) return <Error/>;
 
     const summaryPenilaian = [
         { key: "total_nilai", label: 'Rata-Rata Anggota' },
@@ -95,9 +95,9 @@ export default function SuperAdmin({ isSidebarOpen }){
                     <RadialChart 
                         isSidebarOpen={isSidebarOpen} 
                         data={dataPenilaian} 
-                        value={dotm.total_nilai}
-                        departmentName={dotm.nama_departemen} 
-                        month={dotm.bulan}
+                        value={deptNilai.length > 0 ? dotm.total_akhir : 0}
+                        departmentName={deptNilai.length > 0 ? dotm.nama_departemen : ""} 
+                        month={deptNilai.length > 0 ? dotm.bulan : ""}
                     />
                 </div>
             </div>
