@@ -209,7 +209,7 @@ export default function Sidebars({isOpen}) {
                 <ChevronDownIcon
                   color="black"
                   strokeWidth={2.5}
-                  className={`mx-auto h-auto w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
+                  className={`mx-auto h-auto w-4 transition-transform ${open === 3 ? "rotate-180" : ""}`}
                 />
               }
             >

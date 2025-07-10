@@ -16,6 +16,7 @@ import Matriks from "../pages/performa/matriks/Matriks";
 import EditUser from "../pages/permission/user/EditUser";
 import EditStaff from "../pages/permission/user/EditStaff";
 import Profile from "../pages/profile/Profile";
+import Settings from "../pages/setting/Settings";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
@@ -69,6 +70,8 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             <Route path="/penilaian/import/departemen" element={<ImportExcel dataImport="penilaian" jenisPenilaian="departemen" />} />
             
             <Route path="/matriks-penilaian" element={<Matriks />} />
+
+            <Route path="/setting/profile" element={<Settings nama={username} />} />
           </>
         )}
         {role === "dosen" && (
@@ -76,6 +79,8 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
 
             <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen}/>} />
+
+            <Route path="/setting/profile" element={<Settings nama={username} />} />
           </>
         )}
         {depart && role === "admin" && (
@@ -86,6 +91,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
         {role === "staff" && (
           <>
             {/* <Route path="/" element={<Profile nama={username} isSidebarOpen={isSidebarOpen}/>} /> */}
+            <Route path="/setting/profile" element={<Settings nama={username} />} />
           </>
         )}
       </Route>
