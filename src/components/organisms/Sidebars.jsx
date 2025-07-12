@@ -18,6 +18,8 @@ import {
   ChartBarIcon,
   Square2StackIcon,
   ClipboardDocumentIcon,
+  DocumentIcon,
+  PresentationChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import HRD from '../../assets/dept/HRD-black.png';
@@ -29,6 +31,7 @@ import Adwel from '../../assets/dept/ADWEL-black.png';
 import inforsa from '../../assets/inforsa.png';
 import { NavLink, useLocation } from "react-router-dom";
 import { useGetCurrentUserQuery } from "../../services/login";
+import { DocumentCheckIcon } from "@heroicons/react/24/solid";
  
 export default function Sidebars({isOpen}) {
   const [open, setOpen] = React.useState(0);
@@ -55,10 +58,10 @@ export default function Sidebars({isOpen}) {
         </Typography>
       </div>
       <div className="overflow-y-auto scrollbar-none h-[calc(100vh-8rem)]">
-        <List className="pb-3 border-b-2 border-gray-400">
+        <List className="pb-3">
           <ListItem>
               <ListItemPrefix>
-                <HomeIcon color="black" className="h-5 w-5" />
+                <Square2StackIcon color="black" className="h-5 w-5" />
               </ListItemPrefix>
               <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/" && "text-[#2647AC]"}`}>
                 <NavLink to="/">
@@ -154,6 +157,7 @@ export default function Sidebars({isOpen}) {
                 </List>
               </AccordionBody>
             </Accordion>
+            <div className="border-b-2 border-gray-400"></div>
             {/* Permission */}
             {data.role === "superadmin" && 
               <Accordion
@@ -228,7 +232,7 @@ export default function Sidebars({isOpen}) {
                   {data.role === "superadmin" && 
                     <ListItem className="pl-7">
                       <ListItemPrefix>
-                        <Square2StackIcon color="black" className="h-5 w-5"/>
+                        <ClipboardDocumentIcon color="black" className="h-5 w-5"/>
                       </ListItemPrefix>
                         <NavLink to="/matriks-penilaian">
                           <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/matriks-penilaian" && "text-[#2647AC]"}`}>
@@ -239,7 +243,7 @@ export default function Sidebars({isOpen}) {
                   }
                   <ListItem className="pl-7">
                     <ListItemPrefix>
-                      <ClipboardDocumentIcon color="black" className="h-5 w-5"/>
+                      <PresentationChartBarIcon color="black" className="h-5 w-5"/>
                     </ListItemPrefix>
                       <NavLink to="/hasil-penilaian">
                         <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/hasil-penilaian" && "text-[#2647AC]"}`}>
@@ -250,6 +254,44 @@ export default function Sidebars({isOpen}) {
                 </List>
               </AccordionBody>
             </Accordion>
+            <div className="border-b-2 border-gray-400"></div>
+            {data.role === "superadmin" &&
+              <Accordion
+                  open={open === 4}
+                  icon={
+                    <ChevronDownIcon
+                      color="black"
+                      strokeWidth={2.5}
+                      className={`mx-auto h-auto w-4 transition-transform ${open === 4 ? "rotate-180" : ""}`}
+                    />
+                  }
+                >
+                  <ListItem className="p-0" selected={open===4}>
+                    <AccordionHeader onClick={() => handleOpen(4)} className="border-b-0 p-3">
+                      <ListItemPrefix>
+                        <DocumentIcon color="black" className="h-5 w-5" />
+                      </ListItemPrefix>
+                      <Typography color="black" className="mr-auto font-normal">
+                        Document
+                      </Typography>
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <DocumentCheckIcon color="black" className="h-5 w-5"/>
+                        </ListItemPrefix>
+                          <NavLink to="document/sertif">
+                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                              Sertifikat
+                            </Typography>
+                          </NavLink>
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                </Accordion>
+              }
           </>
           }
         </List>

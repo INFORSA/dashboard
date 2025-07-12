@@ -25,6 +25,7 @@ export default function RadialChart({
 }) {
   const user = useGetCurrentUserQuery();
   const username = user?.data.username;
+  const role = user?.data.role;
   const {data:userData} = useGetUserByNamaQuery(username);
   const userLogin = userData ? userData[0].id_user : "";
   const {data:deptData} = useGetDeptQuery();
@@ -150,7 +151,7 @@ export default function RadialChart({
       </CardHeader>
 
       {/* Bagian Chart dan Review */}
-      <CardBody className="flex flex-col md:flex-row gap-4 md:justify-between items-end w-full h-full">
+      <CardBody className={`flex flex-col md:flex-row gap-4 md:justify-between ${role !== "superadmin" ? "items-center" : "items-end"} w-full h-full`}>
         {/* Chart + Emoji */}
         <div className="flex flex-col items-center w-1/2 border-r-2 border-gray-400">
           <Chart {...chartConfig} />
@@ -197,23 +198,25 @@ export default function RadialChart({
               </div>
             )}
           </div>
-            {/* Input review */}
-          <div className="flex items-center gap-2 mt-4 p-4 border-t border-gray-300">
-            <input
-              type="text"
-              placeholder="Tulis review kamu..."
-              className="flex-1 px-4 py-2 border rounded-lg text-sm focus:outline-none"
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-            />
-            <button
-              onClick={handleSubmitReview}
-              disabled={!reviewText.trim()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50"
-            >
-              Kirim
-            </button>
-          </div>
+          {/* Input review */}
+          { role === "superadmin" && 
+            <div className="flex items-center gap-2 mt-4 p-4 border-t border-gray-300">
+              <input
+                type="text"
+                placeholder="Tulis review kamu..."
+                className="flex-1 px-4 py-2 border rounded-lg text-sm focus:outline-none"
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+              />
+              <button
+                onClick={handleSubmitReview}
+                disabled={!reviewText.trim()}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50"
+              >
+                Kirim
+              </button>
+            </div>
+          }
         </div>
       </CardBody>
     </Card>

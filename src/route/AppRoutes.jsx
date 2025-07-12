@@ -17,6 +17,7 @@ import EditUser from "../pages/permission/user/EditUser";
 import EditStaff from "../pages/permission/user/EditStaff";
 import Profile from "../pages/profile/Profile";
 import Settings from "../pages/setting/Settings";
+import Sertif from "../pages/document/Sertif";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
@@ -70,6 +71,8 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
             <Route path="/penilaian/import/departemen" element={<ImportExcel dataImport="penilaian" jenisPenilaian="departemen" />} />
             
             <Route path="/matriks-penilaian" element={<Matriks />} />
+
+            <Route path="/document/sertif" element={<Sertif />} />
 
             <Route path="/setting/profile" element={<Settings nama={username} />} />
           </>

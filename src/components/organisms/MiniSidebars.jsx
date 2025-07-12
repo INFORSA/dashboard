@@ -3,6 +3,7 @@ import {
   FlagIcon,
   ChartBarIcon,
   InboxIcon,
+  DocumentIcon,
 } from "@heroicons/react/24/solid";
 import { Tooltip } from "@material-tailwind/react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,6 +21,7 @@ export default function MiniSidebars({role}) {
             { icon: <FlagIcon className="h-6 w-6" />, path: "/dept/hrd", label: "Dept" },
             { icon: <InboxIcon className="h-6 w-6" />, path: "/permission/user", label: "Permission" },
             { icon: <ChartBarIcon className="h-6 w-6" />, path: "/hasil-penilaian", label: "Performance" },
+            { icon: <DocumentIcon className="h-6 w-6" />, path: "/document/sertif", label: "Document" },
         );
     }
 
