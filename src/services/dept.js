@@ -16,7 +16,23 @@ export const deptAPI = createApi({
     getPengurus: build.query({
         query: () => `dept/get/pengurus`
     }), 
+    getReview: build.query({
+        query: ({depart, month}) => `dept/get/review/${depart}/${month}`
+    }), 
+    addReview: build.mutation({
+      query: (body) => ({
+        url: 'dept/add/review',
+        method: 'POST',
+        body,
+      }),
+    }),
+    deleteReview: build.mutation({
+      query: (id) => ({
+        url: `dept/remove/review/${id}`, 
+        method: 'DELETE',
+      }),
+    }),
   }),
 })
 
-export const { useGetDeptQuery, useGetPengurusQuery } = deptAPI
+export const { useGetDeptQuery, useGetPengurusQuery, useGetReviewQuery, useAddReviewMutation, useDeleteReviewMutation } = deptAPI

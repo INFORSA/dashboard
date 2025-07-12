@@ -14,6 +14,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useEditNilaiDeptMutation, useEditNilaiMutation } from "../../services/penilaian";
+import { toast } from "react-toastify";
 
 export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", 
                         onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch, 
@@ -54,8 +55,10 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
       type === "staff" ? await editNilai(data).unwrap() : await editNilaiDept(data).unwrap();
       onRefetch();
       setEditingCell(null);
+      toast.success("Nilai berhasil diperbarui!");
     } catch (error) {
       console.error("Update gagal", error);
+      toast.error("Nilai gagal diperbarui!");
     }
   };
 

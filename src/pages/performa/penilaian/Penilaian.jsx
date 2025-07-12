@@ -7,7 +7,7 @@ import { useState } from "react";
 import Loading from "../../loading/Loading";
 import Error from "../../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
-import { useGetDeptQuery } from "../../../services/dept";
+import { useGetDeptQuery, useGetReviewQuery } from "../../../services/dept";
 import LineCharts from "../../../components/atoms/charts/LineCharts";
 import BarChartDept from "../../../components/atoms/charts/BarCharts";
 import RadialChart from "../../../components/atoms/charts/RadialCharts";
@@ -36,12 +36,14 @@ export default function Penilaian({isSidebarOpen, nama}){
     const handleOpen = () => setOpen(!open);
     const { data:deptData } = useGetDeptQuery();
     const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
+    const depart = dept[0].nama;
     const { data, isLoading, isError, refetch:refetchPenilaianStaff } = useGetAllNilaiQuery(month);
     const [generateTemplateStaff, { isLoading: isGenerating }] = useGenerateTemplateStaffMutation();
     const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(month);
     const { data: deptDetailNilai, isLoading: deptDetailLoading, isError: deptDetailError, refetch } = useGetNilaiDeptDetailQuery({month, penilai});
     const { data: bpiData, isLoading: bpiLoading, isError: bpiError } = useGetIntiQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
+    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery({depart, month});
     const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(month);
     let dotm = null;
     // eslint-disable-next-line no-unused-vars
@@ -105,14 +107,15 @@ export default function Penilaian({isSidebarOpen, nama}){
 
     const columnsPenilaianDept = [
         { className:"w-10", key: "no", label: "No" },
+        { className:"", key: "Penilai", label: "Penilai" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "bulan", label: "Waktu" },
-        { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KN" },
-        { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "KKT" },
-        { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "INS" },
-        { className:"", idKey: "id_detail_matriks_4", key: "nilai_matriks_4", label: "KK" },
-        { className:"", idKey: "id_detail_matriks_5", key: "nilai_matriks_5", label: "KI" },
-        { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KP" },
+        { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KPK" },
+        { className:"", idKey: "id_detail_matriks_2", key: "nilai_matriks_2", label: "EFE" },
+        { className:"", idKey: "id_detail_matriks_3", key: "nilai_matriks_3", label: "IK" },
+        { className:"", idKey: "id_detail_matriks_4", key: "nilai_matriks_4", label: "KERKO" },
+        { className:"", idKey: "id_detail_matriks_5", key: "nilai_matriks_5", label: "KEK" },
+        { className:"", idKey: "id_detail_matriks_6", key: "nilai_matriks_6", label: "KRJ" },
         { className:"", key: "total_nilai", label: "Total" },
     ];
 
@@ -126,17 +129,18 @@ export default function Penilaian({isSidebarOpen, nama}){
         { key: "total_nilai", label: "Nilai" },
     ];
 
-    const dataPenilaian = [
-        { nama: "Zaki Fauzan Rabbani", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
-        { nama: "Bayu Purnama Aji", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
-        { nama: "Nurul Vita Azizah", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" }
-    ];
+    // const dataPenilaian = [
+    //     { nama: "Zaki Fauzan Rabbani", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
+    //     { nama: "Bayu Purnama Aji", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
+    //     { nama: "Nurul Vita Azizah", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" }
+    // ];
 
     const summaryPenilaian = [
         { key: "total_nilai", label: dept.nama },
     ];
 
-    if ( isLoading || lineChartLoading || barChartLoading || deptLoading || bpiLoading || deptDetailLoading || isGenerating) return <Loading/>;
+    if ( isLoading || lineChartLoading || barChartLoading || deptLoading 
+        || bpiLoading || deptDetailLoading || isGenerating || reviewLoading) return <Loading/>;
     if ( isError || deptError || bpiError || deptDetailError) return <Error/>;
     
     return(
@@ -271,7 +275,8 @@ export default function Penilaian({isSidebarOpen, nama}){
             <div className="my-3">
                 <RadialChart 
                     isSidebarOpen={isSidebarOpen} 
-                    data={dataPenilaian} 
+                    title="Department of The Month"
+                    data={reviewData} 
                     value={deptNilai.length > 0 ? dotm.total_akhir : 0}
                     departmentName={deptNilai.length > 0 ? dotm.nama_departemen : ""} 
                     month={deptNilai.length > 0 ? dotm.bulan : ""}

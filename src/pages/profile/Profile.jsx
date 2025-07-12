@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-tailwind/react";
+import { Button, Typography, Carousel } from "@material-tailwind/react";
 import LineCharts from "../../components/atoms/charts/LineCharts";
 import RadarChart from "../../components/atoms/charts/RadarCharts";
 import { Tables } from "../../components/atoms/Tables";
@@ -6,14 +6,17 @@ import { useGetLineChartPersonalQuery, useGetNilaiPersonalQuery, useGetRadarChar
 import { useGetAnggotaByNamaQuery } from "../../services/user"
 import Error from "../error/Error";
 import Loading from "../loading/Loading";
-import { PrinterIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon, PrinterIcon } from "@heroicons/react/24/solid";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
+import { useGetReviewQuery } from "../../services/staff";
+import RadialChart from "../../components/atoms/charts/RadialCharts";
 
 export default function Profile({ nama, isSidebarOpen }){
     const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(nama);
     const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(nama);
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery();
     const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery();
+    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery(nama);
     
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -45,7 +48,7 @@ export default function Profile({ nama, isSidebarOpen }){
         { key: "total_nilai", label: nama },
     ];
 
-    if(personalLoading || nilaiLoading || chartLoading || radarChartLoading) return <Loading/>
+    if(personalLoading || nilaiLoading || chartLoading || radarChartLoading || reviewLoading) return <Loading/>
     if(personalError || nilaiError || chartError) return <Error/>
     
     return(
@@ -76,6 +79,42 @@ export default function Profile({ nama, isSidebarOpen }){
                         <div className="w-20 h-20 bg-gray-700 rounded-full"></div>
                     )}
                 </div>
+            </div>
+            <div className="mt-3">
+                <Carousel
+                    transition={{ duration: 0.5 }}
+                    autoplay={false}
+                    className="rounded-xl shadow-lg"
+                    navigation={({ setActiveIndex, activeIndex, length }) => (
+                        <div className="absolute inset-0 flex items-center justify-between px-4 z-0">
+                        <button
+                            onClick={() => setActiveIndex((activeIndex - 1 + length) % length)}
+                            className="bg-white/80 hover:bg-white text-blue-700 p-2 rounded-full shadow hover:bg-[#2647AC] hover:text-white"
+                        >
+                            <ChevronLeftIcon className="h-6 w-6" />
+                        </button>
+                        <button
+                            onClick={() => setActiveIndex((activeIndex + 1) % length)}
+                            className="bg-white/80 hover:bg-white text-blue-700 p-2 rounded-full shadow hover:bg-[#2647AC] hover:text-white"
+                        >
+                            <ChevronRightIcon className="h-6 w-6" />
+                        </button>
+                        </div>
+                    )}
+                >
+                    {nilaiData.map((item, index) => (
+                        <div key={index} className="">
+                            <RadialChart
+                                title="Review Kinerja"
+                                isSidebarOpen={isSidebarOpen}
+                                data={reviewData}
+                                value={item.total_akhir}
+                                departmentName={`${nama}`}
+                                month={item.bulan}
+                            />
+                        </div>
+                    ))}
+                </Carousel>
             </div>
             <div className="mt-3">
                 <Tables

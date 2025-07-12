@@ -3,7 +3,7 @@ import CountCard from '../../components/atoms/cards/CountCard';
 import GrafikCard from '../../components/atoms/cards/GrafikCard';
 // import { Tables } from '../../components/atoms/Tables';
 import LineCharts from '../../components/atoms/charts/LineCharts';
-import { useGetDeptQuery } from '../../services/dept';
+import { useGetDeptQuery, useGetReviewQuery } from '../../services/dept';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { useGetAnggotaQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/cards/DepartCard';
@@ -46,6 +46,8 @@ export default function SuperAdmin({ isSidebarOpen }){
             return prev;
         });
     }
+    const depart = deptNilai ? dotm.nama_departemen : 0;
+    const { data: reviewData, isLoading: reviewLoading, refetch } = useGetReviewQuery({depart, month});
 
     const columnsPenilaian = [
         { className:"w-10", key: "no", label: "No" },
@@ -62,14 +64,8 @@ export default function SuperAdmin({ isSidebarOpen }){
         { className:"", key: "total_nilai", label: "Total" },
         { className:"", key: "total_akhir", label: "Hasil" }
     ];
-
-    const dataPenilaian = [
-        { nama: "Zaki Fauzan Rabbani", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
-        { nama: "Bayu Purnama Aji", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" },
-        { nama: "Nurul Vita Azizah", total_nilai: 60, ulasan: "Kinerja bulan ini sangat baik, target tercapai! 💙" }
-    ];
     
-    if (deptLoading || userLoading || lineChartLoading || nilaiLoading || maxNilaiLoading || deptNilaiLoading) return <Loading/>;
+    if (deptLoading || userLoading || lineChartLoading || nilaiLoading || maxNilaiLoading || deptNilaiLoading || reviewLoading) return <Loading/>;
     if (deptError || userError || nilaiError || deptNilaiError) return <Error/>;
 
     const summaryPenilaian = [
@@ -94,10 +90,12 @@ export default function SuperAdmin({ isSidebarOpen }){
                 <div className="my-3">
                     <RadialChart 
                         isSidebarOpen={isSidebarOpen} 
-                        data={dataPenilaian} 
+                        title="Department of The Month"
+                        data={reviewData} 
                         value={deptNilai.length > 0 ? dotm.total_akhir : 0}
                         departmentName={deptNilai.length > 0 ? dotm.nama_departemen : ""} 
                         month={deptNilai.length > 0 ? dotm.bulan : ""}
+                        refetch={refetch}
                     />
                 </div>
             </div>

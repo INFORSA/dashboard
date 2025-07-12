@@ -39,12 +39,12 @@ export default function Navbars() {
   const logOut = () => {
     setProfileDropdown(false);
     Swal.fire({
-      title: "Are you sure to logout?",
+      title: "Yakin untuk Logout?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Logout!",
+      confirmButtonText: "Ya, Logout!",
     }).then(async(result) => {
       if (result.isConfirmed) {
         try {
@@ -56,7 +56,6 @@ export default function Navbars() {
           }).then(()=>{
             window.location.href = "/login";
           })
-
         } catch (error) {
           Swal.fire({
             title: "Logout Failed",
@@ -98,8 +97,15 @@ export default function Navbars() {
         <Typography className="mr-4 cursor-pointer py-1.5 font-medium">
           <NavLink to="/" className="w-full flex justify-start gap-1">
             <HomeIcon className="w-5 my-0.5 h-full"/>
-            <button className="mx-3 font-thin font-mono text-md text-slate-600">
-              ..{(location.pathname).toUpperCase()}
+            <button className="mx-3 font-semibold text-sm text-slate-600">
+              {location.pathname === "/" 
+                ? "DASHBOARD" 
+                : `DASHBOARD > ${location.pathname
+                    .split("/")
+                    .filter(Boolean)
+                    .map(part => part.replace(/-/g, " ").toUpperCase())
+                    .join(" > ")}`
+              }
             </button> 
           </NavLink>
         </Typography>

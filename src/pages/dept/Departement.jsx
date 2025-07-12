@@ -6,17 +6,19 @@ import CountCard from "../../components/atoms/cards/CountCard";
 import { useGetAnggotaByDepartQuery } from "../../services/user";
 import { useGetNilaiQuery, useGetLineChartValueDepartQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, 
     useGetBarChartValueQuery, 
-    useGetRadarChartValueQuery 
+    useGetRadarChartValueQuery, 
+    useGetNilaiDeptQuery
 } from "../../services/penilaian";
 import { Tables } from "../../components/atoms/Tables";
 import DepartCard from "../../components/atoms/cards/DepartCard";
 import LineCharts from "../../components/atoms/charts/LineCharts";
 import BarChart from "../../components/atoms/charts/BarCharts";
 import RadarChart from "../../components/atoms/charts/RadarCharts";
-import { useGetPengurusQuery } from "../../services/dept";
+import { useGetPengurusQuery, useGetReviewQuery } from "../../services/dept";
 import Loading from "../loading/Loading";
 import Error from "../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
+import RadialChart from "../../components/atoms/charts/RadialCharts";
 
 export default function Departement({isSidebarOpen, departemen, nama}){
     const { name } = useParams();
@@ -39,9 +41,20 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
     const { data: nilaiData, isLoading: nilaiLoading } = useGetNilaiQuery({depart, month});
     const { data: detailData, isLoading: detailLoading, refetch } = useGetNilaiDetailQuery({depart, month, penilai});
-    const { data: pengurusData } = useGetPengurusQuery();    
+    const { data: pengurusData } = useGetPengurusQuery();   
+    const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(month); 
+    const { data: reviewData, isLoading: reviewLoading, refetch:reviewRefecth } = useGetReviewQuery({depart, month});
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(month);
     const lastPerformance = lineChartData?.filter((item) => item.bulan === currentMonthStr);
+    let dotm = null;
+    // eslint-disable-next-line no-unused-vars
+    let maxIndex = -1;
+
+    if (deptNilai && deptNilai.length > 0) {
+        const deptPerformance = deptNilai?.filter((item) => item.nama_departemen === depart);
+
+        dotm = deptPerformance[0];
+    }
 
     useEffect(() => {
         setPenilai(null);
@@ -84,10 +97,10 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     ];
 
     if (departLoading || nilaiLoading || lineChartLoading || detailLoading || maxNilaiLoading
-        || barChartLoading 
+        || barChartLoading || deptLoading || reviewLoading
         || radarChartLoading
     ) return <Loading/>;
-    if (departError) return <Error/>;
+    if (departError || deptError) return <Error/>;
     
     return(
         <div className="h-full">
@@ -95,13 +108,13 @@ export default function Departement({isSidebarOpen, departemen, nama}){
             <div>
                 <Carousels/>
             </div>
-            <div className="flex w-full justify-between my-3 gap-2">
+            <div className="flex w-full justify-between my-3 gap-4">
                 <div className="w-1/3">
                     <Typography className="text-xl font-bold">{departData.data[0].nama_departemen}</Typography>
                     <Typography className="text-4xl font-bold">{departData.data[0].depart}</Typography>
                 </div>
-                <div className="w-2/3 flex gap-2 h-24">
-                    <div className="w-full flex gap-2">
+                <div className="w-2/3 flex gap-4 h-24">
+                    <div className="w-full flex gap-4">
                         <CountCard Detail="Anggota" Count={departData.total}/>
                         <CountCard Detail="Performa" Count={lastPerformance[0]?.total_nilai ?? 0}/>
                     </div>
@@ -112,9 +125,38 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                     ))}
                 </div>
             </div>
+            <div className="flex gap-4 my-3">
+                <Select
+                    name="month"
+                    label="Pilih Bulan"
+                    value={form.waktu}
+                    onChange={(val) => setForm({ ...form, waktu: val })}
+                    animate={{
+                        mount: { y: 0 },
+                        unmount: { y: 25 },
+                    }}
+                    >
+                    {lineChartData?.map((item, index) => (
+                        <Option key={index} value={item.bulan}>
+                            {item.bulan}
+                        </Option>
+                    ))}
+                </Select>
+            </div>
+            <div className="my-3">
+                <RadialChart
+                    isSidebarOpen={isSidebarOpen} 
+                    title="Department of The Month"
+                    data={reviewData} 
+                    value={deptNilai.length > 0 ? dotm.total_akhir : 0}
+                    departmentName={deptNilai.length > 0 ? dotm.nama_departemen : depart} 
+                    month={deptNilai.length > 0 ? dotm.bulan : ""}
+                    refetch={reviewRefecth}
+                />
+            </div>
             <section className="w-full">
-                <div className="flex gap-2 justify-between mt-2">
-                    <div className="flex gap-2">
+                <div className="flex gap-4 justify-between mt-2">
+                    <div className="flex gap-4">
                         <Button onClick={() => setActiveTable("grafik")} className={`px-4 py-2 rounded-bl-none rounded-br-none  ${activeTable === "grafik" ? "bg-blue-500 text-white" : "bg-gray-500"}`}>
                             Grafik
                         </Button>
@@ -132,22 +174,22 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                     </Button> */}
                 </div>
                 {activeTable === "grafik" ? (
-                    <div className="flex gap-2">
-                        <div className="flex flex-col gap-2 w-full">
-                            <div className="flex justify-between gap-2 w-full">
+                    <div className="flex gap-4">
+                        <div className="flex flex-col gap-4 w-full">
+                            <div className="flex justify-between gap-4 w-full">
                                 <BarChart isSidebarOpen={isSidebarOpen} header="Komposisi Penilaian Tiap Anggota" data={barChartData || []} detail={labelPenilaian}/>
                                 <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
                                 {/* <RadarChart isSidebarOpen={isSidebarOpen} /> */}
                             </div>
                             <div className="h-96">
-                                <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
+                                <LineCharts isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian} title={`Penilaian Anggota ${depart}`}/>
                                 {/* <LineCharts isSidebarOpen={isSidebarOpen} /> */}
                             </div>
                         </div>
                     </div>
                 ):(
                     <div className="w-full overflow-x-auto">
-                        <div className="flex gap-2 my-3">
+                        <div className="flex gap-4 my-3">
                             <Select
                                 name="month"
                                 label="Pilih Bulan"

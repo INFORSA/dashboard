@@ -9,6 +9,7 @@ import AppRoutes from './route/AppRoutes';
 import { useGetCurrentUserQuery } from './services/login';
 import MiniSidebars from './components/organisms/MiniSidebars';
 import { Tooltip } from '@material-tailwind/react';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <div className="flex">
+      <ToastContainer position="top-right" autoClose={3000} />
       {!isLoginPage && (isOpen ? <Sidebars isOpen={isOpen} /> : <MiniSidebars role={data.role} onToggleOpen={()=>setIsOpen(true)}/>)}
 
       <div className="flex-1 flex flex-col">
@@ -34,7 +36,7 @@ function App() {
           </div>
         )}
 
-        <div className={`max-w-[900px] lg:max-w-[1060px] min-w-full min-h-[70vh] mt-3 ${isLoginPage ? '' : (isOpen === true ? 'px-12' : 'pl-36 pr-20')}`}>
+        <div className={`max-w-[900px] lg:max-w-[1060px] min-w-full min-h-[70vh] ${isLoginPage ? '' : (isOpen === true ? 'px-12 mt-3' : 'pl-36 pr-20 mt-3')}`}>
           <AppRoutes isSidebarOpen={isOpen} login={data} />
         </div>
 
