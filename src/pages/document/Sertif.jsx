@@ -93,7 +93,7 @@ export default function Sertif() {
                 <Typography className="truncate">{item.path}</Typography>
                 <div className="flex gap-4 items-center">
                     <a
-                        href={`http://localhost:3000/public/sertif/${item.path}`}
+                        href={`${import.meta.env.VITE_API}/public/sertif/${item.path}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 underline text-sm"
