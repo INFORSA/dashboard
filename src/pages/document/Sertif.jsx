@@ -31,7 +31,6 @@ export default function Sertif() {
     isLoading: isSertifLoading,
     refetch,
   } = useGetSertifQuery();
-  console.log(sertifData)
 
   const handleUpload = async () => {
     const formData = new FormData();
