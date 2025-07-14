@@ -61,7 +61,7 @@ export default function Sertif() {
 
         try {
             await deleteSertif(row.id_sertif).unwrap();
-            toast.success("Sertif berhasil dikirim!");
+            toast.success("Sertif berhasil dihapus!");
             refetch();
         } catch (err) {
             console.log("RTK error →", err);  
