@@ -172,9 +172,14 @@ export default function Profile({ nama, isSidebarOpen }){
                     <Button color="green" size="sm" className="my-3 w-full" disabled={!isAvailable}>
                         <div className="flex items-center justify-center gap-3">
                             <PrinterIcon strokeWidth={2} className="h-4 w-4" /> 
-                            <Typography className="text-md">
+                            <a
+                                href={`${import.meta.env.VITE_API}/staff/sertif/download/${personalData[0].nim}.pdf`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-sm"
+                            >
                                 Cetak Sertifikat
-                            </Typography>
+                            </a>
                         </div>
                     </Button>
                 </div>

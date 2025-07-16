@@ -35,6 +35,20 @@ export const userAPI = createApi({
     storeAnggota: build.query({
       query: (id) => `user/store/anggota/${id}`
     }),
+    updateUser: build.mutation({
+      query: ({ id, ...body }) => ({
+        url: `user/update/${id}`, 
+        method: 'PUT',
+        body,   
+      }),
+    }),
+    updateAnggota: build.mutation({
+      query: ({ id, ...body }) => ({
+        url: `user/update/anggota/${id}`, 
+        method: 'PUT',
+        body,   
+      }),
+    }),
     deleteUser: build.mutation({
       query: (id) => ({
         url: `user/remove/${id}`, 
@@ -45,10 +59,12 @@ export const userAPI = createApi({
   }),
 })
 
-export const { useGetUserQuery, useGetIntiQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery, useGetUserByNamaQuery, useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery } = userAPI
+export const { useGetUserQuery, useGetIntiQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery, useGetUserByNamaQuery, 
+                useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery, useUpdateUserMutation, useUpdateAnggotaMutation } = userAPI
 
 export const roleAPI = createApi({
   reducerPath: 'roleAPI',
+  tagTypes: ['Role'],
   baseQuery: fetchBaseQuery({ 
     baseUrl: import.meta.env.VITE_API,
     credentials: "include",
@@ -83,6 +99,7 @@ export const roleAPI = createApi({
         method: 'DELETE',
       }),
     }),
+    providesTags: ['Role'],
   }),
 })
 

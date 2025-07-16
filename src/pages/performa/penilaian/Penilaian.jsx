@@ -36,14 +36,12 @@ export default function Penilaian({isSidebarOpen, nama}){
     const handleOpen = () => setOpen(!open);
     const { data:deptData } = useGetDeptQuery();
     const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
-    const depart = dept[0].nama;
     const { data, isLoading, isError, refetch:refetchPenilaianStaff } = useGetAllNilaiQuery(month);
     const [generateTemplateStaff, { isLoading: isGenerating }] = useGenerateTemplateStaffMutation();
     const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(month);
     const { data: deptDetailNilai, isLoading: deptDetailLoading, isError: deptDetailError, refetch } = useGetNilaiDeptDetailQuery({month, penilai});
     const { data: bpiData, isLoading: bpiLoading, isError: bpiError } = useGetIntiQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
-    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery({depart, month});
     const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(month);
     let dotm = null;
     // eslint-disable-next-line no-unused-vars
@@ -61,6 +59,8 @@ export default function Penilaian({isSidebarOpen, nama}){
             return prev;
         });
     }
+    const departOfTheMonth = dotm?.nama_departemen;
+    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery({departOfTheMonth, month});
 
     const handleGenerateTemplate = async () => {
         try {
@@ -107,7 +107,6 @@ export default function Penilaian({isSidebarOpen, nama}){
 
     const columnsPenilaianDept = [
         { className:"w-10", key: "no", label: "No" },
-        { className:"", key: "Penilai", label: "Penilai" },
         { className:"", key: "nama_departemen", label: "Departemen" },
         { className:"", key: "bulan", label: "Waktu" },
         { className:"", idKey: "id_detail_matriks_1", key: "nilai_matriks_1", label: "KPK" },

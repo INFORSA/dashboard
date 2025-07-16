@@ -3,11 +3,11 @@ import Swal from 'sweetalert2';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { useStoreUserQuery, useUpdateRoleMutation } from '../../../services/user';
+import { useStoreUserQuery, useUpdateUserMutation } from '../../../services/user';
 
 const EditUser = () => {
     const { id } = useParams();
-    const [ updateRole ] = useUpdateRoleMutation();
+    const [ updateUser ] = useUpdateUserMutation();
     const { data } = useStoreUserQuery(id);
     const navigate = useNavigate();
 
@@ -28,10 +28,10 @@ const EditUser = () => {
         formData.append('role', form.role);
 
         try {
-            const response = await updateRole({ id, ...form }).unwrap();
+            const response = await updateUser({ id, ...form }).unwrap();
             Swal.fire("Sukses", response.message, "success");
-            setForm({ username:'', password:'', role:'' });
-            navigate("/");
+            setForm({ username:'', role:'' });
+            navigate("/permission/user");
         } catch (err) {
             Swal.fire("Gagal", err?.data?.message || "Proses gagal", "error");
         }

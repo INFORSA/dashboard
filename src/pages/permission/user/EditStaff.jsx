@@ -3,12 +3,12 @@ import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { useStoreAnggotaQuery, useUpdateRoleMutation } from '../../../services/user';
+import { useStoreAnggotaQuery, useUpdateAnggotaMutation } from '../../../services/user';
 import { useGetDeptQuery } from '../../../services/dept';
 
 const EditStaff = () => {
     const { id } = useParams();
-    const [ updateRole ] = useUpdateRoleMutation();
+    const [ updateAnggota ] = useUpdateAnggotaMutation();
     const { data:storeData } = useStoreAnggotaQuery(id);
     const navigate = useNavigate();
     const { data:deptData, isLoading } = useGetDeptQuery();
@@ -34,10 +34,10 @@ const EditStaff = () => {
         formData.append('departemen', form.departemen);
 
         try {
-            const response = await updateRole({ id, ...form }).unwrap();
+            const response = await updateAnggota({ id, ...form }).unwrap();
             Swal.fire("Sukses", response.message, "success");
             setForm({ username:'', nim:'', gender:'', departemen:''});
-            navigate("/");
+            navigate("/permission/user");
         } catch (err) {
             Swal.fire("Gagal", err?.data?.message || "Proses gagal", "error");
         }

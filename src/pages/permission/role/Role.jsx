@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../loading/Loading";
 
 export default function Role(){
-    const { data = [], isLoading, refetch } = useGetRoleQuery();
+    const { data = [], isLoading, refetch } = useGetRoleQuery(undefined, {
+        refetchOnMountOrArgChange: true,
+    });
     const [deleteRole] = useDeleteRoleMutation();
     const navigate = useNavigate();
 

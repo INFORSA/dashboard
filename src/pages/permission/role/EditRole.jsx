@@ -29,7 +29,7 @@ const EditRole = () => {
             const response = await updateRole({ id, ...form }).unwrap();
             Swal.fire("Sukses", response.message, "success");
             setForm({ nama_role:'' });
-            navigate("/");
+            navigate("/permission/role");
         } catch (err) {
             Swal.fire("Gagal", err?.data?.message || "Proses gagal", "error");
         }

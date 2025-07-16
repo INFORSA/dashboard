@@ -46,7 +46,7 @@ export default function SuperAdmin({ isSidebarOpen }){
             return prev;
         });
     }
-    const depart = deptNilai ? dotm.nama_departemen : 0;
+    const depart = deptNilai ? dotm?.nama_departemen  : 0;
     const { data: reviewData, isLoading: reviewLoading, refetch } = useGetReviewQuery({depart, month});
 
     const columnsPenilaian = [
