@@ -1,32 +1,35 @@
-import { Button, Typography, Carousel } from "@material-tailwind/react";
+import { Button, Carousel } from "@material-tailwind/react";
 import LineCharts from "../../components/atoms/charts/LineCharts";
 import RadarChart from "../../components/atoms/charts/RadarCharts";
 import { Tables } from "../../components/atoms/Tables";
 import { useGetLineChartPersonalQuery, useGetNilaiPersonalQuery, useGetRadarChartPersonalQuery } from "../../services/penilaian";
-import { useGetAnggotaByNamaQuery } from "../../services/user"
+import { useGetAnggotaByNamaQuery } from "../../services/user";
 import Error from "../error/Error";
 import Loading from "../loading/Loading";
 import { ChevronLeftIcon, ChevronRightIcon, PrinterIcon } from "@heroicons/react/24/solid";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useCheckSertifQuery, useGetReviewQuery } from "../../services/staff";
 import RadialChart from "../../components/atoms/charts/RadialCharts";
+import { useParams } from "react-router-dom";
 
 export default function Profile({ nama, isSidebarOpen }){
-    const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(nama);
+    const { username } = useParams();
+    const namaAnggota = nama ?? username?.toUpperCase();
+    const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(namaAnggota);
     const profilData = personalData ?? []
     const nim = profilData[0]?.nim;
-    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(nama);
+    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(namaAnggota);
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery();
     const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery();
     const { data: sertifData, isLoading: sertifLoading, isError: sertifError } = useCheckSertifQuery(nim);
-    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery(nama);
-
-    const isAvailable = sertifData?.available;
-
+    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery(namaAnggota);
+    
     const nilaiAkhir = chartData ?? [];
     const nilaiNumbers = nilaiAkhir.map((item) => parseFloat(item.total_nilai));
     const totalNilai = nilaiNumbers.reduce((sum, val) => sum + val, 0);
     const avgNilai = nilaiNumbers.length > 0 ? (totalNilai / nilaiNumbers.length).toFixed(2) : 0;
+
+    const isAvailable = sertifData?.available && avgNilai >= 65;
     
     const getStatusFeedback = (value) => {
         if (value < 50) return "Terus Semangat!";
@@ -64,7 +67,7 @@ export default function Profile({ nama, isSidebarOpen }){
     ];
 
     const summaryPenilaian = [
-        { key: "total_nilai", label: nama },
+        { key: "total_nilai", label: namaAnggota },
     ];
 
     if(personalLoading || nilaiLoading || chartLoading || radarChartLoading || reviewLoading || sertifLoading) return <Loading/>
@@ -130,7 +133,7 @@ export default function Profile({ nama, isSidebarOpen }){
                                     isSidebarOpen={isSidebarOpen}
                                     data={reviewMonth}
                                     value={item.total_akhir}
-                                    departmentName={`${nama}`}
+                                    departmentName={`${namaAnggota}`}
                                     month={item.bulan}
                                 />
                             </div>
@@ -141,7 +144,7 @@ export default function Profile({ nama, isSidebarOpen }){
             <div className="mt-3">
                 <Tables
                     title="Tabel Penilaian Pribadi"
-                    description={`List Nilai ${nama}`}
+                    description={`List Nilai ${namaAnggota}`}
                     columns={columnsPenilaian}
                     rows={nilaiData}
                     actionHidden={true}

@@ -28,7 +28,7 @@ function App() {
         {!isLoginPage && (
           <div className={`backdrop-blur-md bg-white/50 flex justify-between border border-[#282666] shadow shadow-md sticky top-0 z-10 ${isOpen === true ? '' : 'ml-16'}`}>
             <Tooltip content={isOpen === true ? 'Minimize Sidebar' : 'Expand Sidebar'} placement="right">
-              <button onClick={toggleSidebar} className="mx-0 lg:mx-5 hidden lg:block hover:bg-blue-100 px-3 my-5 rounded-lg">
+              <button onClick={toggleSidebar} className="mx-0 lg:ml-5 hidden lg:block hover:bg-blue-100 px-3 my-5 rounded-lg">
                 <Bars3Icon className={`w-5 h-5 transition-transform duration-300 ease-in-out ${isOpen ? 'rotate-90' : ''}`} />
               </button>
             </Tooltip>

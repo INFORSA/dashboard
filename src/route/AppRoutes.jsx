@@ -74,6 +74,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
 
             <Route path="/document/sertif" element={<Sertif />} />
 
+            <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
             <Route path="/setting/profile" element={<Settings nama={username} role={role} />} />
           </>
         )}
@@ -89,6 +90,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
         {depart && role === "admin" && (
           <>
             {/* <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} /> */}
+            <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
           </>
         )}
         {role === "staff" && (

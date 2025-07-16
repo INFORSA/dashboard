@@ -45,7 +45,6 @@ export default function User(){
             confirmButtonText: "Ya, hapus!",
         }).then((r) => r.isConfirmed);
 
-
         if (!ok) return;
 
         try {

@@ -236,6 +236,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                                 actionHidden={true}
                                 maxRow={10}
                                 type="staff"
+                                profileShow={true}
                             />
                         </div>
                     </div>

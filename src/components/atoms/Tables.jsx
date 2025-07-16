@@ -1,5 +1,6 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
+  EyeIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -15,9 +16,10 @@ import {
 import { useEffect, useState } from "react";
 import { useEditNilaiDeptMutation, useEditNilaiMutation } from "../../services/penilaian";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export function Tables({ maxRow, columns = [], rows = [], title = "", description = "", 
-                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch, 
+                        onEdit = () => {}, onRemove = () => {}, actionHidden, inlineEdit, onRefetch, profileShow,
                         removeHidden, type }) {
   const ITEMS_PER_PAGE = maxRow ?? 25;
   const [page, setPage] = useState(1);
@@ -122,6 +124,15 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                     Action
                   </Typography>
                 </th>
+                <th hidden={!profileShow} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-semibold leading-none opacity-70"
+                  >
+                    Profile
+                  </Typography>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -176,6 +187,18 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                             <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
                           </Button>
                         </div>
+                      </div>
+                    </td>
+                    <td className={classes} hidden={!profileShow}>
+                      <div className="flex gap-2">
+                        <a color="blue" className="flex items-center" size="sm">
+                          <Link className="flex items-center gap-3" to={`/profile/${row.nama_anggota}`}>
+                              <EyeIcon strokeWidth={2} className="h-4 w-4" />
+                              <Typography className="text-md">
+                                  Lihat
+                              </Typography>
+                          </Link>
+                        </a>
                       </div>
                     </td>
                   </tr>

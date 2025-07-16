@@ -52,7 +52,7 @@ const AddAdmin = () => {
       <HelmetProvider>
         <title>Tambah Pengguna</title>
       </HelmetProvider>
-      <Typography className='text-3xl font-semibold text-center mb-3'>Register Admin</Typography>
+      <Typography className='text-3xl font-semibold text-center mb-3'>Tambah Pengguna</Typography>
       <form onSubmit={handleRegister}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3'>
           <Input

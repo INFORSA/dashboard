@@ -67,7 +67,7 @@ const AddStaff = () => {
       <HelmetProvider>
         <title>Tambah Pengguna</title>
       </HelmetProvider>
-      <Typography className='text-3xl font-semibold text-center mb-3'>Register Staff</Typography>
+      <Typography className='text-3xl font-semibold text-center mb-3'>Tambah Anggota</Typography>
       <div className='flex justify-end mb-3'>
           <Button color='green' className='flex items-center gap-3' size='md'>
             <PlusCircleIcon className='w-5 h-5'/>

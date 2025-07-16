@@ -94,7 +94,7 @@ export default function Navbars() {
     <div className="h-max w-full px-4 py-2 lg:px-5 lg:py-4">
       <div className="flex items-center justify-between text-blue-gray-900">
         {/* Left Section - Path Navigation */}
-        <Typography className="mr-4 cursor-pointer py-1.5 font-medium">
+        <Typography className={`mr-4 cursor-pointer py-1.5 font-medium`}>
           <NavLink to="/" className="w-full flex justify-start gap-1">
             <HomeIcon className="w-5 my-0.5 h-full"/>
             <button className="mx-3 font-semibold text-sm text-slate-600">
@@ -104,6 +104,7 @@ export default function Navbars() {
                     .split("/")
                     .filter(Boolean)
                     .map(part => part.replace(/-/g, " ").toUpperCase())
+                    .map(part => part.replace(/%20/g, " ").toUpperCase())
                     .join(" > ")}`
               }
             </button> 
