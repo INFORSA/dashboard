@@ -35,6 +35,13 @@ export const userAPI = createApi({
     storeAnggota: build.query({
       query: (id) => `user/store/anggota/${id}`
     }),
+    updateUsername: build.mutation({
+      query: ({ ...body }) => ({
+        url: `user/update-username`, 
+        method: 'PUT',
+        body,   
+      }),
+    }),
     updateUser: build.mutation({
       query: ({ id, ...body }) => ({
         url: `user/update/${id}`, 
@@ -55,12 +62,19 @@ export const userAPI = createApi({
         method: 'DELETE',
       }),
     }),
+    updatePassword: build.mutation({
+      query: (body) => ({
+        url: `/user/change-password`,
+        method: 'POST',
+        body,
+      }),
+    }),
     providesTags: ["User", "Anggota"],
   }),
 })
 
 export const { useGetUserQuery, useGetIntiQuery, useGetAnggotaQuery, useGetAnggotaByDepartQuery, useGetAnggotaByNamaQuery, useGetUserByNamaQuery, 
-                useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery, useUpdateUserMutation, useUpdateAnggotaMutation } = userAPI
+                useDeleteUserMutation, useStoreUserQuery, useStoreAnggotaQuery, useUpdateUsernameMutation, useUpdateUserMutation, useUpdateAnggotaMutation, useUpdatePasswordMutation } = userAPI
 
 export const roleAPI = createApi({
   reducerPath: 'roleAPI',

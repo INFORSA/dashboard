@@ -105,9 +105,9 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     return(
         <div className="h-full">
             <HelmetProvider><title>{departData.data[0].depart}</title></HelmetProvider>
-            <div>
+            {/* <div>
                 <Carousels/>
-            </div>
+            </div> */}
             <div className="flex w-full justify-between my-3 gap-4">
                 <div className="w-1/3">
                     <Typography className="text-xl font-bold">{departData.data[0].nama_departemen}</Typography>

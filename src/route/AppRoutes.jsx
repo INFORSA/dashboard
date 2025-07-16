@@ -15,9 +15,9 @@ import ImportExcel from "../app/import/Import";
 import Matriks from "../pages/performa/matriks/Matriks";
 import EditUser from "../pages/permission/user/EditUser";
 import EditStaff from "../pages/permission/user/EditStaff";
-import Profile from "../pages/profile/Profile";
 import Settings from "../pages/setting/Settings";
 import Sertif from "../pages/document/Sertif";
+import Profile from "../pages/Profile/Profile";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
@@ -74,7 +74,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
 
             <Route path="/document/sertif" element={<Sertif />} />
 
-            <Route path="/setting/profile" element={<Settings nama={username} />} />
+            <Route path="/setting/profile" element={<Settings nama={username} role={role} />} />
           </>
         )}
         {role === "dosen" && (
