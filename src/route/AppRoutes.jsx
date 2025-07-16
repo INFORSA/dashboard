@@ -17,7 +17,7 @@ import EditUser from "../pages/permission/user/EditUser";
 import EditStaff from "../pages/permission/user/EditStaff";
 import Settings from "../pages/setting/Settings";
 import Sertif from "../pages/document/Sertif";
-import Profile from "../pages/Profile/Profile";
+import Profile from "../pages/profile/Profile";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
