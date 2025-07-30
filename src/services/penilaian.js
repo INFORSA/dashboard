@@ -58,9 +58,15 @@ export const penilaianAPI = createApi({
         providesTags: ["Penilaian Detail"],
       }), 
     getNilaiPersonal: build.query({
-        query: () => `penilaian/get/nilai/personal`,
-        providesTags: ["Penilaian Personal"],
-      }), 
+      query: (username) => {
+        if (username) {
+          return `penilaian/get/nilai/${username}`;
+        }else{
+          return `penilaian/get/nilai/personal`;
+        }
+      },
+      providesTags: ["Penilaian Personal"],
+    }),
     getLineChartValue: build.query({
         query: () => `penilaian/get/linechart`,
         providesTags: ["Performa INFORSA"],
@@ -74,7 +80,13 @@ export const penilaianAPI = createApi({
         providesTags: ["Nilai Depart"],
       }), 
     getLineChartPersonal: build.query({
-        query: () => `penilaian/get/personal/linechart`,
+        query: (username) => {
+          if(username){
+            return `penilaian/get/staff/linechart/${username}`
+          }else{
+            return 'penilaian/get/personal/linechart'
+          }
+        },
         providesTags: ["Linechart Personal"],
       }),
     getBarChartValue: build.query({
@@ -84,11 +96,17 @@ export const penilaianAPI = createApi({
     getRadarChartValue: build.query({
         query: (depart) => `penilaian/get/radarchart/${depart}`,
         providesTags: ["Nilai Radar"],
-      }), 
-    getRadarChartPersonal: build.query({
-        query: () => `penilaian/get/personal/radarchart`,
-        providesTags: ["Radarchart Personal"],
       }),
+    getRadarChartPersonal: build.query({
+      query: (username) => {
+        if (username) {
+          return `penilaian/get/staff/radarchart/${username}`;
+        }else{
+          return `penilaian/get/personal/radarchart`;
+        }
+      },
+      providesTags: ["Radarchart Personal"],
+    }),
   }),
 })
 

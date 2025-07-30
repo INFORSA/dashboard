@@ -14,13 +14,13 @@ import { useParams } from "react-router-dom";
 
 export default function Profile({ nama, isSidebarOpen }){
     const { username } = useParams();
-    const namaAnggota = nama ?? username?.toUpperCase();
+    const namaAnggota = nama ?? username;
     const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(namaAnggota);
     const profilData = personalData ?? []
     const nim = profilData[0]?.nim;
-    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(namaAnggota);
-    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery();
-    const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery();
+    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(username);
+    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery(username);
+    const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery(username);
     const { data: sertifData, isLoading: sertifLoading, isError: sertifError } = useCheckSertifQuery(nim);
     const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery(namaAnggota);
     

@@ -138,7 +138,7 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
             <tbody>
               {paginatedRows.map((row, index) => {
                 const isLast = index === rows.length - 1;
-                const classes = isLast ? "p-4" : "p-4 whitespace-nowrap border-b border-blue-gray-50";
+                const classes = isLast ? "p-4" : `p-4 whitespace-nowrap border-b border-blue-gray-50`;
 
                 return (
                   <tr key={index}>
@@ -148,13 +148,13 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                       const detailId = idKey ? row[idKey] : null;
                       const isEditing = editingCell?.rowId === detailId && editingCell?.colKey === col.key;
                       return (
-                        <td className={classes} key={col.key} 
+                        <td className={`${classes} ${detailId && 'hover:bg-black/15'}`} key={col.key} 
                             onClick={() => {
                               if (!inlineEdit) return; // ✅ Kalau inlineEdit false, klik tidak ngapa-ngapain
                               if (detailId) {
                                 handleEdit(detailId, col.key, value);
                               } else {
-                                console.warn("❗ Tidak untuk diedit", col.key);
+                                toast.error("❗ Tidak untuk diedit", col.key);
                               }
                             }}
                           >
@@ -191,14 +191,12 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
                     </td>
                     <td className={classes} hidden={!profileShow}>
                       <div className="flex gap-2">
-                        <a color="blue" className="flex items-center" size="sm">
-                          <Link className="flex items-center gap-3" to={`/profile/${row.nama_anggota}`}>
-                              <EyeIcon strokeWidth={2} className="h-4 w-4" />
-                              <Typography className="text-md">
-                                  Lihat
-                              </Typography>
-                          </Link>
-                        </a>
+                        <Link className="flex items-center gap-3" to={`/profile/${row.nama_anggota}`}>
+                            <EyeIcon strokeWidth={2} className="h-4 w-4" />
+                            <Typography className="text-md">
+                                Lihat
+                            </Typography>
+                        </Link>
                       </div>
                     </td>
                   </tr>

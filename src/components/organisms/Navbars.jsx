@@ -136,7 +136,7 @@ export default function Navbars() {
         </div>
 
         {/* Right Section - Profile/Login */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 ml-3">
           <div className="flex items-center gap-x-1">
             {data ? (
               /* Profile Dropdown */
