@@ -153,11 +153,11 @@ export default function Profile({ nama, isSidebarOpen }){
             <div className="mt-3">
                 <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
             </div>
-            <div className="flex gap-4 my-3">
-                <div className="w-3/5">
+            <div className="flex flex-col lg:flex-row gap-4 my-3">
+                <div className="lg:w-3/5 w-full">
                     <LineCharts isSidebarOpen={isSidebarOpen} data={chartData || []} detail={summaryPenilaian}/>
                 </div>
-                <div className="w-2/5 flex flex-col justify-center items-center border border-black rounded-md p-5 hover:bg-white">
+                <div className="lg:w-2/5 w-full flex flex-col justify-center items-center border border-black rounded-md p-5 hover:bg-white">
                     <div className="flex gap-3">
                         <div className="font-semibold text-md">
                             <h3>Status</h3>
