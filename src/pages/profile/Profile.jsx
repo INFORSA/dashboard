@@ -108,16 +108,16 @@ export default function Profile({ nama, isSidebarOpen }){
                     autoplay={false}
                     className="rounded-xl shadow-lg"
                     navigation={({ setActiveIndex, activeIndex, length }) => (
-                        <div className="absolute inset-0 flex items-center justify-between px-4 z-0">
+                        <div className="absolute inset-0 flex items-center justify-between px-4 z-0 pointer-events-none">
                         <button
                             onClick={() => setActiveIndex((activeIndex - 1 + length) % length)}
-                            className="bg-white/80 text-blue-700 p-2 rounded-full shadow hover:bg-[#2647AC] hover:text-white"
+                            className="bg-white/80 text-blue-700 p-2 rounded-full shadow hover:bg-[#2647AC] hover:text-white pointer-events-auto"
                         >
                             <ChevronLeftIcon className="h-6 w-6" />
                         </button>
                         <button
                             onClick={() => setActiveIndex((activeIndex + 1) % length)}
-                            className="bg-white/80 text-blue-700 p-2 rounded-full shadow hover:bg-[#2647AC] hover:text-white"
+                            className="bg-white/80 text-blue-700 p-2 rounded-full shadow hover:bg-[#2647AC] hover:text-white pointer-events-auto"
                         >
                             <ChevronRightIcon className="h-6 w-6" />
                         </button>
@@ -127,7 +127,7 @@ export default function Profile({ nama, isSidebarOpen }){
                     {nilaiData.map((item, index) =>{
                         const reviewMonth = reviewData.filter((review)=> review.waktu === item.bulan)
                         return(
-                            <div key={index} className="">
+                            <div key={index} className="z-10">
                                 <RadialChart
                                     title="Review Kinerja"
                                     isSidebarOpen={isSidebarOpen}

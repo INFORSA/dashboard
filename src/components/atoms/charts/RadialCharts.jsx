@@ -210,7 +210,7 @@ export default function RadialChart({
           </div>
 
           {/* Input review */}
-          {role === "superadmin" || role === "admin" && (
+          {role !== "staff" && (
             <div className="flex items-center gap-2 mt-4 p-4 border-t border-gray-300">
               <input
                 type="text"
