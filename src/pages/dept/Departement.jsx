@@ -108,12 +108,12 @@ export default function Departement({isSidebarOpen, departemen, nama}){
             {/* <div>
                 <Carousels/>
             </div> */}
-            <div className="flex w-full justify-between my-3 gap-4">
-                <div className="w-1/3">
+            <div className="flex lg:flex-row flex-col w-full justify-between my-3 gap-4">
+                <div className="lg:w-1/3 w-full">
                     <Typography className="text-xl font-bold">{departData.data[0].nama_departemen}</Typography>
                     <Typography className="text-4xl font-bold">{departData.data[0].depart}</Typography>
                 </div>
-                <div className="w-2/3 flex gap-4 h-24">
+                <div className="lg:w-2/3 w-full flex lg:flex-row flex-col gap-4 lg:h-24 w-full lg:mb-0 mb-3">
                     <div className="w-full flex gap-4">
                         <CountCard Detail="Anggota" Count={departData.total}/>
                         <CountCard Detail="Performa" Count={lastPerformance[0]?.total_nilai ?? 0}/>
@@ -175,8 +175,8 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                 </div>
                 {activeTable === "grafik" ? (
                     <div className="flex gap-4">
-                        <div className="flex flex-col gap-4 w-full">
-                            <div className="flex justify-between gap-4 w-full">
+                        <div className="flex flex-col gap-4 w-full lg:mb-0 mb-3">
+                            <div className="flex lg:flex-row flex-col justify-between gap-4 w-full">
                                 <BarChart isSidebarOpen={isSidebarOpen} header="Komposisi Penilaian Tiap Anggota" data={barChartData || []} detail={labelPenilaian}/>
                                 <RadarChart isSidebarOpen={isSidebarOpen} data={radarChartData || []} detail={labelPenilaian}/>
                                 {/* <RadarChart isSidebarOpen={isSidebarOpen} /> */}
@@ -189,7 +189,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                     </div>
                 ):(
                     <div className="w-full overflow-x-auto">
-                        <div className="flex gap-4 my-3">
+                        <div className="flex lg:flex-row flex-col gap-4 my-3">
                             <Select
                                 name="month"
                                 label="Pilih Bulan"

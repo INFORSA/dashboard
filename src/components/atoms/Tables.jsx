@@ -215,18 +215,51 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
         >
           Previous
         </Button>
+
         <div className="flex items-center gap-2">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <IconButton
-              key={i}
-              variant={page === i + 1 ? "outlined" : "text"}
-              size="sm"
-              onClick={() => setPage(i + 1)}
-            >
-              {i + 1}
-            </IconButton>
-          ))}
+          {/* Tampilkan halaman 1 dan titik jika current page > 3 */}
+          {page > 2 && (
+            <>
+              <IconButton
+                variant={page === 1 ? "outlined" : "text"}
+                size="sm"
+                onClick={() => setPage(1)}
+              >
+                1
+              </IconButton>
+              {page > 3 && <span className="text-sm px-1">...</span>}
+            </>
+          )}
+
+          {/* Tampilkan page -1, page, page +1 */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1)
+            .filter((p) => Math.abs(p - page) <= 1)
+            .map((p) => (
+              <IconButton
+                key={p}
+                variant={page === p ? "outlined" : "text"}
+                size="sm"
+                onClick={() => setPage(p)}
+              >
+                {p}
+              </IconButton>
+            ))}
+
+          {/* Tampilkan titik dan halaman terakhir jika current page < totalPages - 2 */}
+          {page < totalPages - 1 && (
+            <>
+              {page < totalPages - 2 && <span className="text-sm px-1">...</span>}
+              <IconButton
+                variant={page === totalPages ? "outlined" : "text"}
+                size="sm"
+                onClick={() => setPage(totalPages)}
+              >
+                {totalPages}
+              </IconButton>
+            </>
+          )}
         </div>
+
         <Button
           variant="outlined"
           size="sm"

@@ -265,7 +265,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                             ))}
                         </Select>
                     </div>
-                    <div className="my-3 grid grid-cols-2 gap-3">
+                    <div className="my-3 grid grid-cols-1 lg:grid-cols-2 gap-3">
                         <LineCharts title="Penilaian Anggota" isSidebarOpen={isSidebarOpen} data={lineChartData || []} detail={summaryPenilaian}/>
                         <BarChartDept header="Rata-Rata Penilaian Anggota Tiap Departemen" isSidebarOpen={isSidebarOpen} data={barChartData || []} detail={labelPenilaian}/>
                     </div>
@@ -286,7 +286,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                 <Typography variant="small" className="mb-4 text-black">
                     Tabel ini berisi daftar lengkap hasil penilaian berdasarkan bulan yang dipilih.
                 </Typography>
-                <div className="my-3 flex gap-2">
+                <div className="my-3 grid gap-2 grid-cols-1 lg:grid-cols-2">
                     <Select
                         label="Pilih Waktu"
                         value={form.waktu}

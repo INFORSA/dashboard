@@ -5,18 +5,29 @@ import {
   Button,
   IconButton,
   Collapse,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
 } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { HomeIcon, ClockIcon, CalendarIcon } from "@heroicons/react/24/solid";
+import { HomeIcon, ClockIcon, CalendarIcon, Square2StackIcon, FlagIcon, ChevronDownIcon, InboxIcon, UserCircleIcon, UserGroupIcon, ChartBarIcon, ClipboardDocumentIcon, PresentationChartBarIcon, DocumentIcon, DocumentCheckIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
 import { useGetCurrentUserQuery, useLogoutMutation } from "../../services/login";
+import HRD from '../../assets/dept/HRD-black.png';
+import PSD from '../../assets/dept/PSD-black.png';
+import COMINFO from '../../assets/dept/COMINFO-black.png';
+import EDEN from '../../assets/dept/EDEN-black.png';
+import RELACS from '../../assets/dept/RELACS-black.png';
+import Adwel from '../../assets/dept/ADWEL-black.png';
  
 export default function Navbars() {
   const [logout] = useLogoutMutation();
   const { data } = useGetCurrentUserQuery();
   const [openNav, setOpenNav] = React.useState(false);
   const [profileDropdown, setProfileDropdown] = React.useState(false);
-  const isLoggedIn = localStorage.getItem("token") !== null;
 
   React.useEffect(() => {
     window.addEventListener(
@@ -73,22 +84,10 @@ export default function Navbars() {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
-  // Get current date and time
-  const getCurrentDateTime = () => {
-    const now = new Date();
-    const options = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    return now.toLocaleDateString('id-ID', options);
+  const [open, setOpen] = React.useState(0);
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
   };
-
-  // Mock user data - replace with actual data from your API
-  const userData = data || { name: "John Doe", email: "john@example.com" };
  
   return (
     <div className="h-max w-full px-4 py-2 lg:px-5 lg:py-4">
@@ -273,44 +272,189 @@ export default function Navbars() {
       {/* Mobile Menu Collapse */}
       <Collapse open={openNav}>
         <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-gray-200">
-          {/* Mobile Date Time */}
-          <div className="flex flex-col gap-1 px-2 py-1 text-slate-600 text-sm lg:hidden">
-            <div className="flex items-center gap-2">
-              <CalendarIcon className="w-4 h-4" />
-              <span>{getCurrentDateTime().split(',')[0]}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <ClockIcon className="w-4 h-4" />
-              <span>{new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
-            </div>
-          </div>
-
-          {/* Mobile Profile/Login */}
-          <div className="flex items-center gap-x-1">
-            {isLoggedIn ? (
-              <div className="w-full">
-                {/* Mobile Profile Info */}
-                <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
-                    {getUserInitials(userData.name)}
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-800 text-sm">{userData.name}</p>
-                    <p className="text-xs text-gray-600">{userData.email}</p>
-                  </div>
-                </div>
-                <Button onClick={logOut} fullWidth variant="text" size="sm" color="red">
-                  <span>LogOut</span>
-                </Button>
-              </div>
-            ) : (
-              <NavLink to="/login" className="w-full">
-                <Button fullWidth variant="text" size="sm" color="green">
-                  <span>LogIn</span>
-                </Button>
+          {/* Mobile Sidebar Menu */}
+          <List className="px-2">
+            <ListItem>
+              <ListItemPrefix>
+                <Square2StackIcon className="h-5 w-5 text-black" />
+              </ListItemPrefix>
+              <NavLink to="/">
+                <Typography className={`font-normal ${location.pathname === "/" && "text-[#2647AC]"}`}>
+                  Dashboard
+                </Typography>
               </NavLink>
+            </ListItem>
+
+            {(data?.role === "superadmin" || data?.role === "dosen") && (
+              <>
+                {/* Dept Menu */}
+                <Accordion open={open === 1}>
+                  <ListItem className="p-0" selected={open === 1}>
+                    <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+                      <ListItemPrefix>
+                        <FlagIcon className="h-5 w-5 text-black" />
+                      </ListItemPrefix>
+                      <Typography className="font-normal text-black mr-auto">Dept/Bureau</Typography>
+                      <ChevronDownIcon
+                        className={`h-4 w-4 ml-auto transition-transform ${open === 1 ? "rotate-180" : ""}`}
+                      />
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
+                      {[
+                        { name: "HRD", to: "/dept/hrd", icon: HRD },
+                        { name: "RELACS", to: "/dept/relacs", icon: RELACS },
+                        { name: "PSD", to: "/dept/psd", icon: PSD },
+                        { name: "ADWEL", to: "/dept/adwel", icon: Adwel },
+                        { name: "EDEN", to: "/dept/eden", icon: EDEN },
+                        { name: "COMINFO", to: "/dept/cominfo", icon: COMINFO }
+                      ].map(({ name, to, icon }) => (
+                        <ListItem key={name} className="pl-7">
+                          <ListItemPrefix>
+                            <img src={icon} className="h-5 w-5 mb-1" />
+                          </ListItemPrefix>
+                          <NavLink to={to}>
+                            <Typography className={`font-normal ${location.pathname === to && "text-[#2647AC]"}`}>
+                              {name}
+                            </Typography>
+                          </NavLink>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </AccordionBody>
+                </Accordion>
+
+                {/* Permission */}
+                {data?.role === "superadmin" && (
+                  <Accordion open={open === 2}>
+                    <ListItem className="p-0" selected={open === 2}>
+                      <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
+                        <ListItemPrefix>
+                          <InboxIcon className="h-5 w-5 text-black" />
+                        </ListItemPrefix>
+                        <Typography className="font-normal text-black mr-auto">Permissions</Typography>
+                        <ChevronDownIcon
+                          className={`h-4 w-4 ml-auto transition-transform ${open === 2 ? "rotate-180" : ""}`}
+                        />
+                      </AccordionHeader>
+                    </ListItem>
+                    <AccordionBody className="py-1">
+                      <List className="p-0">
+                        <ListItem className="pl-7">
+                          <ListItemPrefix>
+                            <UserCircleIcon className="h-5 w-5 text-black" />
+                          </ListItemPrefix>
+                          <NavLink to="/permission/user">
+                            <Typography className={`font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                              Users
+                            </Typography>
+                          </NavLink>
+                        </ListItem>
+                        <ListItem className="pl-7">
+                          <ListItemPrefix>
+                            <UserGroupIcon className="h-5 w-5 text-black" />
+                          </ListItemPrefix>
+                          <NavLink to="/permission/role">
+                            <Typography className={`font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
+                              Roles
+                            </Typography>
+                          </NavLink>
+                        </ListItem>
+                      </List>
+                    </AccordionBody>
+                  </Accordion>
+                )}
+
+                {/* Performance */}
+                <Accordion open={open === 3}>
+                  <ListItem className="p-0" selected={open === 3}>
+                    <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
+                      <ListItemPrefix>
+                        <ChartBarIcon className="h-5 w-5 text-black" />
+                      </ListItemPrefix>
+                      <Typography className="font-normal text-black mr-auto">Performance</Typography>
+                      <ChevronDownIcon
+                        className={`h-4 w-4 ml-auto transition-transform ${open === 3 ? "rotate-180" : ""}`}
+                      />
+                    </AccordionHeader>
+                  </ListItem>
+                  <AccordionBody className="py-1">
+                    <List className="p-0">
+                      {data?.role === "superadmin" && (
+                        <ListItem className="pl-7">
+                          <ListItemPrefix>
+                            <ClipboardDocumentIcon className="h-5 w-5 text-black" />
+                          </ListItemPrefix>
+                          <NavLink to="/matriks-penilaian">
+                            <Typography className={`font-normal ${location.pathname === "/matriks-penilaian" && "text-[#2647AC]"}`}>
+                              Matriks Penilaian
+                            </Typography>
+                          </NavLink>
+                        </ListItem>
+                      )}
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <PresentationChartBarIcon className="h-5 w-5 text-black" />
+                        </ListItemPrefix>
+                        <NavLink to="/hasil-penilaian">
+                          <Typography className={`font-normal ${location.pathname === "/hasil-penilaian" && "text-[#2647AC]"}`}>
+                            Hasil Penilaian
+                          </Typography>
+                        </NavLink>
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                </Accordion>
+
+                {/* Document */}
+                {data?.role === "superadmin" && (
+                  <Accordion open={open === 4}>
+                    <ListItem className="p-0" selected={open === 4}>
+                      <AccordionHeader onClick={() => handleOpen(4)} className="border-b-0 p-3">
+                        <ListItemPrefix>
+                          <DocumentIcon className="h-5 w-5 text-black" />
+                        </ListItemPrefix>
+                        <Typography className="font-normal text-black mr-auto">Document</Typography>
+                        <ChevronDownIcon
+                          className={`h-4 w-4 ml-auto transition-transform ${open === 4 ? "rotate-180" : ""}`}
+                        />
+                      </AccordionHeader>
+                    </ListItem>
+                    <AccordionBody className="py-1">
+                      <List className="p-0">
+                        <ListItem className="pl-7">
+                          <ListItemPrefix>
+                            <DocumentCheckIcon className="h-5 w-5 text-black" />
+                          </ListItemPrefix>
+                          <NavLink to="/document/sertif">
+                            <Typography className={`font-normal ${location.pathname === "/document/sertif" && "text-[#2647AC]"}`}>
+                              Sertifikat
+                            </Typography>
+                          </NavLink>
+                        </ListItem>
+                      </List>
+                    </AccordionBody>
+                  </Accordion>
+                )}
+              </>
             )}
-          </div>
+
+            {/* Mobile Log In / Out */}
+            <div className="px-2 mt-2">
+              {data ? (
+                <Button onClick={logOut} fullWidth variant="text" size="sm" color="red">
+                  Log Out
+                </Button>
+              ) : (
+                <NavLink to="/login">
+                  <Button fullWidth variant="text" size="sm" color="green">
+                    Log In
+                  </Button>
+                </NavLink>
+              )}
+            </div>
+          </List>
         </div>
       </Collapse>
     </div>

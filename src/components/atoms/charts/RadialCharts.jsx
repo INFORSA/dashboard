@@ -130,7 +130,7 @@ export default function RadialChart({
   }, [isSidebarOpen]);
 
   return (
-    <Card className="w-full h-full border border-md border-black bg-white/30 backdrop-blur-md hover:bg-white">
+    <Card className="w-full h-full border border-md border-black bg-white/30 backdrop-blur-md hover:bg-white overflow-auto">
       <CardHeader
         floated={false}
         shadow={false}
@@ -150,33 +150,43 @@ export default function RadialChart({
         </div>
       </CardHeader>
 
-      {/* Bagian Chart dan Review */}
-      <CardBody className={`flex flex-col md:flex-row gap-4 md:justify-between ${role !== "superadmin" ? "items-center" : "items-end"} w-full h-full`}>
+      <CardBody className={`flex flex-col md:flex-row gap-4 md:justify-between w-full h-full`}>
         {/* Chart + Emoji */}
-        <div className="flex flex-col items-center w-1/2 border-r-2 border-gray-400">
+        <div className="flex flex-col items-center lg:w-2/5 w-full border-b-2 md:border-b-0 md:border-r-2 border-gray-400 min-h-[300px]">
           <Chart {...chartConfig} />
           <div className="flex flex-col items-center gap-1 mt-2">
             <div className="text-3xl">{getEmojiFeedback(value).emoji}</div>
-            <Typography variant="small" className="text-gray-700 text-sm">
+            <Typography variant="small" className="text-gray-700 text-sm text-center px-2">
               {getEmojiFeedback(value).label}
             </Typography>
           </div>
         </div>
 
         {/* Chat Bubble */}
-        <div className="flex flex-col w-1/2 md:w-2/3">
-          <div className="flex flex-col gap-2 h-30 overflow-y-auto scrollbar-none">
+        <div className="flex flex-col lg:w-3/5 w-full">
+          <div className="flex flex-col gap-2 h-full overflow-y-auto scrollbar-thin pr-2">
             {data && data.length > 0 ? (
               data.map((item, index) => {
                 const isUserReview = item.nama_reviewer === username;
-                return(
-                  <div key={index} className="grid grid-cols-[120px,12px,1fr] gap-4 py-1 px-4" onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)} >
-                    <Typography variant="small" className="font-bold w-26 mb-1 truncate">
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col sm:flex-row sm:items-start gap-2 py-2 px-4 border-b"
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    {/* Nama Reviewer */}
+                    <Typography variant="small" className="font-bold mb-1 sm:mb-0 sm:w-[120px] truncate">
                       {item.nama_reviewer || item.nama_staff}
                     </Typography>
-                    <Typography variant="small" className="font-bold mb-1 text-gray-500 w-2">-</Typography>
-                    <div className="flex gap-2">
+
+                    {/* Tanda strip ( - ) */}
+                    <Typography variant="small" className="text-gray-500 hidden sm:inline-block w-[12px]">
+                      -
+                    </Typography>
+
+                    {/* Komentar dan Icon Trash */}
+                    <div className="flex-1 flex justify-between gap-2">
                       <Typography variant="small" color="gray" className="w-full">
                         {item.isi}
                       </Typography>
@@ -188,7 +198,7 @@ export default function RadialChart({
                       )}
                     </div>
                   </div>
-                )
+                );
               })
             ) : (
               <div className="flex gap-4 p-4 justify-center items-center">
@@ -198,13 +208,14 @@ export default function RadialChart({
               </div>
             )}
           </div>
+
           {/* Input review */}
-          { role === "superadmin" && 
+          {role === "superadmin" && (
             <div className="flex items-center gap-2 mt-4 p-4 border-t border-gray-300">
               <input
                 type="text"
                 placeholder="Tulis review kamu..."
-                className="flex-1 px-4 py-2 border rounded-lg text-sm focus:outline-none"
+                className="flex-1 lg:w-full md:w-96 w-12 px-4 py-2 border rounded-lg text-sm focus:outline-none"
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
               />
@@ -216,7 +227,7 @@ export default function RadialChart({
                 Kirim
               </button>
             </div>
-          }
+          )}
         </div>
       </CardBody>
     </Card>

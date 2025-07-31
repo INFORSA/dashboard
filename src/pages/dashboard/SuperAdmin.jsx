@@ -76,7 +76,7 @@ export default function SuperAdmin({ isSidebarOpen }){
         <div className="mx-auto w-full">
             <HelmetProvider><title>Dashboard</title></HelmetProvider>
             <Banner/>
-            <div className='my-5 w-full grid grid-cols-3 gap-4 h-24'>
+            <div className='my-5 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                 <CountCard Detail="Departement" Count={deptData.total}/>
                 <CountCard Detail="Anggota" Count={userData.total}/>
                 <CountCard Detail="Performa" Count={lastPerformance[0]?.total_nilai ?? 0}/>
@@ -104,7 +104,7 @@ export default function SuperAdmin({ isSidebarOpen }){
                     <h3 className='text-2xl font-semibold '>Staff Of The Month</h3>
                     <p className='text-md font-thin text-gray-700'>Celebrating outstanding performers from staff</p>
                 </div>
-                <div className='grid grid-cols-3 gap-4'>
+                <div className='grid lg:grid-cols-3 grid-cols-2 gap-4'>
                     {maxNilaiData.map((item) => (
                         <DepartCard key={item.nama_departemen} Head={`${item.nama_departemen} : `} Detail={item.nama_anggota}/>
                     ))}
