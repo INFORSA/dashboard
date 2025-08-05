@@ -59,17 +59,17 @@ export default function Sidebars({isOpen}) {
       </div>
       <div className="overflow-y-auto scrollbar-none h-[calc(100vh-8rem)]">
         <List className="pb-3">
-          <ListItem>
-              <ListItemPrefix>
-                <Square2StackIcon color="black" className="h-5 w-5" />
-              </ListItemPrefix>
-              <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/" && "text-[#2647AC]"}`}>
-                <NavLink to="/">
-                  Dashboard
-                </NavLink>
-              </Typography>
-          </ListItem>
-          { data && (data.role === "superadmin" || data.role === "dosen") && 
+          <NavLink to="/">
+            <ListItem>
+                <ListItemPrefix>
+                  <Square2StackIcon color="black" className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/" && "text-[#2647AC]"}`}>
+                    Dashboard
+                </Typography>
+            </ListItem>
+          </NavLink>
+          { data && (data.role === "superadmin" || data.role === "dosen") ?
           <>
             {/* Departemen */}
             <Accordion
@@ -94,66 +94,66 @@ export default function Sidebars({isOpen}) {
               </ListItem>
               <AccordionBody className="py-1">
                 <List className="p-0">
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <img src={HRD} className="h-5 w-5 mb-1" />
-                    </ListItemPrefix>
-                    <NavLink to="/dept/hrd">
-                      <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/hrd" && "text-[#2647AC]"}`}>
-                        HRD
-                      </Typography>
-                    </NavLink>
-                  </ListItem>
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <img src={RELACS} className="h-5 w-5 mb-1" />
-                    </ListItemPrefix>
-                    <NavLink to="/dept/relacs">
-                      <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/relacs" && "text-[#2647AC]"}`}>
-                        RELACS
-                      </Typography>
-                    </NavLink>
-                  </ListItem>
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <img src={PSD} className="h-5 w-5 mb-1" />
-                    </ListItemPrefix>
-                    <NavLink to="/dept/psd">
-                      <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/psd" && "text-[#2647AC]"}`}>
-                        PSD
-                      </Typography>
-                    </NavLink>
-                  </ListItem>
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <img src={Adwel} className="h-5 w-5 mb-2" />
-                    </ListItemPrefix>
-                    <NavLink to="/dept/adwel">
-                      <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/adwel" && "text-[#2647AC]"}`}>
-                        ADWEL
-                      </Typography>
-                    </NavLink>
-                  </ListItem>
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <img src={EDEN} className="h-5 w-5 mb-1" />
-                    </ListItemPrefix>
-                    <NavLink to="/dept/eden">
-                      <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/eden" && "text-[#2647AC]"}`}>
-                        EDEN
-                      </Typography>
-                    </NavLink>
-                  </ListItem>
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <img src={COMINFO} className="h-5 w-5 mb-1" />
-                    </ListItemPrefix>
-                    <NavLink to="/dept/cominfo">
-                      <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/cominfo" && "text-[#2647AC]"}`}>
-                        COMINFO
-                      </Typography>
-                    </NavLink>
-                  </ListItem>
+                  <NavLink to="/dept/hrd">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <img src={HRD} className="h-5 w-5 mb-1" />
+                      </ListItemPrefix>
+                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/hrd" && "text-[#2647AC]"}`}>
+                          HRD
+                        </Typography>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dept/relacs">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <img src={RELACS} className="h-5 w-5 mb-1" />
+                      </ListItemPrefix>
+                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/relacs" && "text-[#2647AC]"}`}>
+                          RELACS
+                        </Typography>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dept/psd">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <img src={PSD} className="h-5 w-5 mb-1" />
+                      </ListItemPrefix>
+                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/psd" && "text-[#2647AC]"}`}>
+                          PSD
+                        </Typography>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dept/adwel">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <img src={Adwel} className="h-5 w-5 mb-2" />
+                      </ListItemPrefix>
+                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/adwel" && "text-[#2647AC]"}`}>
+                          ADWEL
+                        </Typography>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dept/eden">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <img src={EDEN} className="h-5 w-5 mb-1" />
+                      </ListItemPrefix>
+                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/eden" && "text-[#2647AC]"}`}>
+                          EDEN
+                        </Typography>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dept/cominfo">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <img src={COMINFO} className="h-5 w-5 mb-1" />
+                      </ListItemPrefix>
+                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/cominfo" && "text-[#2647AC]"}`}>
+                          COMINFO
+                        </Typography>
+                    </ListItem>
+                  </NavLink>
                 </List>
               </AccordionBody>
             </Accordion>
@@ -182,26 +182,26 @@ export default function Sidebars({isOpen}) {
                 </ListItem>
                 <AccordionBody className="py-1">
                   <List className="p-0">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <UserCircleIcon color="black" className="h-5 w-5"/>
-                      </ListItemPrefix>
-                        <NavLink to="permission/user">
-                          <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
-                            Users
-                          </Typography>
-                        </NavLink>
-                    </ListItem>
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <UserGroupIcon color="black" className="h-5 w-5"/>
-                      </ListItemPrefix>
-                        <NavLink to="permission/role">
-                          <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
-                            Roles
-                          </Typography>
-                        </NavLink>
-                    </ListItem>
+                    <NavLink to="permission/user">
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <UserCircleIcon color="black" className="h-5 w-5"/>
+                        </ListItemPrefix>
+                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                              Users
+                            </Typography>
+                      </ListItem>
+                    </NavLink>
+                    <NavLink to="permission/role">
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <UserGroupIcon color="black" className="h-5 w-5"/>
+                        </ListItemPrefix>
+                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
+                              Roles
+                            </Typography>
+                      </ListItem>
+                    </NavLink>
                   </List>
                 </AccordionBody>
               </Accordion>
@@ -230,27 +230,27 @@ export default function Sidebars({isOpen}) {
               <AccordionBody className="py-1">
                 <List className="p-0">
                   {data.role === "superadmin" && 
+                    <NavLink to="/matriks-penilaian">
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <ClipboardDocumentIcon color="black" className="h-5 w-5"/>
+                        </ListItemPrefix>
+                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/matriks-penilaian" && "text-[#2647AC]"}`}>
+                              Matriks Penilaian 
+                            </Typography>
+                      </ListItem>
+                    </NavLink>
+                  }
+                  <NavLink to="/hasil-penilaian">
                     <ListItem className="pl-7">
                       <ListItemPrefix>
-                        <ClipboardDocumentIcon color="black" className="h-5 w-5"/>
+                        <PresentationChartBarIcon color="black" className="h-5 w-5"/>
                       </ListItemPrefix>
-                        <NavLink to="/matriks-penilaian">
-                          <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/matriks-penilaian" && "text-[#2647AC]"}`}>
-                            Matriks Penilaian 
+                          <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/hasil-penilaian" && "text-[#2647AC]"}`}>
+                            Hasil Penilaian
                           </Typography>
-                        </NavLink>
                     </ListItem>
-                  }
-                  <ListItem className="pl-7">
-                    <ListItemPrefix>
-                      <PresentationChartBarIcon color="black" className="h-5 w-5"/>
-                    </ListItemPrefix>
-                      <NavLink to="/hasil-penilaian">
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/hasil-penilaian" && "text-[#2647AC]"}`}>
-                          Hasil Penilaian
-                        </Typography>
-                      </NavLink>
-                  </ListItem>
+                  </NavLink>
                 </List>
               </AccordionBody>
             </Accordion>
@@ -278,20 +278,35 @@ export default function Sidebars({isOpen}) {
                   </ListItem>
                   <AccordionBody className="py-1">
                     <List className="p-0">
-                      <ListItem className="pl-7">
-                        <ListItemPrefix>
-                          <DocumentCheckIcon color="black" className="h-5 w-5"/>
-                        </ListItemPrefix>
-                          <NavLink to="document/sertif">
-                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
-                              Sertifikat
-                            </Typography>
-                          </NavLink>
-                      </ListItem>
+                      <NavLink to="document/sertif">
+                        <ListItem className="pl-7">
+                          <ListItemPrefix>
+                            <DocumentCheckIcon color="black" className="h-5 w-5"/>
+                          </ListItemPrefix>
+                              <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/document/sertif" && "text-[#2647AC]"}`}>
+                                Sertifikat
+                              </Typography>
+                        </ListItem>
+                      </NavLink>
                     </List>
                   </AccordionBody>
                 </Accordion>
               }
+          </>
+          :
+          (data.role === "admin") &&
+          <>
+            <NavLink to={`/dept/${data?.departemen}`}>
+              <ListItem>
+                <ListItemPrefix>
+                  <Square2StackIcon color="black" className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/"+data?.departemen && "text-[#2647AC]"}`}>
+                    Dept/Bureau
+                </Typography>
+              </ListItem>
+            </NavLink>
+            <div className="border-b-2 border-gray-400"></div>
           </>
           }
         </List>

@@ -38,7 +38,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
       <Route path="/" element={
         login ? (
           role === "superadmin" || role === "dosen" ? <Dashboard isSidebarOpen={isSidebarOpen} /> :
-          role === "admin" ? <Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen} nama={keterangan}/> :
+          role === "admin" ? <Dashboard isSidebarOpen={isSidebarOpen} /> :
           role === "staff" ? <Profile nama={username} isSidebarOpen={isSidebarOpen}/> :
           <Navigate to="/login" />
         ) : (
@@ -91,6 +91,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
           <>
             {/* <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} /> */}
             <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
+            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
           </>
         )}
         {role === "staff" && (
