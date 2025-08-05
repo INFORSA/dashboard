@@ -294,7 +294,7 @@ export default function Sidebars({isOpen}) {
               }
           </>
           :
-          (data.role === "admin") &&
+          (data && data.role === "admin") &&
           <>
             <NavLink to={`/dept/${data?.departemen}`}>
               <ListItem>
