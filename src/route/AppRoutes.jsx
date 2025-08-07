@@ -18,12 +18,17 @@ import EditStaff from "../pages/permission/user/EditStaff";
 import Settings from "../pages/setting/Settings";
 import Sertif from "../pages/document/Sertif";
 import Profile from "../pages/profile/Profile";
+import Error from "../pages/error/Error";
 
 const AppRoutes = ({ isSidebarOpen, login }) => {
   const depart = login?.departemen;
   const role = login?.role;
   const username = login?.username;
   const keterangan = login?.keterangan;
+
+  if (!login) {
+    return <div>Loading...</div>; // Atau spinner
+  }
 
   return(
     <Routes>
@@ -76,6 +81,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
 
             <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
             <Route path="/setting/profile" element={<Settings nama={username} role={role} />} />
+            {/* <Route path="/error" element={<Error />} /> */}
           </>
         )}
         {role === "dosen" && (
@@ -91,7 +97,7 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
           <>
             {/* <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} /> */}
             <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
-            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
+            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen} nama={keterangan}/>} />
           </>
         )}
         {role === "staff" && (

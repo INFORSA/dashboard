@@ -59,9 +59,8 @@ export default function Penilaian({isSidebarOpen, nama}){
             return prev;
         });
     }
-    const departOfTheMonth = dotm?.nama_departemen;
-    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery({departOfTheMonth, month});
-
+    const depart = deptNilai ? dotm?.nama_departemen  : 0;
+    const { data: reviewData, isLoading: reviewLoading, refetch:refetchReview } = useGetReviewQuery({depart, month});
     const handleGenerateTemplate = async () => {
         try {
             await generateTemplateStaff({
@@ -279,6 +278,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                     value={deptNilai.length > 0 ? dotm.total_akhir : 0}
                     departmentName={deptNilai.length > 0 ? dotm.nama_departemen : ""} 
                     month={deptNilai.length > 0 ? dotm.bulan : ""}
+                    refetch={refetchReview}
                 />
             </div>
              <Card className="p-4 border border-md border-black bg-white/5 backdrop-blur-md">

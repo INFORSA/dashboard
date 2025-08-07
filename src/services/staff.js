@@ -13,6 +13,19 @@ export const staffAPI = createApi({
     getReview: build.query({
         query: (anggota) => `staff/get/review/${anggota}`
     }), 
+    addReviewAnggota: build.mutation({
+      query: (body) => ({
+        url: 'staff/add/review',
+        method: 'POST',
+        body,
+      }),
+    }),
+    deleteReviewAnggota: build.mutation({
+      query: (id) => ({
+        url: `staff/remove/review/${id}`, 
+        method: 'DELETE',
+      }),
+    }),
     checkSertif: build.query({
         query: (nim) => `staff/check-sertif/${nim}`
     }), 
@@ -35,4 +48,6 @@ export const staffAPI = createApi({
   }),
 })
 
-export const { useGetReviewQuery, useGetSertifQuery, useCheckSertifQuery, useUploadSertifMutation, useDeleteSertifMutation } = staffAPI
+export const { useGetReviewQuery, useGetSertifQuery, useCheckSertifQuery, useUploadSertifMutation, useDeleteSertifMutation,
+                  useAddReviewAnggotaMutation, useDeleteReviewAnggotaMutation
+                } = staffAPI

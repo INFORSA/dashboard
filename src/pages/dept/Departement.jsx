@@ -1,5 +1,4 @@
-import { Link, useParams } from "react-router-dom";
-import Carousels from "../../components/organisms/Carousels";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import CountCard from "../../components/atoms/cards/CountCard";
@@ -146,7 +145,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
             <div className="my-3">
                 <RadialChart
                     isSidebarOpen={isSidebarOpen} 
-                    title="Department of The Month"
+                    title="Performance Department"
                     data={reviewData} 
                     value={deptNilai.length > 0 ? dotm.total_akhir : 0}
                     departmentName={deptNilai.length > 0 ? dotm.nama_departemen : depart} 

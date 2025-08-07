@@ -22,7 +22,7 @@ export default function Profile({ nama, isSidebarOpen }){
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery(username);
     const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery(username);
     const { data: sertifData, isLoading: sertifLoading, isError: sertifError } = useCheckSertifQuery(nim);
-    const { data: reviewData, isLoading: reviewLoading } = useGetReviewQuery(namaAnggota);
+    const { data: reviewData, isLoading: reviewLoading, refetch } = useGetReviewQuery(namaAnggota);
     
     const nilaiAkhir = chartData ?? [];
     const nilaiNumbers = nilaiAkhir.map((item) => parseFloat(item.total_nilai));
@@ -74,7 +74,7 @@ export default function Profile({ nama, isSidebarOpen }){
     if(personalError || nilaiError || chartError || sertifError) return <Error/>
     
     return(
-        <div className="my-3">
+        <div className="my-3 max-w-[82vw]">
             <HelmetProvider><title>{personalData[0].nama_staff}</title></HelmetProvider>
             <div className="flex justify-between border border-black rounded-md p-5 hover:bg-white">
                 <div className="flex gap-3">
@@ -135,6 +135,7 @@ export default function Profile({ nama, isSidebarOpen }){
                                     value={item.total_akhir}
                                     departmentName={`${namaAnggota}`}
                                     month={item.bulan}
+                                    refetch={refetch}
                                 />
                             </div>
                         )

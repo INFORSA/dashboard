@@ -10,9 +10,10 @@ import { Bars3BottomLeftIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useAddReviewMutation, useDeleteReviewMutation, useGetDeptQuery } from "../../../services/dept";
 import { useGetCurrentUserQuery } from "../../../services/login";
-import { useGetUserByNamaQuery } from "../../../services/user";
+import { useGetAnggotaByNamaQuery, useGetUserByNamaQuery } from "../../../services/user";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
+import { useAddReviewAnggotaMutation, useDeleteReviewAnggotaMutation } from "../../../services/staff";
 
 export default function RadialChart({ 
   isSidebarOpen, 
@@ -27,26 +28,37 @@ export default function RadialChart({
   const username = user?.data.username;
   const role = user?.data.role;
   const {data:userData} = useGetUserByNamaQuery(username);
+  const {data:anggotaReview} = useGetAnggotaByNamaQuery(departmentName);
+  const targetAnggota = anggotaReview ? anggotaReview[0] : "";
   const userLogin = userData ? userData[0].id_user : "";
   const {data:deptData} = useGetDeptQuery();
   const deptList = deptData?.data ?? []; // fallback ke array kosong
   const deptId = deptList.find((item) => item.nama === departmentName);
-  const deptTarget = deptId?.id_depart;
+  const target = deptId?.id_depart || targetAnggota.id_anggota;
+  const isDept = deptId?.id_depart !== undefined;
   const [reviewText, setReviewText] = useState("");
   const [hoveredIndex, setHoveredIndex] = useState(null);
+
   const [addReview] = useAddReviewMutation();
   const [deleteReview] = useDeleteReviewMutation();
+  const [addReviewAnggota] = useAddReviewAnggotaMutation(); 
+  const [deleteReviewAnggota] = useDeleteReviewAnggotaMutation();
 
   const handleSubmitReview = async () => {
     try {
       const payload = {
         userLogin,      // pastikan ini adalah user yang sedang login
-        deptTarget,       // id departemen yang sedang direview
+        target,       // id departemen yang sedang direview
         month,           // dalam bentuk nama bulan (misal: "Juli")
         isi: reviewText  // isi review yang diketik user
       };
 
-      await addReview(payload);
+      if (isDept) {
+        await addReview(payload);
+      } else {
+        await addReviewAnggota(payload);
+      }
+
       // console.log("Kirim Review:", payload);
       setReviewText(""); // kosongkan setelah submit
       refetch();
@@ -68,7 +80,11 @@ export default function RadialChart({
 
     if (!ok) return;
     try {
-        await deleteReview(id);
+        if(isDept){
+          await deleteReview(id);
+        }else{
+          await deleteReviewAnggota(id);
+        }
         refetch();
         toast.success("Review berhasil dihapus");
       } catch (err) {
