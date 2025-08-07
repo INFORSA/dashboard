@@ -15,7 +15,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
-  const {data} = useGetCurrentUserQuery();
+  const {data, isLoading} = useGetCurrentUserQuery();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -37,7 +37,7 @@ function App() {
         )}
 
         <div className={`lg:w-full w-[100vw] min-h-[70vh] ${isLoginPage ? '' : (isOpen === true ? 'lg:px-12 xl:w-[77vw] px-5 mt-3' : 'pl-36 pr-20 mt-3')}`}>
-          <AppRoutes isSidebarOpen={isOpen} login={data} />
+          <AppRoutes isSidebarOpen={isOpen} login={data} isLoading={isLoading}/>
         </div>
 
         <div className={`${isOpen === true ? '' : 'pl-16'}`}>

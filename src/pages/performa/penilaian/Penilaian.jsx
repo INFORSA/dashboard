@@ -34,14 +34,17 @@ export default function Penilaian({isSidebarOpen, nama}){
     const [ penilai, setPenilai ] = useState(null);
      
     const handleOpen = () => setOpen(!open);
-    const { data:deptData } = useGetDeptQuery();
-    const dept = deptData.data?.filter((item)=> item.id_depart === form.departemen);
+    const { data:deptData, isLoading:deptLoadingData } = useGetDeptQuery();
+    const dept = deptData?.data?.filter((item)=> item.id_depart === form.departemen);
+    const deptNama = dept?.length > 0 ? dept[0].nama : '';
     const { data, isLoading, isError, refetch:refetchPenilaianStaff } = useGetAllNilaiQuery(month);
     const [generateTemplateStaff, { isLoading: isGenerating }] = useGenerateTemplateStaffMutation();
     const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(month);
     const { data: deptDetailNilai, isLoading: deptDetailLoading, isError: deptDetailError, refetch } = useGetNilaiDeptDetailQuery({month, penilai});
     const { data: bpiData, isLoading: bpiLoading, isError: bpiError } = useGetIntiQuery();
-    const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(dept[0].nama);
+    const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(deptNama, {
+        skip: !deptNama,
+    });
     const { data: barChartData, isLoading: barChartLoading } = useGetLineChartDepartQuery(month);
     let dotm = null;
     // eslint-disable-next-line no-unused-vars
@@ -78,6 +81,7 @@ export default function Penilaian({isSidebarOpen, nama}){
             refetchPenilaianStaff();
             setTemplateModal(false);
         } catch (error) {
+            console.log(error)
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal membuat template',
@@ -134,11 +138,11 @@ export default function Penilaian({isSidebarOpen, nama}){
     // ];
 
     const summaryPenilaian = [
-        { key: "total_nilai", label: dept.nama },
+        { key: "total_nilai", label: dept?.nama },
     ];
 
     if ( isLoading || lineChartLoading || barChartLoading || deptLoading 
-        || bpiLoading || deptDetailLoading || isGenerating || reviewLoading) return <Loading/>;
+        || bpiLoading || deptDetailLoading || isGenerating || reviewLoading || deptLoadingData) return <Loading/>;
     if ( isError || deptError || bpiError || deptDetailError) return <Error/>;
     
     return(

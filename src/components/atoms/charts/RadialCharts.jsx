@@ -34,7 +34,7 @@ export default function RadialChart({
   const {data:deptData} = useGetDeptQuery();
   const deptList = deptData?.data ?? []; // fallback ke array kosong
   const deptId = deptList.find((item) => item.nama === departmentName);
-  const target = deptId?.id_depart || targetAnggota.id_anggota;
+  const target = deptId?.id_depart || targetAnggota?.id_anggota;
   const isDept = deptId?.id_depart !== undefined;
   const [reviewText, setReviewText] = useState("");
   const [hoveredIndex, setHoveredIndex] = useState(null);

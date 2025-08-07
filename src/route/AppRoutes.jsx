@@ -19,15 +19,16 @@ import Settings from "../pages/setting/Settings";
 import Sertif from "../pages/document/Sertif";
 import Profile from "../pages/profile/Profile";
 import Error from "../pages/error/Error";
+import Loading from "../pages/loading/Loading";
 
-const AppRoutes = ({ isSidebarOpen, login }) => {
+const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
   const depart = login?.departemen;
   const role = login?.role;
   const username = login?.username;
   const keterangan = login?.keterangan;
 
-  if (!login) {
-    return <div>Loading...</div>; // Atau spinner
+  if (isLoading) {
+    return <Loading/>; // Atau spinner
   }
 
   return(
@@ -50,7 +51,6 @@ const AppRoutes = ({ isSidebarOpen, login }) => {
           <Navigate to="/login" />
         )
       } />
-
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
