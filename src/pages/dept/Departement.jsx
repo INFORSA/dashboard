@@ -13,7 +13,7 @@ import DepartCard from "../../components/atoms/cards/DepartCard";
 import LineCharts from "../../components/atoms/charts/LineCharts";
 import BarChart from "../../components/atoms/charts/BarCharts";
 import RadarChart from "../../components/atoms/charts/RadarCharts";
-import { useGetPengurusQuery, useGetReviewQuery } from "../../services/dept";
+import { useGetDeptQuery, useGetPengurusQuery, useGetReviewQuery } from "../../services/dept";
 import Loading from "../loading/Loading";
 import Error from "../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
@@ -35,6 +35,8 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     const [ activeTable, setActiveTable ] = useState("grafik");
     const [ penilai, setPenilai ] = useState(null);
     const { data: departData, isLoading: departLoading, isError: departError } = useGetAnggotaByDepartQuery(depart);
+    const { data: deptData } = useGetDeptQuery();
+    const deptChoosen = deptData?.data.find((item)=> item.nama === depart);
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueDepartQuery(depart);
     const { data: barChartData, isLoading: barChartLoading } = useGetBarChartValueQuery(depart);
     const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartValueQuery(depart);
@@ -90,7 +92,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
         { key: "nilai_matriks_6", label: "Kepemimpinan" },
         { key: "nilai_matriks_7", label: "Kepatuhan dan Etika Kerja" },
     ];
-
+    
     const summaryPenilaian = [
         { key: "total_nilai", label: depart },
     ];
@@ -103,14 +105,14 @@ export default function Departement({isSidebarOpen, departemen, nama}){
     
     return(
         <div className="h-full">
-            <HelmetProvider><title>{departData.data[0].depart}</title></HelmetProvider>
+            <HelmetProvider><title>{departData?.data?.length > 0 ? departData.data[0].depart : deptChoosen.keterangan}</title></HelmetProvider>
             {/* <div>
                 <Carousels/>
             </div> */}
             <div className="flex lg:flex-row flex-col w-full justify-between my-3 gap-4">
                 <div className="lg:w-1/3 w-full">
-                    <Typography className="text-xl font-bold">{departData.data[0].nama_departemen}</Typography>
-                    <Typography className="text-4xl font-bold">{departData.data[0].depart}</Typography>
+                    <Typography className="text-xl font-bold">{departData?.data?.length > 0 ? departData.data[0].nama_departemen : deptChoosen.keterangan}</Typography>
+                    <Typography className="text-4xl font-bold">{departData?.data?.length > 0 ? departData.data[0].depart : depart}</Typography>
                 </div>
                 <div className="lg:w-2/3 w-full flex lg:flex-row flex-col gap-4 lg:h-24 w-full lg:mb-0 mb-3">
                     <div className="w-full flex gap-4">
@@ -227,7 +229,7 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                         <div className="max-w-full">
                             <Tables
                                 title="Tabel Penilaian"
-                                description={`List Nilai Anggota ${departData.data[0].nama_departemen} (${departData.data[0].depart})`}
+                                description={`List Nilai Anggota ${deptChoosen.keterangan} (${depart})`}
                                 columns={columnsPenilaian}
                                 rows={penilai === null ? nilaiData : detailData || []}
                                 inlineEdit={penilai === nama ? true : false}
