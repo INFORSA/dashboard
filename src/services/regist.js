@@ -7,7 +7,7 @@ export const registerAPI = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: "include",
     validateStatus: (response) => {
-      return response.status === 200 || response.status === 304;
+      return response.status >= 200 && response.status < 300;
     }
    }),
   endpoints: (builder) => ({

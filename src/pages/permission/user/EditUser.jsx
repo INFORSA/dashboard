@@ -3,13 +3,16 @@ import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { useStoreUserQuery, useUpdateUserMutation } from '../../../services/user';
+import { useGetRoleQuery, useStoreUserQuery, useUpdateUserMutation } from '../../../services/user';
 import { useGetDeptQuery } from '../../../services/dept';
 
 const EditUser = () => {
     const { id } = useParams();
     const [ updateUser ] = useUpdateUserMutation();
     const { data } = useStoreUserQuery(id);
+    const { data: roleData = [], isLoading: roleLoading } = useGetRoleQuery(undefined, {
+        refetchOnMountOrArgChange: true,
+    });
     const navigate = useNavigate();
     const { data: deptData, isLoading: deptLoading } = useGetDeptQuery();
 
@@ -67,17 +70,27 @@ const EditUser = () => {
                         label="Username"
                         required
                     />
-                    <Input
-                        type="text"
-                        name="role"
+                    <Select
+                        name='role'
+                        label="Pilih Role"
                         value={form.role}
-                        onChange={handleChange}
-                        placeholder="Jabatan"
-                        label="Jabatan"
-                        required
-                    />
+                        onChange={(val) => setForm({ ...form, role: val })}
+                        animate={{
+                            mount: { y: 0 },
+                            unmount: { y: 25 },
+                        }}
+                    >
+                        {roleLoading ? 
+                        (<Option disabled>Loading...</Option>)
+                        :
+                        (
+                            roleData.filter((item) => item.id_role !== 3).map((item, index)=>(
+                                <Option key={index} value={item.id_role}>{item.nama_role}</Option>
+                            ))
+                        )}
+                    </Select>
                 </div>
-                {form.role === 2 && (
+                {form.role == 2 && (
                     <>
                         <div className='mt-3'>
                         <Select
@@ -91,11 +104,11 @@ const EditUser = () => {
                             }}
                         >
                             {deptLoading ? 
-                            (<Option disabled>Loading...</Option>)
+                                (<Option disabled>Loading...</Option>)
                             :
                             (
                                 deptData.data.map((item, index)=>(
-                                <Option key={index} value={item.id_depart}>{item.nama}</Option>
+                                    <Option key={index} value={item.id_depart}>{item.nama}</Option>
                                 ))
                             )}
                         </Select>

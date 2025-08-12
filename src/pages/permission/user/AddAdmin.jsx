@@ -43,7 +43,7 @@ const AddAdmin = () => {
     formData.append('keterangan', form.keterangan);
 
     try {
-      const response = await registerAdmin(formData);
+      const response = await registerAdmin(formData).unwrap();
       Swal.fire("Sukses", response.message, "success");
       setForm({ username: '', password: '', role:'', jabatan:'', dept_id:'', keterangan:'' });
       navigate("/permission/user");

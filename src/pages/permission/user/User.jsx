@@ -20,7 +20,7 @@ export default function User(){
     const navigate = useNavigate();
 
     const handleEditAdmin = (row) => {
-        if (row.nama_role?.toLowerCase() === "staff") {
+        if (row.nama_role?.toLowerCase() === "staff" ) {
             navigate(`/permission/user/edit-staff/${row.id_user}`)
         } else {
             navigate(`/permission/user/edit-admin/${row.id_user}`)
