@@ -7,7 +7,7 @@ export const penilaianAPI = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: 'include',
     validateStatus: (response) => {
-      return response.status === 200 || response.status === 304;
+      return response.status >= 200 && response.status < 300;
     }
    }),
   endpoints: (build) => ({
@@ -44,6 +44,15 @@ export const penilaianAPI = createApi({
         body,
       }),
       invalidatesTags: ["Penilaian"], // atau sesuaikan tag jika ingin refetch otomatis
+    }),
+    storePenilaian: build.query({
+      query: () => `penilaian/template-staff/store`
+    }),
+    deletePenilaian: build.mutation({
+      query: (bulan) => ({
+        url: `penilaian/template-staff/delete/${bulan}`, 
+        method: 'DELETE',
+      }),
     }),
     getMaxNilai: build.query({
         query: (month) => `penilaian/get/max-nilai/${month}`,
@@ -113,7 +122,8 @@ export const penilaianAPI = createApi({
 export const { useGetNilaiQuery, useGetNilaiDetailQuery, useGetMaxNilaiQuery, useGetLineChartValueQuery, useGetLineChartValueDepartQuery, 
               useGetBarChartValueQuery, useGetRadarChartValueQuery, useGetAllNilaiQuery, useGetNilaiPersonalQuery,
               useGetLineChartPersonalQuery, useEditNilaiMutation, useGetRadarChartPersonalQuery, useGetLineChartDepartQuery,
-              useGetNilaiDeptQuery, useGetNilaiDeptDetailQuery, useEditNilaiDeptMutation, useGenerateTemplateStaffMutation } = penilaianAPI
+              useGetNilaiDeptQuery, useGetNilaiDeptDetailQuery, useEditNilaiDeptMutation, useGenerateTemplateStaffMutation,
+              useDeletePenilaianMutation, useStorePenilaianQuery } = penilaianAPI
 
 export const matriksAPI = createApi({
   reducerPath: 'matriksAPI',
@@ -121,7 +131,7 @@ export const matriksAPI = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: 'include',
     validateStatus: (response) => {
-      return response.status === 200 || response.status === 304;
+      return response.status >= 200 && response.status < 300;
     }
   }),
   endpoints: (build) => ({

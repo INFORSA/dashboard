@@ -29,7 +29,7 @@ export default function Profile({ nama, isSidebarOpen }){
     const totalNilai = nilaiNumbers.reduce((sum, val) => sum + val, 0);
     const avgNilai = nilaiNumbers.length > 0 ? (totalNilai / nilaiNumbers.length).toFixed(2) : 0;
 
-    const isAvailable = sertifData?.available && avgNilai >= 65;
+    const isAvailable = sertifData?.available && avgNilai >= personalData[0].nilai;
     
     const getStatusFeedback = (value) => {
         if (value < 50) return "Terus Semangat!";

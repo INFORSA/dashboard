@@ -1,8 +1,8 @@
 import { Button, Card, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Option, Select, Typography } from "@material-tailwind/react";
 import { Tables } from "../../../components/atoms/Tables";
-import { useGenerateTemplateStaffMutation, useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery, useGetNilaiDeptDetailQuery, useGetNilaiDeptQuery } from "../../../services/penilaian";
+import { useDeletePenilaianMutation, useGenerateTemplateStaffMutation, useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery, useGetNilaiDeptDetailQuery, useGetNilaiDeptQuery, useStorePenilaianQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Loading from "../../loading/Loading";
 import Error from "../../error/Error";
@@ -13,6 +13,7 @@ import BarChartDept from "../../../components/atoms/charts/BarCharts";
 import RadialChart from "../../../components/atoms/charts/RadialCharts";
 import { useGetIntiQuery } from "../../../services/user";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function Penilaian({isSidebarOpen, nama}){
     const now = new Date();
@@ -28,17 +29,23 @@ export default function Penilaian({isSidebarOpen, nama}){
     const [templateModal, setTemplateModal] = useState(false);
     const [templateRange, setTemplateRange] = useState({ start: '', end: '' });
     const toggleTemplateModal = () => setTemplateModal(!templateModal);
+    const [hoveredIndex, setHoveredIndex] = useState(null);
 
     const month = form.waktu;
     const [open, setOpen] = useState(false);
     const [ penilai, setPenilai ] = useState(null);
-     
+
+    const [edit, setEdit] = useState(false);
+    const [deletePenilaian] = useDeletePenilaianMutation();
+    
     const handleOpen = () => setOpen(!open);
+    const handleEdit = () => setEdit(!edit);
     const { data:deptData, isLoading:deptLoadingData } = useGetDeptQuery();
     const dept = deptData?.data?.filter((item)=> item.id_depart === form.departemen);
     const deptNama = dept?.length > 0 ? dept[0].nama : '';
     const { data, isLoading, isError, refetch:refetchPenilaianStaff } = useGetAllNilaiQuery(month);
     const [generateTemplateStaff, { isLoading: isGenerating }] = useGenerateTemplateStaffMutation();
+    const { data: penilaianData, isLoading: penilaianLoading, isError: penilaianError, refetch:refecthPenilaian } = useStorePenilaianQuery();
     const { data: deptNilai, isLoading: deptLoading, isError: deptError } = useGetNilaiDeptQuery(month);
     const { data: deptDetailNilai, isLoading: deptDetailLoading, isError: deptDetailError, refetch } = useGetNilaiDeptDetailQuery({month, penilai});
     const { data: bpiData, isLoading: bpiLoading, isError: bpiError } = useGetIntiQuery();
@@ -64,6 +71,7 @@ export default function Penilaian({isSidebarOpen, nama}){
     }
     const depart = deptNilai ? dotm?.nama_departemen  : 0;
     const { data: reviewData, isLoading: reviewLoading, refetch:refetchReview } = useGetReviewQuery({depart, month});
+    
     const handleGenerateTemplate = async () => {
         try {
             await generateTemplateStaff({
@@ -85,11 +93,32 @@ export default function Penilaian({isSidebarOpen, nama}){
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal membuat template',
-                text: error?.response?.data?.message || 'Terjadi kesalahan',
+                text: error?.data?.message || 'Terjadi kesalahan',
             });
 
             setTemplateModal(false);
         }
+    };
+
+    const handleDeleteReview = async(bulan) => {
+        setEdit(false);
+        const ok = await Swal.fire({
+            title: "Hapus Bulan?",
+            text: `Yakin hapus bulan ${bulan}?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, hapus!",
+        }).then((r) => r.isConfirmed);
+    
+        if (!ok) return;
+        try {
+            deletePenilaian(bulan);
+            refecthPenilaian();
+            toast.success("Bulan berhasil dihapus");
+          } catch (err) {
+            toast.error("Gagal menghapus bulan");
+            console.error("Delete error:", err);
+          }
     };
 
     const columnsPenilaian = [
@@ -142,8 +171,8 @@ export default function Penilaian({isSidebarOpen, nama}){
     ];
 
     if ( isLoading || lineChartLoading || barChartLoading || deptLoading 
-        || bpiLoading || deptDetailLoading || isGenerating || reviewLoading || deptLoadingData) return <Loading/>;
-    if ( isError || deptError || bpiError || deptDetailError) return <Error/>;
+        || bpiLoading || deptDetailLoading || isGenerating || reviewLoading || deptLoadingData || penilaianLoading) return <Loading/>;
+    if ( isError || deptError || bpiError || deptDetailError || penilaianError) return <Error/>;
     
     return(
          <div className="w-full overflow-x-auto">
@@ -218,6 +247,10 @@ export default function Penilaian({isSidebarOpen, nama}){
                         <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                         <Typography className="text-md">Buat Template</Typography>
                     </Button>
+                    <Button onClick={handleEdit} color="yellow" size="sm" className="mb-3 flex items-center gap-3">
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">Edit Template</Typography>
+                    </Button>
                 </div>
             </div>
             <Dialog open={templateModal} handler={toggleTemplateModal} size="sm">
@@ -240,6 +273,63 @@ export default function Penilaian({isSidebarOpen, nama}){
                     <Button variant="text" color="red" onClick={toggleTemplateModal}>Cancel</Button>
                     <Button variant="gradient" color="green" onClick={handleGenerateTemplate}>Submit</Button>
                 </DialogFooter>
+            </Dialog>
+            <Dialog
+                open={edit}
+                handler={handleEdit}
+                animate={{
+                    mount: { scale: 1, y: 0 },
+                    unmount: { scale: 0.9, y: -100 },
+                }}
+            >
+                <DialogHeader>
+                    <Typography className='text-3xl font-semibold text-center mb-3'>Edit Bulan Penilaian</Typography>
+                </DialogHeader>
+                    <DialogBody className="flex justify-center items-center gap-4">
+                        <div className="flex flex-col gap-2 w-full h-full overflow-y-auto scrollbar-thin">
+                            {penilaianData && penilaianData.length > 0 ? (
+                            penilaianData.map((item, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className="flex flex-col justify-between sm:flex-row sm:items-start gap-2 py-2 px-4 border-b"
+                                        onMouseEnter={() => setHoveredIndex(index)}
+                                        onMouseLeave={() => setHoveredIndex(null)}
+                                    >
+                                        {/* Nama Bulan */}
+                                        <Typography variant="small" className="font-bold mb-1 sm:mb-0 sm:w-[120px] truncate">
+                                        {item.bulan} Month
+                                        </Typography>
+
+                                        {/* Hapus Icon */}
+                                        {hoveredIndex === index && (
+                                            <TrashIcon
+                                                className="w-[18px] h-[18px] text-red-500 transform cursor-pointer"
+                                                onClick={() => handleDeleteReview(item.bulan)}
+                                            />
+                                        )}
+                                    </div>
+                                );
+                            })
+                            ) : (
+                            <div className="flex gap-4 p-4 justify-center items-center">
+                                <Typography variant="small" className="font-bold mb-1">
+                                Belum ada bulan penilaian
+                                </Typography>
+                            </div>
+                            )}
+                        </div>
+                    </DialogBody>
+                    <DialogFooter>
+                        <Button
+                            variant="text"
+                            color="red"
+                            onClick={handleEdit}
+                            className="mr-1"
+                        >
+                            <span>Cancel</span>
+                        </Button>   
+                    </DialogFooter>
             </Dialog>
             <div className="my-3">
                 <Card className="p-4 mb-3 border border-md border-black bg-white/5 backdrop-blur-md">

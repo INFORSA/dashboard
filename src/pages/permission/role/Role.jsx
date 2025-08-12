@@ -40,38 +40,39 @@ export default function Role(){
         }
     };
 
-    const [registerAdmin] = useAddRoleMutation();
+    const [registerRole] = useAddRoleMutation();
 
     const [open, setOpen] = React.useState(false);
  
     const handleOpen = () => setOpen(!open);
     
-      const [form, setForm] = useState({
+    const [form, setForm] = useState({
         nama_role:''
-      });
-    
-      const handleChange = (e) => {
+    });
+
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
-      };
-    
-      const handleRegister = async (e) => {
+    };
+
+    const handleRegister = async (e) => {
         e.preventDefault();
-    
+
         const formData = new FormData();
         formData.append('nama_role', form.nama_role);
-    
+
         try {
-          const response = await registerAdmin(formData);
-          Swal.fire("Sukses", response.message, "success");
-          setForm({ nama_role:'' });
-          setOpen(false);
-          refetch();
+            const response = await registerRole(formData).unwrap();
+            Swal.fire("Sukses", response.message, "success");
+            setForm({ nama_role:'' });
+            setOpen(false);
+            refetch();
         } catch (err) {
-          console.log('RTK error:', err);
-          Swal.fire("Gagal", err?.data?.message || "Proses gagal", "error");
+            console.log('RTK error:', err);
+            setOpen(false);
+            Swal.fire("Gagal", err?.data?.message || "Proses gagal", "error");
         }
-      };
+    };
 
     const columnsUser = [
         { className:"w-10", key: "no", label: "No" },

@@ -19,7 +19,7 @@ import Error from "../error/Error";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import RadialChart from "../../components/atoms/charts/RadialCharts";
 
-export default function Departement({isSidebarOpen, departemen, nama}){
+export default function Dept({isSidebarOpen, departemen, nama}){
     const { name } = useParams();
     const depart = departemen ?? name?.toUpperCase();
     const now = new Date();
@@ -149,9 +149,9 @@ export default function Departement({isSidebarOpen, departemen, nama}){
                     isSidebarOpen={isSidebarOpen} 
                     title="Performance Department"
                     data={reviewData} 
-                    value={deptNilai.length > 0 ? dotm.total_akhir : 0}
-                    departmentName={deptNilai.length > 0 ? dotm.nama_departemen : depart} 
-                    month={deptNilai.length > 0 ? dotm.bulan : ""}
+                    value={deptNilai.length > 0 & dotm ? dotm.total_akhir : 0}
+                    departmentName={deptNilai.length > 0 & dotm ? dotm.nama_departemen : depart} 
+                    month={deptNilai.length > 0 & dotm ? dotm.bulan : ""}
                     refetch={reviewRefecth}
                 />
             </div>

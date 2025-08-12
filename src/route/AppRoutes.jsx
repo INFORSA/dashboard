@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../pages/dashboard/Dashboard";
-import Departement from "../pages/dept/Departement";
+import Dept from "../pages/dept/Dept";
 import AddStaff from "../pages/permission/user/AddStaff";
 import AddAdmin from "../pages/permission/user/AddAdmin";
 import User from "../pages/permission/user/User";
@@ -20,6 +20,7 @@ import Sertif from "../pages/document/Sertif";
 import Profile from "../pages/profile/Profile";
 import Error from "../pages/error/Error";
 import Loading from "../pages/loading/Loading";
+import Departemen from "../pages/permission/departemen/Departemen";
 
 const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
   const depart = login?.departemen;
@@ -57,7 +58,7 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
         {role === "superadmin" && (
           <>
             {/* <Route index path="/" element={<Dashboard isSidebarOpen={isSidebarOpen} />} /> */}
-            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
+            <Route path="/dept/:name" element={<Dept isSidebarOpen={isSidebarOpen}/>} />
 
             <Route path="/permission/user" element={<User />} />
             <Route path="/permission/user/import" element={<ImportExcel dataImport="user"/>} />
@@ -70,6 +71,8 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
             <Route path="/permission/role" element={<Role />} />
             <Route path="/permission/role/add" element={<AddRole />} />
             <Route path="/permission/role/edit/:id" element={<EditRole />} />
+
+            <Route path="/permission/departemen" element={<Departemen />} />
 
             <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen} nama={username} />} />
             <Route path="/penilaian/import/staff" element={<ImportExcel dataImport="penilaian" jenisPenilaian="staff" />} />
@@ -86,7 +89,7 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
         )}
         {role === "dosen" && (
           <>
-            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen}/>} />
+            <Route path="/dept/:name" element={<Dept isSidebarOpen={isSidebarOpen}/>} />
 
             <Route path="/hasil-penilaian" element={<Penilaian isSidebarOpen={isSidebarOpen}/>} />
 
@@ -97,7 +100,7 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
           <>
             {/* <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} /> */}
             <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
-            <Route path="/dept/:name" element={<Departement isSidebarOpen={isSidebarOpen} nama={keterangan}/>} />
+            <Route path="/dept/:name" element={<Dept isSidebarOpen={isSidebarOpen} nama={keterangan}/>} />
           </>
         )}
         {role === "staff" && (

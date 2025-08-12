@@ -6,7 +6,7 @@ export const excelAPI = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: "include",
     validateStatus: (response) => {
-      return response.status === 200 || response.status === 304;
+      return response.status >= 200 && response.status < 300;
     }
   }),
   tagTypes: ['User', 'Anggota', 'Penilaian'],

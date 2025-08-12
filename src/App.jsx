@@ -16,7 +16,7 @@ function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
   const {data, isLoading} = useGetCurrentUserQuery();
-
+  
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   return (

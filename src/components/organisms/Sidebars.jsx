@@ -20,6 +20,7 @@ import {
   ClipboardDocumentIcon,
   DocumentIcon,
   PresentationChartBarIcon,
+  RectangleGroupIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import HRD from '../../assets/dept/HRD-black.png';
@@ -32,15 +33,22 @@ import inforsa from '../../assets/inforsa.png';
 import { NavLink, useLocation } from "react-router-dom";
 import { useGetCurrentUserQuery } from "../../services/login";
 import { DocumentCheckIcon } from "@heroicons/react/24/solid";
+import { useGetDeptQuery } from "../../services/dept";
+import Loading from "../../pages/loading/Loading";
  
 export default function Sidebars({isOpen}) {
   const [open, setOpen] = React.useState(0);
   const {data} = useGetCurrentUserQuery();
+  const { data: deptData, isLoading: deptLoading } = useGetDeptQuery();
   const location = useLocation();
- 
+  
+  const deptIcons = [HRD, RELACS, PSD, Adwel, COMINFO, EDEN]; 
+
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
-  };
+  }; 
+
+  if(deptLoading) return <Loading/>;
  
   return (
     <Card className={`bg-gradient-to-br from-[#dfe3ec] via-[#f3f4f6] to-[#e2e8f0] 
@@ -94,66 +102,21 @@ export default function Sidebars({isOpen}) {
               </ListItem>
               <AccordionBody className="py-1">
                 <List className="p-0">
-                  <NavLink to="/dept/hrd">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <img src={HRD} className="h-5 w-5 mb-1" />
-                      </ListItemPrefix>
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/hrd" && "text-[#2647AC]"}`}>
-                          HRD
+                  {deptData.data?.map((dept, index) => (
+                    <NavLink key={dept.id_depart} to={`/dept/${dept.nama}`}>
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <img src={deptIcons[index] || HRD} className="h-5 w-5 mb-1" />
+                        </ListItemPrefix>
+                        <Typography
+                          color="black"
+                          className={`mr-auto font-normal ${location.pathname === "/dept/" + dept.nama && "text-[#2647AC]"}`}
+                        >
+                          {dept.nama}
                         </Typography>
-                    </ListItem>
-                  </NavLink>
-                  <NavLink to="/dept/relacs">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <img src={RELACS} className="h-5 w-5 mb-1" />
-                      </ListItemPrefix>
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/relacs" && "text-[#2647AC]"}`}>
-                          RELACS
-                        </Typography>
-                    </ListItem>
-                  </NavLink>
-                  <NavLink to="/dept/psd">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <img src={PSD} className="h-5 w-5 mb-1" />
-                      </ListItemPrefix>
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/psd" && "text-[#2647AC]"}`}>
-                          PSD
-                        </Typography>
-                    </ListItem>
-                  </NavLink>
-                  <NavLink to="/dept/adwel">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <img src={Adwel} className="h-5 w-5 mb-2" />
-                      </ListItemPrefix>
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/adwel" && "text-[#2647AC]"}`}>
-                          ADWEL
-                        </Typography>
-                    </ListItem>
-                  </NavLink>
-                  <NavLink to="/dept/eden">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <img src={EDEN} className="h-5 w-5 mb-1" />
-                      </ListItemPrefix>
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/eden" && "text-[#2647AC]"}`}>
-                          EDEN
-                        </Typography>
-                    </ListItem>
-                  </NavLink>
-                  <NavLink to="/dept/cominfo">
-                    <ListItem className="pl-7">
-                      <ListItemPrefix>
-                        <img src={COMINFO} className="h-5 w-5 mb-1" />
-                      </ListItemPrefix>
-                        <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/cominfo" && "text-[#2647AC]"}`}>
-                          COMINFO
-                        </Typography>
-                    </ListItem>
-                  </NavLink>
+                      </ListItem>
+                    </NavLink>
+                  ))}
                 </List>
               </AccordionBody>
             </Accordion>
@@ -199,6 +162,16 @@ export default function Sidebars({isOpen}) {
                         </ListItemPrefix>
                             <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
                               Roles
+                            </Typography>
+                      </ListItem>
+                    </NavLink>
+                    <NavLink to="permission/departemen">
+                      <ListItem className="pl-7">
+                        <ListItemPrefix>
+                          <RectangleGroupIcon color="black" className="h-5 w-5"/>
+                        </ListItemPrefix>
+                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                              Departemen
                             </Typography>
                       </ListItem>
                     </NavLink>

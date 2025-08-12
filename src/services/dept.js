@@ -6,12 +6,35 @@ export const deptAPI = createApi({
     baseUrl: import.meta.env.VITE_API,
     credentials: "include",
     validateStatus: (response) => {
-      return response.status === 200 || response.status === 304;
+      return response.status >= 200 && response.status < 300;
     }
   }),
   endpoints: (build) => ({
     getDept: build.query({
         query: () => "dept/get"
+    }),
+    storeDept: build.query({
+      query: (id) => `dept/get/departemen/${id}`
+    }),
+    addDept: build.mutation({
+      query: (body) => ({
+        url: 'dept/add/departemen',
+        method: 'POST',
+        body,
+      }),
+    }),
+    updateDept: build.mutation({
+      query: ({ ...body }) => ({
+        url: `dept/update/departemen`, 
+        method: 'PUT',
+        body,   
+      }),
+    }),
+    deleteDept: build.mutation({
+      query: (id) => ({
+        url: `dept/remove/departemen/${id}`, 
+        method: 'DELETE',
+      }),
     }),
     getPengurus: build.query({
         query: () => `dept/get/pengurus`
@@ -35,4 +58,6 @@ export const deptAPI = createApi({
   }),
 })
 
-export const { useGetDeptQuery, useGetPengurusQuery, useGetReviewQuery, useAddReviewMutation, useDeleteReviewMutation } = deptAPI
+export const { useGetDeptQuery, useGetPengurusQuery, useGetReviewQuery, useAddReviewMutation, useDeleteReviewMutation,
+                useAddDeptMutation, useDeleteDeptMutation, useStoreDeptQuery, useUpdateDeptMutation              
+              } = deptAPI
