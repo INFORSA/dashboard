@@ -198,8 +198,8 @@ export default function Penilaian({isSidebarOpen, nama}){
                 <DialogHeader>
                     <Typography className='text-3xl font-semibold text-center mb-3'>Import Data</Typography>
                 </DialogHeader>
-                    <DialogBody className="flex justify-center items-center gap-4">
-                        <Button color="blue-gray" size="sm" className="mb-3">
+                    <DialogBody className="flex flex-col justify-center items-center gap-2">
+                        <Button color="gray" size="sm" className="mb-3 w-full">
                             <Link className="flex items-center gap-3" to='/penilaian/import/staff'>
                                 <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                                 <Typography className="text-md">
@@ -207,7 +207,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                                 </Typography>
                             </Link>
                         </Button>
-                        <Button color="blue-gray" size="sm" className="mb-3">
+                        <Button color="blue-gray" size="sm" className="mb-3 w-full">
                             <Link className="flex items-center gap-3" to='/penilaian/import/departemen'>
                                 <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                                 <Typography className="text-md">
@@ -227,31 +227,21 @@ export default function Penilaian({isSidebarOpen, nama}){
                         </Button>   
                     </DialogFooter>
             </Dialog>
-            <div className="flex gap-2">
-                {/* <Button color="blue" size="sm" className="mb-3">
-                    <Link className="flex items-center gap-3" to='/penilaian/add'>
-                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                        <Typography className="text-md">
-                            Isi Penilaian
-                        </Typography>
-                    </Link>
-                </Button> */}
-                <div className="flex gap-4">
-                    <Button onClick={handleOpen}  color="blue-gray" size="sm" className="mb-3 flex items-center gap-3">
-                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                        <Typography className="text-md">
-                            Import Data
-                        </Typography>
-                    </Button>
-                    <Button onClick={toggleTemplateModal} color="blue" size="sm" className="mb-3 flex items-center gap-3">
-                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                        <Typography className="text-md">Buat Template</Typography>
-                    </Button>
-                    <Button onClick={handleEdit} color="yellow" size="sm" className="mb-3 flex items-center gap-3">
-                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                        <Typography className="text-md">Edit Template</Typography>
-                    </Button>
-                </div>
+            <div className="flex flex-col lg:flex-row lg:gap-4 gap-2">
+                <Button onClick={handleOpen}  color="brown" size="sm" className="mb-3 flex items-center gap-3">
+                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                    <Typography className="text-md">
+                        Import Data
+                    </Typography>
+                </Button>
+                <Button onClick={toggleTemplateModal} color="blue" size="sm" className="mb-3 flex items-center gap-3">
+                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                    <Typography className="text-md">Buat Template</Typography>
+                </Button>
+                <Button onClick={handleEdit} color="yellow" size="sm" className="mb-3 flex items-center gap-3">
+                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                    <Typography className="text-md">Edit Template</Typography>
+                </Button>
             </div>
             <Dialog open={templateModal} handler={toggleTemplateModal} size="sm">
                 <DialogHeader>Buat Template Penilaian</DialogHeader>
@@ -286,7 +276,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                     <Typography className='text-3xl font-semibold text-center mb-3'>Edit Bulan Penilaian</Typography>
                 </DialogHeader>
                     <DialogBody className="flex justify-center items-center gap-4">
-                        <div className="flex flex-col gap-2 w-full h-full overflow-y-auto scrollbar-thin">
+                        <div className="flex flex-col gap-2 w-full h-96 overflow-y-auto scrollbar-thin">
                             {penilaianData && penilaianData.length > 0 ? (
                             penilaianData.map((item, index) => {
                                 return (
