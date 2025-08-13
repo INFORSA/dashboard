@@ -155,7 +155,7 @@ export default function Sidebars({isOpen}) {
                             </Typography>
                       </ListItem>
                     </NavLink>
-                    <NavLink to="permission/role">
+                    {/* <NavLink to="permission/role">
                       <ListItem className="pl-7">
                         <ListItemPrefix>
                           <UserGroupIcon color="black" className="h-5 w-5"/>
@@ -164,7 +164,7 @@ export default function Sidebars({isOpen}) {
                               Roles
                             </Typography>
                       </ListItem>
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink to="permission/departemen">
                       <ListItem className="pl-7">
                         <ListItemPrefix>
