@@ -170,7 +170,7 @@ export default function Sidebars({isOpen}) {
                         <ListItemPrefix>
                           <RectangleGroupIcon color="black" className="h-5 w-5"/>
                         </ListItemPrefix>
-                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/departemen" && "text-[#2647AC]"}`}>
                               Departemen
                             </Typography>
                       </ListItem>
