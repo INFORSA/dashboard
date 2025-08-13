@@ -68,12 +68,12 @@ const AddStaff = () => {
         <title>Tambah Pengguna</title>
       </HelmetProvider>
       <Typography className='text-3xl font-semibold text-center mb-3'>Tambah Anggota</Typography>
-      <div className='flex justify-end mb-3'>
+      {/* <div className='flex justify-end mb-3'>
           <Button color='green' className='flex items-center gap-3' size='md'>
             <PlusCircleIcon className='w-5 h-5'/>
             <Typography className='text-md'>Import</Typography>
           </Button>
-      </div>
+      </div> */}
       <form onSubmit={handleRegister}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3'>
           <Input
