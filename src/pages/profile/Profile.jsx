@@ -76,29 +76,31 @@ export default function Profile({ nama, isSidebarOpen }){
     return(
         <div className="my-3 lg:max-w-[82vw]">
             <HelmetProvider><title>{personalData[0].nama_staff}</title></HelmetProvider>
-            <div className="flex justify-between border border-black rounded-md p-5 hover:bg-white">
-                <div className="flex gap-3">
-                    <div className="font-semibold text-md">
-                        <h3>Nama</h3>
-                        <h3>Departemen</h3>
-                        <h3>NIM</h3>
-                    </div>
-                    <div>
-                        <h3>:</h3>
-                        <h3>:</h3>
-                        <h3>:</h3>
-                    </div>
-                    <div className="font-base text-md">
-                        <h3>{personalData[0].nama_staff}</h3>
-                        <h3>{personalData[0].nama_departemen}</h3>
-                        <h3>{personalData[0].nim}</h3>
-                    </div>
-                </div>
+            <div className="flex flex-col-reverse lg:flex-row justify-between border border-black rounded-md p-5 hover:bg-white">
+                <table className="">
+                    <tr className="font-semibold text-md">
+                        <td>Nama</td>
+                        <td className="px-3">:</td>
+                        <td>{personalData[0].nama_staff}</td>
+                    </tr>
+                    <tr>
+                        <td>Departemen</td>
+                        <td className="px-3">:</td>
+                        <td>{personalData[0].nama_departemen}</td>
+                    </tr>
+                    <tr className="font-base text-md">
+                        <td>NIM</td>
+                        <td className="px-3">:</td>
+                        <td>{personalData[0].nim}</td>
+                    </tr>
+                </table>
                 <div>
                     {personalData[0].gambar ? (
                         <img src="" alt="" />
                     ):(
-                        <div className="w-20 h-20 bg-gray-700 rounded-full"></div>
+                        <div className="flex justify-center mb-5 lg:my-0">
+                            <div className="w-28 h-28 lg:w-20 lg:h-20 bg-gray-700 rounded-full"></div>
+                        </div>
                     )}
                 </div>
             </div>
