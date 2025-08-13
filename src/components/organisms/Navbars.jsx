@@ -13,7 +13,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
-import { HomeIcon, ClockIcon, CalendarIcon, Square2StackIcon, FlagIcon, ChevronDownIcon, InboxIcon, UserCircleIcon, UserGroupIcon, ChartBarIcon, ClipboardDocumentIcon, PresentationChartBarIcon, DocumentIcon, DocumentCheckIcon } from "@heroicons/react/24/solid";
+import { HomeIcon, ClockIcon, CalendarIcon, Square2StackIcon, FlagIcon, ChevronDownIcon, InboxIcon, UserCircleIcon, UserGroupIcon, ChartBarIcon, ClipboardDocumentIcon, PresentationChartBarIcon, DocumentIcon, DocumentCheckIcon, RectangleGroupIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
 import { useGetCurrentUserQuery, useLogoutMutation } from "../../services/login";
 import HRD from '../../assets/dept/HRD-black.png';
@@ -274,16 +274,16 @@ export default function Navbars() {
         <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-gray-200">
           {/* Mobile Sidebar Menu */}
           <List className="px-2">
-            <ListItem>
-              <ListItemPrefix>
-                <Square2StackIcon className="h-5 w-5 text-black" />
-              </ListItemPrefix>
-              <NavLink to="/">
-                <Typography className={`font-normal ${location.pathname === "/" && "text-[#2647AC]"}`}>
-                  Dashboard
-                </Typography>
-              </NavLink>
-            </ListItem>
+            <NavLink to="/">
+              <ListItem>
+                <ListItemPrefix>
+                  <Square2StackIcon className="h-5 w-5 text-black" />
+                </ListItemPrefix>
+                  <Typography className={`font-normal ${location.pathname === "/" && "text-[#2647AC]"}`}>
+                    Dashboard
+                  </Typography>
+              </ListItem>
+            </NavLink>
 
             {(data?.role === "superadmin" || data?.role === "dosen") && (
               <>
@@ -310,16 +310,16 @@ export default function Navbars() {
                         { name: "EDEN", to: "/dept/eden", icon: EDEN },
                         { name: "COMINFO", to: "/dept/cominfo", icon: COMINFO }
                       ].map(({ name, to, icon }) => (
-                        <ListItem key={name} className="pl-7">
-                          <ListItemPrefix>
-                            <img src={icon} className="h-5 w-5 mb-1" />
-                          </ListItemPrefix>
-                          <NavLink to={to}>
-                            <Typography className={`font-normal ${location.pathname === to && "text-[#2647AC]"}`}>
-                              {name}
-                            </Typography>
-                          </NavLink>
-                        </ListItem>
+                        <NavLink key={name} to={to}>
+                          <ListItem className="pl-7">
+                            <ListItemPrefix>
+                              <img src={icon} className="h-5 w-5 mb-1" />
+                            </ListItemPrefix>
+                              <Typography className={`font-normal ${location.pathname === to && "text-[#2647AC]"}`}>
+                                {name}
+                              </Typography>
+                          </ListItem>
+                        </NavLink>
                       ))}
                     </List>
                   </AccordionBody>
@@ -341,26 +341,36 @@ export default function Navbars() {
                     </ListItem>
                     <AccordionBody className="py-1">
                       <List className="p-0">
-                        <ListItem className="pl-7">
-                          <ListItemPrefix>
-                            <UserCircleIcon className="h-5 w-5 text-black" />
-                          </ListItemPrefix>
-                          <NavLink to="/permission/user">
-                            <Typography className={`font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
-                              Users
-                            </Typography>
-                          </NavLink>
-                        </ListItem>
-                        <ListItem className="pl-7">
-                          <ListItemPrefix>
-                            <UserGroupIcon className="h-5 w-5 text-black" />
-                          </ListItemPrefix>
-                          <NavLink to="/permission/role">
-                            <Typography className={`font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
-                              Roles
-                            </Typography>
-                          </NavLink>
-                        </ListItem>
+                        <NavLink to="/permission/user">
+                          <ListItem className="pl-7">
+                            <ListItemPrefix>
+                              <UserCircleIcon className="h-5 w-5 text-black" />
+                            </ListItemPrefix>
+                              <Typography className={`font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                                Users
+                              </Typography>
+                          </ListItem>
+                        </NavLink>
+                        <NavLink to="/permission/role">
+                          <ListItem className="pl-7">
+                            <ListItemPrefix>
+                              <UserGroupIcon className="h-5 w-5 text-black" />
+                            </ListItemPrefix>
+                              <Typography className={`font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
+                                Roles
+                              </Typography>
+                          </ListItem>
+                        </NavLink>
+                        <NavLink to="/permission/departemen">
+                          <ListItem className="pl-7">
+                            <ListItemPrefix>
+                              <RectangleGroupIcon className="h-5 w-5 text-black" />
+                            </ListItemPrefix>
+                              <Typography className={`font-normal ${location.pathname === "/permission/departemen" && "text-[#2647AC]"}`}>
+                                Departemen
+                              </Typography>
+                          </ListItem>
+                        </NavLink>
                       </List>
                     </AccordionBody>
                   </Accordion>
@@ -382,27 +392,27 @@ export default function Navbars() {
                   <AccordionBody className="py-1">
                     <List className="p-0">
                       {data?.role === "superadmin" && (
+                        <NavLink to="/matriks-penilaian">
+                          <ListItem className="pl-7">
+                            <ListItemPrefix>
+                              <ClipboardDocumentIcon className="h-5 w-5 text-black" />
+                            </ListItemPrefix>
+                              <Typography className={`font-normal ${location.pathname === "/matriks-penilaian" && "text-[#2647AC]"}`}>
+                                Matriks Penilaian
+                              </Typography>
+                          </ListItem>
+                        </NavLink>
+                      )}
+                      <NavLink to="/hasil-penilaian">
                         <ListItem className="pl-7">
                           <ListItemPrefix>
-                            <ClipboardDocumentIcon className="h-5 w-5 text-black" />
+                            <PresentationChartBarIcon className="h-5 w-5 text-black" />
                           </ListItemPrefix>
-                          <NavLink to="/matriks-penilaian">
-                            <Typography className={`font-normal ${location.pathname === "/matriks-penilaian" && "text-[#2647AC]"}`}>
-                              Matriks Penilaian
+                            <Typography className={`font-normal ${location.pathname === "/hasil-penilaian" && "text-[#2647AC]"}`}>
+                              Hasil Penilaian
                             </Typography>
-                          </NavLink>
                         </ListItem>
-                      )}
-                      <ListItem className="pl-7">
-                        <ListItemPrefix>
-                          <PresentationChartBarIcon className="h-5 w-5 text-black" />
-                        </ListItemPrefix>
-                        <NavLink to="/hasil-penilaian">
-                          <Typography className={`font-normal ${location.pathname === "/hasil-penilaian" && "text-[#2647AC]"}`}>
-                            Hasil Penilaian
-                          </Typography>
-                        </NavLink>
-                      </ListItem>
+                      </NavLink>
                     </List>
                   </AccordionBody>
                 </Accordion>
@@ -423,16 +433,16 @@ export default function Navbars() {
                     </ListItem>
                     <AccordionBody className="py-1">
                       <List className="p-0">
-                        <ListItem className="pl-7">
-                          <ListItemPrefix>
-                            <DocumentCheckIcon className="h-5 w-5 text-black" />
-                          </ListItemPrefix>
-                          <NavLink to="/document/sertif">
-                            <Typography className={`font-normal ${location.pathname === "/document/sertif" && "text-[#2647AC]"}`}>
-                              Sertifikat
-                            </Typography>
-                          </NavLink>
-                        </ListItem>
+                        <NavLink to="/document/sertif">
+                          <ListItem className="pl-7">
+                            <ListItemPrefix>
+                              <DocumentCheckIcon className="h-5 w-5 text-black" />
+                            </ListItemPrefix>
+                              <Typography className={`font-normal ${location.pathname === "/document/sertif" && "text-[#2647AC]"}`}>
+                                Sertifikat
+                              </Typography>
+                          </ListItem>
+                        </NavLink>
                       </List>
                     </AccordionBody>
                   </Accordion>

@@ -74,7 +74,7 @@ export default function Profile({ nama, isSidebarOpen }){
     if(personalError || nilaiError || chartError || sertifError) return <Error/>
     
     return(
-        <div className="my-3 max-w-[82vw]">
+        <div className="my-3 lg:max-w-[82vw]">
             <HelmetProvider><title>{personalData[0].nama_staff}</title></HelmetProvider>
             <div className="flex justify-between border border-black rounded-md p-5 hover:bg-white">
                 <div className="flex gap-3">
