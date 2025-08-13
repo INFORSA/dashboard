@@ -78,25 +78,32 @@ export default function Profile({ nama, isSidebarOpen }){
             <HelmetProvider><title>{personalData[0].nama_staff}</title></HelmetProvider>
             <div className="flex flex-col-reverse lg:flex-row justify-between border border-black rounded-md p-5 hover:bg-white">
                 <table className="">
-                    <tr className="font-semibold text-md">
-                        <td>Nama</td>
+                    <tr className="text-md">
+                        <td className="font-semibold">Nama</td>
                         <td className="px-3">:</td>
                         <td>{personalData[0].nama_staff}</td>
                     </tr>
-                    <tr>
-                        <td>Departemen</td>
+                    <tr className="text-md">
+                        <td className="font-semibold">Departemen</td>
                         <td className="px-3">:</td>
                         <td>{personalData[0].nama_departemen}</td>
                     </tr>
-                    <tr className="font-base text-md">
-                        <td>NIM</td>
+                    <tr className="text-md">
+                        <td className="font-semibold">NIM</td>
                         <td className="px-3">:</td>
                         <td>{personalData[0].nim}</td>
                     </tr>
                 </table>
                 <div>
                     {personalData[0].gambar ? (
-                        <img src="" alt="" />
+                        <div className="flex justify-center mb-5 lg:my-0">
+                            <img 
+                                src={`http://localhost:3000/uploads/${personalData[0].gambar}`}
+                                // src={`https://dashboard-api.inforsa-unmul.org/uploads/${personalData[0].gambar}`}
+                                alt="Foto Staff"
+                                className="w-28 h-28 lg:w-20 lg:h-20 rounded-full object-cover"
+                            />
+                        </div>
                     ):(
                         <div className="flex justify-center mb-5 lg:my-0">
                             <div className="w-28 h-28 lg:w-20 lg:h-20 bg-gray-700 rounded-full"></div>

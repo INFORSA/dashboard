@@ -142,7 +142,6 @@ const AddStaff = () => {
               onChange={handleChange}
               placeholder="Gambar"
               label="Gambar"
-              required
             />
         </div>
         <div className='flex justify-end my-3'>

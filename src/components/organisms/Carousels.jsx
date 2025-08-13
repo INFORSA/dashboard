@@ -1,5 +1,7 @@
 import { Carousel } from "@material-tailwind/react";
 import Pict1 from '../../assets/family-si.png';
+import Pict2 from '../../assets/inforsa2.jpeg';
+import Pict3 from '../../assets/inforsa3.jpeg';
  
 export default function Carousels() {
   return (
@@ -25,12 +27,12 @@ export default function Carousels() {
         className="h-96 w-full object-cover"
       />
       <img
-        src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
+        src={Pict2}
         alt="image 2"
         className="h-96 w-full object-cover"
       />
       <img
-        src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
+        src={Pict3}
         alt="image 3"
         className="h-96 w-full object-cover"
       />
