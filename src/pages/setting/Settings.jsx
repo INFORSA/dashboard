@@ -71,12 +71,13 @@ export default function Settings({ nama, role }) {
     }
 
     try {
-      await updatePassword({ passwordLama, passwordBaru }).unwrap();
+      await updatePassword({ passwordLama, passwordBaru, konfirmasiPassword }).unwrap();
       Swal.fire("Berhasil", "Password berhasil diubah", "success");
       setPasswordForm({ passwordLama: "", passwordBaru: "", konfirmasiPassword: "" });
       setOpenPassModal(false);
     } catch (err) {
       Swal.fire("Gagal", err?.data?.message || "Gagal mengubah password", "error");
+      setOpenPassModal(false);
     }
   };
 
