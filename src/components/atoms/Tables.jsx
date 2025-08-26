@@ -136,72 +136,83 @@ export function Tables({ maxRow, columns = [], rows = [], title = "", descriptio
               </tr>
             </thead>
             <tbody>
-              {paginatedRows.map((row, index) => {
-                const isLast = index === rows.length - 1;
-                const classes = isLast ? "p-4" : `p-4 whitespace-nowrap border-b border-blue-gray-50`;
-
-                return (
-                  <tr key={index}>
-                    {columns.map((col) => {
-                      const idKey = col.idKey;
-                      const value = row[col.key];
-                      const detailId = idKey ? row[idKey] : null;
-                      const isEditing = editingCell?.rowId === detailId && editingCell?.colKey === col.key;
-                      return (
-                        <td className={`${classes} ${detailId && 'hover:bg-black/15'}`} key={col.key} 
-                            onClick={() => {
-                              if (!inlineEdit) return; // ✅ Kalau inlineEdit false, klik tidak ngapa-ngapain
-                              if (detailId) {
-                                handleEdit(detailId, col.key, value);
-                              } else {
-                                toast.error("❗ Tidak untuk diedit", col.key);
-                              }
-                            }}
-                          >
-                          {isEditing ? (
-                            <input
-                              className="border rounded px-2 py-1 w-8"
-                              value={editValue}
-                              onChange={(e) => handleFieldChange(e.target.value)}
-                              onBlur={() => handleSave(detailId, col.key, editValue)}
-                              onKeyDown={(e) => e.key === "Enter" && handleSave(detailId, col.key, editValue)}
-                              autoFocus
-                            />
-                          ) : (
-                            <div className="flex items-center gap-3">
-                              <Typography variant="small" color="blue-gray" className="font-base">
-                                {col.key === "no" ? index + 1 : row[col.key]}
-                              </Typography>
-                            </div>
-                          )}
-                        </td>
-                      );
-                    })}
-                    <td className={classes} hidden={actionHidden}>
-                      <div className="flex gap-2">
-                        <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
-                          <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
-                        </Button>
-                        <div hidden={removeHidden}>
-                          <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
-                            <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
+              {paginatedRows.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={columns.length + 2} // +2 kalau ada kolom action/profile, sesuaikan
+                    className="text-center py-6 text-slate-500"
+                  >
+                    Tidak ada data
+                  </td>
+                </tr>
+              ) : (
+                paginatedRows.map((row, index) => {
+                  const isLast = index === rows.length - 1;
+                  const classes = isLast ? "p-4" : `p-4 whitespace-nowrap border-b border-blue-gray-50`;
+                  
+                  return (
+                    <tr key={index}>
+                      {columns.map((col) => {
+                        const idKey = col.idKey;
+                        const value = row[col.key];
+                        const detailId = idKey ? row[idKey] : null;
+                        const isEditing = editingCell?.rowId === detailId && editingCell?.colKey === col.key;
+                        return (
+                          <td className={`${classes} ${detailId && 'hover:bg-black/15'}`} key={col.key} 
+                              onClick={() => {
+                                if (!inlineEdit) return; // ✅ Kalau inlineEdit false, klik tidak ngapa-ngapain
+                                if (detailId) {
+                                  handleEdit(detailId, col.key, value);
+                                } else {
+                                  toast.error("❗ Tidak untuk diedit", col.key);
+                                }
+                              }}
+                            >
+                            {isEditing ? (
+                              <input
+                                className="border rounded px-2 py-1 w-8"
+                                value={editValue}
+                                onChange={(e) => handleFieldChange(e.target.value)}
+                                onBlur={() => handleSave(detailId, col.key, editValue)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSave(detailId, col.key, editValue)}
+                                autoFocus
+                              />
+                            ) : (
+                              <div className="flex items-center gap-3">
+                                <Typography variant="small" color="blue-gray" className="font-base">
+                                  {col.key === "no" ? index + 1 : row[col.key]}
+                                </Typography>
+                              </div>
+                            )}
+                          </td>
+                        );
+                      })}
+                      <td className={classes} hidden={actionHidden}>
+                        <div className="flex gap-2">
+                          <Button color="blue" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onEdit(row)}>
+                            <PencilSquareIcon strokeWidth={2} className="h-4 w-4" /> Edit
                           </Button>
+                          <div hidden={removeHidden}>
+                            <Button color="red" className="flex items-center gap-3 mb-3" size="sm" onClick={() => onRemove(row)}>
+                              <TrashIcon strokeWidth={2} className="h-4 w-4" /> Remove
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className={classes} hidden={!profileShow}>
-                      <div className="flex gap-2">
-                        <Link className="flex items-center gap-3" to={`/profile/${row.nama_anggota}`}>
-                            <EyeIcon strokeWidth={2} className="h-4 w-4" />
-                            <Typography className="text-md">
-                                Lihat
-                            </Typography>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                      <td className={classes} hidden={!profileShow}>
+                        <div className="flex gap-2">
+                          <Link className="flex items-center gap-3" to={`/profile/${row.nama_anggota}`}>
+                              <EyeIcon strokeWidth={2} className="h-4 w-4" />
+                              <Typography className="text-md">
+                                  Lihat
+                              </Typography>
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>

@@ -122,49 +122,49 @@ export default function Sidebars({isOpen}) {
             </Accordion>
             <div className="border-b-2 border-gray-400"></div>
             {/* Permission */}
-            {data.role === "superadmin" && 
-              <Accordion
-                open={open === 2}
-                icon={
-                  <ChevronDownIcon
-                    color="black"
-                    strokeWidth={2.5}
-                    className={`mx-auto h-auto w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
-                  />
-                }
-              >
-                <ListItem className="p-0" selected={open===2}>
-                  <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
-                    <ListItemPrefix>
-                      <InboxIcon color="black" className="h-5 w-5" />
-                    </ListItemPrefix>
-                    <Typography color="black" className="mr-auto font-normal">
-                      Permissions
-                    </Typography>
-                  </AccordionHeader>
-                </ListItem>
-                <AccordionBody className="py-1">
-                  <List className="p-0">
-                    <NavLink to="permission/user">
-                      <ListItem className="pl-7">
-                        <ListItemPrefix>
-                          <UserCircleIcon color="black" className="h-5 w-5"/>
-                        </ListItemPrefix>
-                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
-                              Users
-                            </Typography>
-                      </ListItem>
-                    </NavLink>
-                    {/* <NavLink to="permission/role">
-                      <ListItem className="pl-7">
-                        <ListItemPrefix>
-                          <UserGroupIcon color="black" className="h-5 w-5"/>
-                        </ListItemPrefix>
-                            <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
-                              Roles
-                            </Typography>
-                      </ListItem>
-                    </NavLink> */}
+            <Accordion
+              open={open === 2}
+              icon={
+                <ChevronDownIcon
+                  color="black"
+                  strokeWidth={2.5}
+                  className={`mx-auto h-auto w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
+                />
+              }
+            >
+              <ListItem className="p-0" selected={open===2}>
+                <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
+                  <ListItemPrefix>
+                    <InboxIcon color="black" className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <Typography color="black" className="mr-auto font-normal">
+                    Permissions
+                  </Typography>
+                </AccordionHeader>
+              </ListItem>
+              <AccordionBody className="py-1">
+                <List className="p-0">
+                  <NavLink to="permission/user">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <UserCircleIcon color="black" className="h-5 w-5"/>
+                      </ListItemPrefix>
+                          <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                            Users
+                          </Typography>
+                    </ListItem>
+                  </NavLink>
+                  {/* <NavLink to="permission/role">
+                    <ListItem className="pl-7">
+                      <ListItemPrefix>
+                        <UserGroupIcon color="black" className="h-5 w-5"/>
+                      </ListItemPrefix>
+                          <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/role" && "text-[#2647AC]"}`}>
+                            Roles
+                          </Typography>
+                    </ListItem>
+                  </NavLink> */}
+                  {data.role === "superadmin" && 
                     <NavLink to="permission/departemen">
                       <ListItem className="pl-7">
                         <ListItemPrefix>
@@ -175,10 +175,10 @@ export default function Sidebars({isOpen}) {
                             </Typography>
                       </ListItem>
                     </NavLink>
-                  </List>
-                </AccordionBody>
-              </Accordion>
-            }
+                  }
+                </List>
+              </AccordionBody>
+            </Accordion>
             {/* Performance */}
             <Accordion
               open={open === 3}
@@ -277,6 +277,16 @@ export default function Sidebars({isOpen}) {
                 <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/"+data?.departemen && "text-[#2647AC]"}`}>
                     Dept/Bureau
                 </Typography>
+              </ListItem>
+            </NavLink>
+            <NavLink to="permission/user">
+              <ListItem>
+                <ListItemPrefix>
+                  <UserCircleIcon color="black" className="h-5 w-5"/>
+                </ListItemPrefix>
+                    <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                      Users
+                    </Typography>
               </ListItem>
             </NavLink>
             <div className="border-b-2 border-gray-400"></div>

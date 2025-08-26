@@ -8,8 +8,8 @@ import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import Loading from "../../loading/Loading";
 import Swal from "sweetalert2";
 
-export default function User(){
-    const [activeTable, setActiveTable] = useState("user");
+export default function User({role}){
+    const [activeTable, setActiveTable] = useState(role.nama_role?.toLowerCase() === "superadmin" ? "user" : "anggota");
     const { data: userData, isLoading: isLoadingUser, refetch: refetchUser, } = useGetUserQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
@@ -156,9 +156,11 @@ export default function User(){
                         )}
                     </div>
                     <div className="flex gap-2 justify-center">
-                        <Button onClick={() => setActiveTable("user")} className={`px-4 py-2 rounded-bl-none rounded-br-none  ${activeTable === "user" ? "bg-blue-500 text-white" : "bg-gray-500"}`}>
-                            Tabel User
-                        </Button>
+                        {role.nama_role?.toLowerCase() === "superadmin" &&
+                            <Button onClick={() => setActiveTable("user")} className={`px-4 py-2 rounded-bl-none rounded-br-none  ${activeTable === "user" ? "bg-blue-500 text-white" : "bg-gray-500"}`}>
+                                Tabel User
+                            </Button>
+                        }
                         <Button onClick={() => setActiveTable("anggota")} className={`px-4 py-2 rounded-bl-none rounded-br-none  ${activeTable === "anggota" ? "bg-blue-500 text-white" : "bg-gray-500"}`}>
                             Tabel Anggota
                         </Button>

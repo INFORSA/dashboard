@@ -78,6 +78,18 @@ export default function Navbars() {
     });
   };
 
+  let parts = location.pathname
+    .split("/")
+    .filter(Boolean)
+    .map(part => 
+      part.replace(/-/g, " ").replace(/%20/g, " ").toUpperCase()
+    );
+
+  // batasi maksimal 3 level (buang depan kalau lebih)
+  if (parts.length > 3) {
+    parts = parts.slice(parts.length - 3);
+  }
+
   // Get user initials for avatar
   const getUserInitials = (name) => {
     if (!name) return "U";
@@ -99,12 +111,7 @@ export default function Navbars() {
             <button className="mx-3 font-semibold text-sm text-slate-600">
               {location.pathname === "/" 
                 ? "DASHBOARD" 
-                : `DASHBOARD > ${location.pathname
-                    .split("/")
-                    .filter(Boolean)
-                    .map(part => part.replace(/-/g, " ").toUpperCase())
-                    .map(part => part.replace(/%20/g, " ").toUpperCase())
-                    .join(" > ")}`
+                : `${parts.join(" > ")}`
               }
             </button> 
           </NavLink>

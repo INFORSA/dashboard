@@ -101,6 +101,14 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
             {/* <Route path="/" element={<Departement isSidebarOpen={isSidebarOpen} departemen={login.departemen}/>} /> */}
             <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
             <Route path="/dept/:name" element={<Dept isSidebarOpen={isSidebarOpen} nama={keterangan}/>} />
+
+            <Route path="/setting/profile" element={<Settings nama={username} />} />
+
+            {/* User */}
+            <Route path="/permission/user" element={<User role={role}/>} />
+            <Route path="/permission/anggota/import" element={<ImportExcel dataImport="anggota" />} />
+            <Route path="/permission/user/add-staff" element={<AddStaff />} />
+            <Route path="/permission/user/edit-staff/:id" element={<EditStaff />} />
           </>
         )}
         {role === "staff" && (
