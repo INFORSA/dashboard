@@ -17,13 +17,19 @@ export default function MiniSidebars({role}) {
     { icon: <HomeIcon className="h-6 w-6" />, path: "/", label: "Dashboard" },
   ];
   if(role === "superadmin"){
-        menuItems.push(
-            { icon: <FlagIcon className="h-6 w-6" />, path: "/dept/hrd", label: "Dept" },
-            { icon: <InboxIcon className="h-6 w-6" />, path: "/permission/user", label: "Permission" },
-            { icon: <ChartBarIcon className="h-6 w-6" />, path: "/hasil-penilaian", label: "Performance" },
-            { icon: <DocumentIcon className="h-6 w-6" />, path: "/document/sertif", label: "Document" },
-        );
-    }
+    menuItems.push(
+        { icon: <FlagIcon className="h-6 w-6" />, path: "/dept/hrd", label: "Dept" },
+        { icon: <InboxIcon className="h-6 w-6" />, path: "/permission/user", label: "Permission" },
+        { icon: <ChartBarIcon className="h-6 w-6" />, path: "/hasil-penilaian", label: "Performance" },
+        { icon: <DocumentIcon className="h-6 w-6" />, path: "/document/sertif", label: "Document" },
+    );
+  }
+  else if(role === "admin"){
+    menuItems.push(
+      { icon: <FlagIcon className="h-6 w-6" />, path: "/dept/hrd", label: "Dept" },
+      { icon: <InboxIcon className="h-6 w-6" />, path: "/permission/user", label: "Permission" },
+    )
+  }
 
   return (
     <div className="fixed top-0 left-0 h-screen w-16 bg-gradient-to-br from-[#dfe3ec] via-[#f3f4f6] to-[#e2e8f0]

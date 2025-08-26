@@ -456,6 +456,30 @@ export default function Navbars() {
                 )}
               </>
             )}
+            {data?.role === "admin" && 
+              <>
+                <NavLink to={`/dept/${data?.departemen}`}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <Square2StackIcon color="black" className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/dept/"+data?.departemen && "text-[#2647AC]"}`}>
+                        Dept/Bureau
+                    </Typography>
+                  </ListItem>
+                </NavLink>
+                <NavLink to="/permission/user">
+                  <ListItem>
+                    <ListItemPrefix>
+                      <UserCircleIcon className="h-5 w-5 text-black" />
+                    </ListItemPrefix>
+                      <Typography className={`font-normal ${location.pathname === "/permission/user" && "text-[#2647AC]"}`}>
+                        Users
+                      </Typography>
+                  </ListItem>
+                </NavLink>
+              </>
+            }
 
             {/* Mobile Log In / Out */}
             <div className="px-2 mt-2">
