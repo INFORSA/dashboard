@@ -198,51 +198,53 @@ export default function Penilaian({isSidebarOpen, nama}){
                 <DialogHeader>
                     <Typography className='text-3xl font-semibold text-center mb-3'>Import Data</Typography>
                 </DialogHeader>
-                    <DialogBody className="flex flex-col justify-center items-center gap-2">
-                        <Button color="gray" size="sm" className="mb-3 w-full">
-                            <Link className="flex items-center gap-3" to='/penilaian/import/staff'>
-                                <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                                <Typography className="text-md">
-                                    Import Penilaian Staff
-                                </Typography>
-                            </Link>
-                        </Button>
-                        <Button color="blue-gray" size="sm" className="mb-3 w-full">
-                            <Link className="flex items-center gap-3" to='/penilaian/import/departemen'>
-                                <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                                <Typography className="text-md">
-                                    Import Penilaian Departemen
-                                </Typography>
-                            </Link>
-                        </Button>
-                    </DialogBody>
-                    <DialogFooter>
-                        <Button
-                            variant="text"
-                            color="red"
-                            onClick={handleOpen}
-                            className="mr-1"
-                        >
-                            <span>Cancel</span>
-                        </Button>   
-                    </DialogFooter>
+                <DialogBody className="flex flex-col justify-center items-center gap-2">
+                    <Button color="gray" size="sm" className="mb-3 w-full">
+                        <Link className="flex items-center gap-3" to='/penilaian/import/staff'>
+                            <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                            <Typography className="text-md">
+                                Import Penilaian Staff
+                            </Typography>
+                        </Link>
+                    </Button>
+                    <Button color="blue-gray" size="sm" className="mb-3 w-full">
+                        <Link className="flex items-center gap-3" to='/penilaian/import/departemen'>
+                            <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                            <Typography className="text-md">
+                                Import Penilaian Departemen
+                            </Typography>
+                        </Link>
+                    </Button>
+                </DialogBody>
+                <DialogFooter>
+                    <Button
+                        variant="text"
+                        color="red"
+                        onClick={handleOpen}
+                        className="mr-1"
+                    >
+                        <span>Cancel</span>
+                    </Button>   
+                </DialogFooter>
             </Dialog>
-            <div className="flex flex-col lg:flex-row lg:gap-4 gap-2">
-                <Button onClick={handleOpen}  color="brown" size="sm" className="mb-3 flex items-center gap-3">
-                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                    <Typography className="text-md">
-                        Import Data
-                    </Typography>
-                </Button>
-                <Button onClick={toggleTemplateModal} color="blue" size="sm" className="mb-3 flex items-center gap-3">
-                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                    <Typography className="text-md">Buat Template</Typography>
-                </Button>
-                <Button onClick={handleEdit} color="yellow" size="sm" className="mb-3 flex items-center gap-3">
-                    <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
-                    <Typography className="text-md">Edit Template</Typography>
-                </Button>
-            </div>
+            {nama &&
+                <div className="flex flex-col lg:flex-row lg:gap-4 gap-2">
+                    <Button onClick={handleOpen}  color="brown" size="sm" className="mb-3 flex items-center gap-3">
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">
+                            Import Data
+                        </Typography>
+                    </Button>
+                    <Button onClick={toggleTemplateModal} color="blue" size="sm" className="mb-3 flex items-center gap-3">
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">Buat Template</Typography>
+                    </Button>
+                    <Button onClick={handleEdit} color="yellow" size="sm" className="mb-3 flex items-center gap-3">
+                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <Typography className="text-md">Edit Template</Typography>
+                    </Button>
+                </div>
+            }
             <Dialog open={templateModal} handler={toggleTemplateModal} size="sm">
                 <DialogHeader>Buat Template Penilaian</DialogHeader>
                 <DialogBody className="flex flex-col gap-4">

@@ -9,7 +9,7 @@ import { Tooltip } from "@material-tailwind/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import inforsa from '../../assets/inforsa.png';
 
-export default function MiniSidebars({role}) {
+export default function MiniSidebars({role, dept}) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -26,8 +26,14 @@ export default function MiniSidebars({role}) {
   }
   else if(role === "admin"){
     menuItems.push(
-      { icon: <FlagIcon className="h-6 w-6" />, path: "/dept/hrd", label: "Dept" },
+      { icon: <FlagIcon className="h-6 w-6" />, path: `/dept/${dept}`, label: "Dept" },
       { icon: <InboxIcon className="h-6 w-6" />, path: "/permission/user", label: "Permission" },
+    )
+  }
+  else if(role === "dosen"){
+    menuItems.push(
+      { icon: <FlagIcon className="h-6 w-6" />, path: "/dept/hrd", label: "Dept" },
+      { icon: <ChartBarIcon className="h-6 w-6" />, path: "/hasil-penilaian", label: "Performance" },
     )
   }
 

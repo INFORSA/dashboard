@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="flex">
       <ToastContainer position="top-right" autoClose={3000} />
-      {!isLoginPage && (isOpen ? <Sidebars isOpen={isOpen} /> : <MiniSidebars role={data.role} onToggleOpen={()=>setIsOpen(true)}/>)}
+      {!isLoginPage && (isOpen ? <Sidebars isOpen={isOpen} /> : <MiniSidebars role={data?.role} dept={data?.departemen}  onToggleOpen={()=>setIsOpen(true)}/>)}
 
       <div className="flex-1 flex flex-col">
         {!isLoginPage && (
