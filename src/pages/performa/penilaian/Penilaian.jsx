@@ -2,7 +2,7 @@ import { Button, Card, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Op
 import { Tables } from "../../../components/atoms/Tables";
 import { useDeletePenilaianMutation, useGenerateTemplateStaffMutation, useGetAllNilaiQuery, useGetLineChartDepartQuery, useGetLineChartValueDepartQuery, useGetNilaiDeptDetailQuery, useGetNilaiDeptQuery, useStorePenilaianQuery } from "../../../services/penilaian";
 import { Link } from "react-router-dom";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Loading from "../../loading/Loading";
 import Error from "../../error/Error";
@@ -240,7 +240,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                         <Typography className="text-md">Buat Template</Typography>
                     </Button>
                     <Button onClick={handleEdit} color="yellow" size="sm" className="mb-3 flex items-center gap-3">
-                        <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+                        <PencilIcon strokeWidth={2} className="h-4 w-4" /> 
                         <Typography className="text-md">Edit Template</Typography>
                     </Button>
                 </div>

@@ -21,6 +21,7 @@ import Profile from "../pages/profile/Profile";
 import Error from "../pages/error/Error";
 import Loading from "../pages/loading/Loading";
 import Departemen from "../pages/permission/departemen/Departemen";
+import Riwayat from "../pages/performa/riwayat/Riwayat";
 
 const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
   const depart = login?.departemen;
@@ -71,6 +72,8 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
             <Route path="/permission/role" element={<Role />} />
             <Route path="/permission/role/add" element={<AddRole />} />
             <Route path="/permission/role/edit/:id" element={<EditRole />} />
+
+            <Route path="/permission/riwayat" element={<Riwayat />} />
 
             <Route path="/permission/departemen" element={<Departemen />} />
 

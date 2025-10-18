@@ -21,6 +21,7 @@ import {
   DocumentIcon,
   PresentationChartBarIcon,
   RectangleGroupIcon,
+  ClockIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import HRD from '../../assets/dept/HRD-black.png';
@@ -173,6 +174,16 @@ export default function Sidebars({isOpen}) {
                           </ListItemPrefix>
                               <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/departemen" && "text-[#2647AC]"}`}>
                                 Departemen
+                              </Typography>
+                        </ListItem>
+                      </NavLink>
+                      <NavLink to="permission/riwayat">
+                        <ListItem className="pl-7">
+                          <ListItemPrefix>
+                            <ClockIcon color="black" className="h-5 w-5"/>
+                          </ListItemPrefix>
+                              <Typography color="black" className={`mr-auto font-normal ${location.pathname === "/permission/riwayat" && "text-[#2647AC]"}`}>
+                                Riwayat
                               </Typography>
                         </ListItem>
                       </NavLink>

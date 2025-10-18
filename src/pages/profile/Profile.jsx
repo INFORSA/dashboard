@@ -167,11 +167,11 @@ export default function Profile({ nama, isSidebarOpen }){
                 <div className="lg:w-3/5 w-full">
                     <LineCharts isSidebarOpen={isSidebarOpen} data={chartData || []} detail={summaryPenilaian}/>
                 </div>
-                <div className="lg:w-2/5 w-full flex flex-col justify-center items-center border border-black rounded-md p-5 hover:bg-white">
+                <div className="lg:w-2/5 w-full flex flex-col justify-center items-start border border-black rounded-md p-5 hover:bg-white">
                     <div className="flex gap-3">
                         <div className="font-semibold text-md">
                             <h3>Status</h3>
-                            <h3>Rata-Rata</h3>
+                            <h3>Nilai</h3>
                         </div>
                         <div>
                             <h3>:</h3>
@@ -179,9 +179,15 @@ export default function Profile({ nama, isSidebarOpen }){
                         </div>
                         <div className="font-base text-md">
                             <h3>{statusFeedback}</h3>
-                            <h3>{avgNilai}</h3>
+                            <h3>{avgNilai} dari {personalData[0].nilai}</h3>
                         </div>
                     </div>
+                    {avgNilai < personalData[0].nilai && 
+                        <p className="text-red-800 text-sm">Nilai tidak mencukupi karena berada dibawah rata-rata yang ditentukan</p>
+                    }
+                    {!sertifData?.available && 
+                        <p className="text-red-800 text-sm mt-2">Sertif belum diupload</p>
+                    }
                     <Button color="green" size="sm" className="my-3 w-full" disabled={!isAvailable}>
                         <div className="flex items-center justify-center gap-3">
                             <PrinterIcon strokeWidth={2} className="h-4 w-4" /> 

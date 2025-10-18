@@ -7,6 +7,7 @@ import { roleAPI, userAPI } from '../services/user'
 import { excelAPI } from '../services/excel'
 import { matriksAPI, penilaianAPI } from '../services/penilaian'
 import { staffAPI } from '../services/staff'
+import trackingApi from '../services/tracking'
 
 export default configureStore({
   reducer: {
@@ -24,9 +25,10 @@ export default configureStore({
     
     [penilaianAPI.reducerPath]: penilaianAPI.reducer, 
     [matriksAPI.reducerPath]: matriksAPI.reducer, 
+    [trackingApi.reducerPath]: trackingApi.reducer, 
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat( roleAPI.middleware, registerAPI.middleware, loginAPI.middleware, deptAPI.middleware, 
                                     userAPI.middleware, excelAPI.middleware, penilaianAPI.middleware, matriksAPI.middleware,
-                                    staffAPI.middleware ), 
+                                    staffAPI.middleware, trackingApi.middleware ), 
 })
