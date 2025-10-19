@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useRegisterAdminMutation } from '../../../services/regist'; // sesuaikan path
 import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
+import { EyeIcon, EyeSlashIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { Link, useNavigate } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { useGetDeptQuery } from '../../../services/dept';
 
@@ -66,6 +66,14 @@ const AddAdmin = () => {
         <title>Tambah Pengguna</title>
       </HelmetProvider>
       <Typography className='text-3xl font-semibold text-center mb-3'>Tambah Pengguna</Typography>
+      <Button color="yellow" size="sm" className="mb-3">
+          <Link className="flex items-center gap-3" to='/permission/user/import'>
+              <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+              <Typography className="text-md">
+                  Import User
+              </Typography>
+          </Link>
+      </Button>
       <form onSubmit={handleRegister}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3'>
           <Input

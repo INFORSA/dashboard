@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useRegisterStaffMutation } from '../../../services/regist'; // sesuaikan path
 import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
-import { EyeIcon, EyeSlashIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
+import { EyeIcon, EyeSlashIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { useGetDeptQuery } from '../../../services/dept';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 const AddStaff = () => {
@@ -68,12 +68,14 @@ const AddStaff = () => {
         <title>Tambah Pengguna</title>
       </HelmetProvider>
       <Typography className='text-3xl font-semibold text-center mb-3'>Tambah Anggota</Typography>
-      {/* <div className='flex justify-end mb-3'>
-          <Button color='green' className='flex items-center gap-3' size='md'>
-            <PlusCircleIcon className='w-5 h-5'/>
-            <Typography className='text-md'>Import</Typography>
-          </Button>
-      </div> */}
+      <Button color="yellow" size="sm" className="mb-3">
+          <Link className="flex items-center gap-3" to='/permission/anggota/import'>
+              <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
+              <Typography className="text-md ">
+                  Import melalui file
+              </Typography>
+          </Link>
+      </Button>
       <form onSubmit={handleRegister}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3'>
           <Input

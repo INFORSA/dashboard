@@ -125,14 +125,14 @@ export default function User({role}){
                                     </Typography>
                                 </Link>
                             </Button>
-                            <Button color="yellow" size="sm" className="mb-3">
+                            {/* <Button color="yellow" size="sm" className="mb-3">
                                 <Link className="flex items-center gap-3" to='/permission/user/import'>
                                     <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                                     <Typography className="text-md">
                                         Import User
                                     </Typography>
                                 </Link>
-                            </Button>
+                            </Button> */}
                             </>
                         ):(
                             <>
@@ -144,14 +144,14 @@ export default function User({role}){
                                     </Typography>
                                 </Link>
                             </Button>
-                            <Button color="yellow" size="sm" className="mb-3">
+                            {/* <Button color="yellow" size="sm" className="mb-3">
                                 <Link className="flex items-center gap-3" to='/permission/anggota/import'>
                                     <PlusIcon strokeWidth={2} className="h-4 w-4" /> 
                                     <Typography className="text-md">
                                         Import Anggota
                                     </Typography>
                                 </Link>
-                            </Button>
+                            </Button> */}
                             </>
                         )}
                     </div>
