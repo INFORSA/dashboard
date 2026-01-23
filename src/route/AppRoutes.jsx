@@ -41,8 +41,8 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
       {/* Login tetap terbuka */}
       <Route path="/login" element={
         <GuestRoute>
-        <Login />
-      </GuestRoute>} />
+          <Login />
+        </GuestRoute>} />
       <Route path="/" element={
         login ? (
           role === "superadmin" || role === "dosen" ? <Dashboard isSidebarOpen={isSidebarOpen} /> :

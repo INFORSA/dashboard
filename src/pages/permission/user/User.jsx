@@ -63,19 +63,26 @@ export default function User({role}){
     const isLoading = activeTable === "user" ? isLoadingUser : isLoadingAnggota;
 
     const yearOptions = [...new Set(
-    dataArray.map((item) => {
-        const nim = item.nim?.toString();
-        if (!nim || nim.length < 2) return null;
-        return "20" + nim.slice(0, 2); // "21" -> "2021"
-    }).filter(Boolean) // hapus null/undefined
+        dataArray.map((item) => {
+            const nim = item.nim?.toString();
+            if (!nim || nim.length < 2) return null;
+            return "20" + nim.slice(0, 2); // "21" -> "2021"
+        }).filter(Boolean) // hapus null/undefined
     )].sort().reverse(); 
 
+    const currentYear = new Date().getFullYear().toString();
+    const periodeList = [
+    ...new Set(dataArray.map(item => item.periode))
+    ];
     const [selectedYear, setSelectedYear] = useState("");
+    const [selectedPeriode, setSelectedPeriode] = useState(currentYear);
 
     // Filter anggota berdasarkan tahun dari nim
     const filteredData = dataArray.filter((item) =>
-        item.nim?.toString().startsWith(selectedYear.slice(2))
+        item.nim?.toString().startsWith(selectedYear.slice(2)) &&
+        item.periode === selectedPeriode
     );
+
 
     const columnsUser = [
         { className:"w-10", key: "no", label: "No" },
@@ -176,7 +183,7 @@ export default function User({role}){
                         />
                     ):(
                         <div>
-                            <div className="my-3">
+                            <div className="flex gap-3 my-3">
                                 <Select
                                     name='year'
                                     label="Pilih Tahun"
@@ -192,6 +199,25 @@ export default function User({role}){
                                     :
                                     (
                                         yearOptions.map((item)=>(
+                                            <Option key={item} value={item}>{item}</Option>
+                                        ))
+                                    )}
+                                </Select>
+                                <Select
+                                    name='periode'
+                                    label="Pilih Kepengurusan"
+                                    value={selectedPeriode}
+                                    onChange={(val) => setSelectedPeriode(val)}
+                                    animate={{
+                                        mount: { y: 0 },
+                                        unmount: { y: 25 },
+                                    }}
+                                >
+                                    {isLoading ? 
+                                    (<Option disabled>Loading...</Option>)
+                                    :
+                                    (
+                                        periodeList.map((item)=>(
                                             <Option key={item} value={item}>{item}</Option>
                                         ))
                                     )}
