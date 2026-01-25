@@ -27,7 +27,7 @@ export default function Dept({isSidebarOpen, departemen, nama}){
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
-    const currentMonthStr = monthNames[now.getMonth()-1];
+    const currentMonthStr = monthNames[now.getMonth()];
     const [form, setForm] = useState({
         waktu:currentMonthStr,
     });

@@ -111,6 +111,19 @@ const AddAdmin = () => {
             <Option value='BPI'>BPI</Option>
             <Option value='BPH'>BPH</Option>
         </Select>
+        {form.role === 'BPI' && (
+          <div className="mt-3">
+            <Input
+              type="text"
+              name="keterangan"
+              value={form.keterangan || ""}
+              onChange={handleChange}
+              placeholder= "Jabatan"
+              label="Jabatan"
+              required
+            />
+          </div>
+        )}
         {form.role === 'BPH' && (
           <>
             <div className='mt-3'>
@@ -146,16 +159,16 @@ const AddAdmin = () => {
               />
             </div>
             <div className="mt-3">
-              <Input
-                type="text"
-                name="keterangan"
-                value={form.keterangan || ""}
-                onChange={handleChange}
-                placeholder="Nama Panggilan"
-                label="Nama Panggilan"
-                required
-              />
-            </div>
+            <Input
+              type="text"
+              name="keterangan"
+              value={form.keterangan || ""}
+              onChange={handleChange}
+              placeholder= "Nama Panggilan"
+              label="Nama Panggilan"
+              required
+            />
+          </div>
           </>
         )}
         <div className='flex justify-end my-3'>

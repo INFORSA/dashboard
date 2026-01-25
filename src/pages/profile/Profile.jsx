@@ -78,21 +78,23 @@ export default function Profile({ nama, isSidebarOpen }){
             <HelmetProvider><title>{personalData[0].nama_staff}</title></HelmetProvider>
             <div className="flex flex-col-reverse lg:flex-row justify-between border border-black rounded-md p-5 hover:bg-white">
                 <table className="">
-                    <tr className="text-md">
-                        <td className="font-semibold">Nama</td>
-                        <td className="px-3">:</td>
-                        <td>{personalData[0].nama_staff}</td>
-                    </tr>
-                    <tr className="text-md">
-                        <td className="font-semibold">Departemen</td>
-                        <td className="px-3">:</td>
-                        <td>{personalData[0].nama_departemen}</td>
-                    </tr>
-                    <tr className="text-md">
-                        <td className="font-semibold">NIM</td>
-                        <td className="px-3">:</td>
-                        <td>{personalData[0].nim}</td>
-                    </tr>
+                    <tbody>    
+                        <tr className="text-md">
+                            <td className="font-semibold">Nama</td>
+                            <td className="px-3">:</td>
+                            <td>{personalData[0].nama_staff}</td>
+                        </tr>
+                        <tr className="text-md">
+                            <td className="font-semibold">Departemen</td>
+                            <td className="px-3">:</td>
+                            <td>{personalData[0].nama_departemen}</td>
+                        </tr>
+                        <tr className="text-md">
+                            <td className="font-semibold">NIM</td>
+                            <td className="px-3">:</td>
+                            <td>{personalData[0].nim}</td>
+                        </tr>
+                    </tbody>
                 </table>
                 <div>
                     {personalData[0].gambar ? (

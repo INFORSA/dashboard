@@ -70,12 +70,11 @@ export default function User({role}){
         }).filter(Boolean) // hapus null/undefined
     )].sort().reverse(); 
 
-    const currentYear = new Date().getFullYear().toString();
     const periodeList = [
     ...new Set(dataArray.map(item => item.periode))
-    ];
+    ].sort().reverse();
     const [selectedYear, setSelectedYear] = useState("");
-    const [selectedPeriode, setSelectedPeriode] = useState(currentYear);
+    const [selectedPeriode, setSelectedPeriode] = useState("");
 
     // Filter anggota berdasarkan tahun dari nim
     const filteredData = dataArray.filter((item) =>
@@ -100,6 +99,11 @@ export default function User({role}){
         if (!selectedYear && yearOptions.length > 0) {
             setSelectedYear(yearOptions[0]);
         }
+
+        if (periodeList.length > 0 && !selectedPeriode) {
+            setSelectedPeriode(periodeList[0]);
+        }
+
          const handleFocus = () => {
             if (activeTable === "user") {
                 refetchUser();
@@ -110,7 +114,7 @@ export default function User({role}){
 
         window.addEventListener("focus", handleFocus);
         return () => window.removeEventListener("focus", handleFocus);
-    }, [yearOptions, selectedYear, activeTable, refetchAnggota, refetchUser]);
+    }, [yearOptions, selectedYear, activeTable, refetchAnggota, refetchUser, selectedPeriode, periodeList]);
 
     return(
         <div>

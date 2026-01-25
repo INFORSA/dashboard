@@ -21,7 +21,7 @@ export default function Penilaian({isSidebarOpen, nama}){
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
-    const currentMonthStr = monthNames[now.getMonth()-1];
+    const currentMonthStr = monthNames[now.getMonth()];
     const [form, setForm] = useState({
         departemen:1,
         waktu:currentMonthStr
@@ -403,7 +403,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                 <div className="w-full">
                     <Tables
                         title="Tabel Penilaian Departemen"
-                        description={`List Nilai Departemen Bulan ${form.waktu}`}
+                        description={`List Nilai Departemen Bulan ${form.waktu ?? "(silahkan pilih bulan)"}`}
                         columns={columnsPenilaianDept}
                         rows={penilai === null ? deptNilai : deptDetailNilai || []}
                         actionHidden={true}
@@ -415,7 +415,7 @@ export default function Penilaian({isSidebarOpen, nama}){
                 <div className="w-full my-3">
                     <Tables
                         title="Tabel Penilaian Anggota"
-                        description={`List Nilai Anggota Bulan ${form.waktu}`}
+                        description={`List Nilai Anggota Bulan ${form.waktu ?? "(silahkan pilih bulan)"}`}
                         columns={columnsPenilaian}
                         rows={data || []}
                         actionHidden={true}

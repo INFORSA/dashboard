@@ -52,7 +52,6 @@ export default function RadialChart({
         month,           // dalam bentuk nama bulan (misal: "Juli")
         isi: reviewText  // isi review yang diketik user
       };
-      console.log(payload)
 
       if (isDept) {
         await addReview(payload);

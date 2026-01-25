@@ -17,6 +17,7 @@ const EditUser = () => {
     const { data: deptData, isLoading: deptLoading } = useGetDeptQuery();
 
     const [form, setForm] = useState({
+        id_pengurus:'',
         username:'',
         role:'',
         dept_id:'',
@@ -50,7 +51,7 @@ const EditUser = () => {
 
     // ketika data datang, isi form awal
     useEffect(() => {
-        if (data) setForm({ username: data.username, role: data.role, dept_id:data.dept_id, jabatan:data.jabatan, keterangan:data.keterangan});
+        if (data) setForm({ id_pengurus: data.id_pengurus, username: data.username, role: data.role, dept_id:data.dept_id, jabatan:data.jabatan, keterangan:data.keterangan});
     }, [data]);
 
     return (
@@ -60,7 +61,16 @@ const EditUser = () => {
             </HelmetProvider>
             <Typography className='text-3xl font-semibold text-center mb-3'>Edit User</Typography>
             <form onSubmit={handleRegister}>
-                <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+                <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
+                    <Input
+                        type="text"
+                        name="id_pengurus"
+                        value={form.id_pengurus}
+                        placeholder="ID Pengurus"
+                        label="ID Pengurus"
+                        readOnly
+                        className="cursor-not-allowed bg-gray-100 text-gray-700"
+                    />
                     <Input
                         type="text"
                         name="username"
