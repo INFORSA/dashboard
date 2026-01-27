@@ -12,7 +12,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { HomeIcon, ClockIcon, CalendarIcon, Square2StackIcon, FlagIcon, ChevronDownIcon, InboxIcon, UserCircleIcon, UserGroupIcon, ChartBarIcon, ClipboardDocumentIcon, PresentationChartBarIcon, DocumentIcon, DocumentCheckIcon, RectangleGroupIcon } from "@heroicons/react/24/solid";
 import Swal from "sweetalert2";
 import { useGetCurrentUserQuery, useLogoutMutation } from "../../services/login";
@@ -178,17 +178,19 @@ export default function Navbars() {
                 {profileDropdown && (
                   <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                     {/* Profile Header */}
-                    <div className="p-3 border-b border-gray-100">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
-                          {getUserInitials(data.username)}
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-800">{data.username}</p>
-                          <p className="text-sm text-gray-600">{data.role}</p>
+                    <Link to="/my-profile">
+                      <div className="p-3 border-b border-gray-100">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
+                            {getUserInitials(data.username)}
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800">{data.username}</p>
+                            <p className="text-sm text-gray-600">{data.role}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Menu Items */}
                     <div className="p-1">

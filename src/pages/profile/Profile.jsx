@@ -1,4 +1,4 @@
-import { Button, Carousel } from "@material-tailwind/react";
+import { Button, Carousel, Option, Select } from "@material-tailwind/react";
 import LineCharts from "../../components/atoms/charts/LineCharts";
 import RadarChart from "../../components/atoms/charts/RadarCharts";
 import { Tables } from "../../components/atoms/Tables";
@@ -11,18 +11,34 @@ import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useCheckSertifQuery, useGetReviewQuery } from "../../services/staff";
 import RadialChart from "../../components/atoms/charts/RadialCharts";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 export default function Profile({ nama, isSidebarOpen }){
     const { username } = useParams();
     const namaAnggota = nama ?? username;
-    const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(namaAnggota);
+
+    const currentYear = new Date().getFullYear();
+    const startYear = 2025;
+
+    const periodeList = Array.from(
+    { length: currentYear - startYear + 1 },
+    (_, i) => (startYear + i).toString()
+    );
+    const [periode, setPeriode] = useState(currentYear.toString());
+
+    const isUserReady = Boolean(namaAnggota);
+    
+    const { data: personalData, isLoading: personalLoading, isError: personalError } = useGetAnggotaByNamaQuery(namaAnggota, {skip: !isUserReady});
+
     const profilData = personalData ?? []
     const nim = profilData[0]?.nim;
-    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(username);
-    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery(username);
-    const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery(username);
-    const { data: sertifData, isLoading: sertifLoading, isError: sertifError } = useCheckSertifQuery(nim);
-    const { data: reviewData, isLoading: reviewLoading, refetch } = useGetReviewQuery(namaAnggota);
+    const isNimReady = Boolean(nim);
+
+    const { data: radarChartData, isLoading: radarChartLoading } = useGetRadarChartPersonalQuery(username, {skip: !isUserReady});
+    const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetNilaiPersonalQuery({username, periode}, {skip: !isUserReady});
+    const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery({username, periode}, {skip: !isUserReady});
+    const { data: sertifData, isLoading: sertifLoading, isError: sertifError } = useCheckSertifQuery(nim, {skip: !isNimReady});
+    const { data: reviewData, isLoading: reviewLoading, refetch } = useGetReviewQuery(namaAnggota, {skip: !isUserReady});
     
     const nilaiAkhir = chartData ?? [];
     const nilaiNumbers = nilaiAkhir.map((item) => parseFloat(item.total_nilai));
@@ -113,7 +129,20 @@ export default function Profile({ nama, isSidebarOpen }){
                     )}
                 </div>
             </div>
-            <div className="mt-3">
+            <div className="mt-3 space-y-3">
+                <div className="flex justify-end w-full">
+                    <Select
+                        label="Pilih Periode"
+                        value={periode}
+                        onChange={(val) => setPeriode(val)}
+                    >
+                        {periodeList.map((p) => (
+                        <Option key={p} value={p}>
+                            Periode {p}
+                        </Option>
+                        ))}
+                    </Select>
+                </div>
                 <Carousel
                     transition={{ duration: 0.5 }}
                     autoplay={false}

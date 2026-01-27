@@ -26,6 +26,8 @@ const EditUser = () => {
         keterangan:''
     });
 
+    const isFormChanged = form.username !== data?.username;
+
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -163,8 +165,11 @@ const EditUser = () => {
                         />
                     </div>
                 )}
-            <div className='flex justify-end my-3'>
-                <Button color='green' type="submit">Simpan</Button>
+            <div className='flex items-center justify-end my-3 gap-3'>
+                {!isFormChanged && (
+                    <p className='text-red-700 text-xs font-base'>Untuk update data ganti username untuk menghindari duplikat</p>
+                )}
+                <Button color='green' type="submit" disabled={!isFormChanged}>Simpan</Button>
             </div>
             </form>
         </div>

@@ -11,6 +11,7 @@ const EditStaff = () => {
     const [ updateAnggota ] = useUpdateAnggotaMutation();
     const { data:storeData } = useStoreAnggotaQuery(id);
     const { data: pengurusData } = useGetPengurusQuery();
+    const currentYear = new Date().getFullYear();
     const navigate = useNavigate();
     const { data:deptData, isLoading } = useGetDeptQuery();
 
@@ -148,7 +149,9 @@ const EditStaff = () => {
                         </Typography>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {filteredPengurus?.map((item) => (
+                            {filteredPengurus?.filter(item =>
+                                    Number(item.periode) === currentYear
+                                ).map((item) => (
                                 <label
                                     key={item.id_pengurus}
                                     className="flex items-center gap-2 text-sm cursor-pointer"

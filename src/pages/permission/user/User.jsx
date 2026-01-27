@@ -20,11 +20,7 @@ export default function User({role}){
     const navigate = useNavigate();
 
     const handleEditAdmin = (row) => {
-        if (row.nama_role?.toLowerCase() === "staff" ) {
-            navigate(`/permission/user/edit-staff/${row.id_user}`)
-        } else {
-            navigate(`/permission/user/edit-admin/${row.id_user}`)
-        }
+        navigate(`/permission/user/edit-admin/${row.id_user}`)
     };
     const handleEditStaff = (row) => {
         navigate(`/permission/user/edit-staff/${row.user_id}`)

@@ -67,11 +67,11 @@ export const penilaianAPI = createApi({
         providesTags: ["Penilaian Detail"],
       }), 
     getNilaiPersonal: build.query({
-      query: (username) => {
+      query: ({username, periode}) => {
         if (username) {
-          return `penilaian/get/nilai/${username}`;
+          return `penilaian/get/staff/nilai/${username}?periode=${periode}`;
         }else{
-          return `penilaian/get/nilai/personal`;
+          return `penilaian/get/nilai/personal?periode=${periode}`;
         }
       },
       providesTags: ["Penilaian Personal"],
@@ -89,11 +89,11 @@ export const penilaianAPI = createApi({
         providesTags: ["Nilai Depart"],
       }), 
     getLineChartPersonal: build.query({
-        query: (username) => {
+        query: ({username, periode}) => {
           if(username){
-            return `penilaian/get/staff/linechart/${username}`
+            return `penilaian/get/staff/linechart/${username}?periode=${periode}`
           }else{
-            return 'penilaian/get/personal/linechart'
+            return `penilaian/get/personal/linechart?periode=${periode}`
           }
         },
         providesTags: ["Linechart Personal"],

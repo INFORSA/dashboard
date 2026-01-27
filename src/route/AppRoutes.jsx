@@ -86,6 +86,7 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
             <Route path="/document/sertif" element={<Sertif />} />
 
             <Route path="/profile/:username" element={<Profile isSidebarOpen={isSidebarOpen} />} />
+            <Route path="/my-profile" element={<Profile nama={username} isSidebarOpen={isSidebarOpen}/> } />
             <Route path="/setting/profile" element={<Settings nama={username} role={role} />} />
             {/* <Route path="/error" element={<Error />} /> */}
           </>
@@ -107,6 +108,8 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
 
             <Route path="/setting/profile" element={<Settings nama={username} />} />
 
+            <Route path="/my-profile" element={<Profile nama={username} isSidebarOpen={isSidebarOpen}/> } />
+
             {/* User */}
             <Route path="/permission/user" element={<User role={role}/>} />
             <Route path="/permission/anggota/import" element={<ImportExcel dataImport="anggota" />} />
@@ -116,7 +119,7 @@ const AppRoutes = ({ isSidebarOpen, login, isLoading }) => {
         )}
         {role === "staff" && (
           <>
-            {/* <Route path="/" element={<Profile nama={username} isSidebarOpen={isSidebarOpen}/>} /> */}
+            <Route path="/my-profile" element={<Navigate to="/" />}  />
             <Route path="/setting/profile" element={<Settings nama={username} />} />
           </>
         )}

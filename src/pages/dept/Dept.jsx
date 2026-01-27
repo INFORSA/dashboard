@@ -23,6 +23,7 @@ export default function Dept({isSidebarOpen, departemen, nama}){
     const { name } = useParams();
     const depart = departemen ?? name?.toUpperCase();
     const now = new Date();
+    const currentYear = new Date().getFullYear();
     const monthNames = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -217,7 +218,10 @@ export default function Dept({isSidebarOpen, departemen, nama}){
                                     unmount: { y: 25 },
                                 }}
                                 >
-                                {pengurusData?.data.map((item) => (
+                                {pengurusData?.data.filter(item =>
+                                    item.dept === depart &&
+                                    Number(item.periode) === currentYear
+                                ).map((item) => (
                                     <Option
                                         hidden={item.dept !== depart}
                                         key={item?.id_pengurus} value={item?.keterangan}>
