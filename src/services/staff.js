@@ -10,6 +10,9 @@ export const staffAPI = createApi({
     }
   }),
   endpoints: (build) => ({
+    getStaff: build.query({
+        query: () => "staff/get",
+      }), 
     getReview: build.query({
         query: (anggota) => `staff/get/review/${anggota}`
     }), 
@@ -49,5 +52,5 @@ export const staffAPI = createApi({
 })
 
 export const { useGetReviewQuery, useGetSertifQuery, useCheckSertifQuery, useUploadSertifMutation, useDeleteSertifMutation,
-                  useAddReviewAnggotaMutation, useDeleteReviewAnggotaMutation
+                  useAddReviewAnggotaMutation, useDeleteReviewAnggotaMutation, useGetStaffQuery
                 } = staffAPI

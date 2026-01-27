@@ -1,11 +1,8 @@
 import Carousels from '../../components/organisms/Carousels';
 import CountCard from '../../components/atoms/cards/CountCard';
-import GrafikCard from '../../components/atoms/cards/GrafikCard';
-// import { Tables } from '../../components/atoms/Tables';
 import LineCharts from '../../components/atoms/charts/LineCharts';
 import { useGetDeptQuery, useGetReviewQuery } from '../../services/dept';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
-import { useGetAnggotaQuery } from '../../services/user';
 import DepartCard from '../../components/atoms/cards/DepartCard';
 import { useGetAllNilaiQuery, useGetLineChartValueQuery, useGetMaxNilaiQuery, useGetNilaiDeptQuery } from '../../services/penilaian';
 import { Tables } from '../../components/atoms/Tables';
@@ -13,6 +10,7 @@ import Banner from '../../components/atoms/Banner';
 import Loading from '../loading/Loading';
 import Error from '../error/Error';
 import RadialChart from '../../components/atoms/charts/RadialCharts';
+import { useGetStaffQuery } from '../../services/staff';
 
 export default function SuperAdmin({ isSidebarOpen }){
     const monthNames = [
@@ -21,7 +19,7 @@ export default function SuperAdmin({ isSidebarOpen }){
     ];
     const month = monthNames[new Date().getMonth().toString()-1];
     const { data : deptData, error : deptError, isLoading : deptLoading } = useGetDeptQuery();
-    const { data : userData, error : userError, isLoading : userLoading } = useGetAnggotaQuery();
+    const { data : anggotaData, error : userError, isLoading : userLoading } = useGetStaffQuery();
     const { data: lineChartData, isLoading: lineChartLoading } = useGetLineChartValueQuery();
     const { data: nilaiData, isLoading: nilaiLoading, isError: nilaiError } = useGetAllNilaiQuery(month);
     const { data: maxNilaiData, isLoading: maxNilaiLoading } = useGetMaxNilaiQuery(month);
@@ -78,7 +76,7 @@ export default function SuperAdmin({ isSidebarOpen }){
             <Banner/>
             <div className='my-5 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                 <CountCard Detail="Departement" Count={deptData.total}/>
-                <CountCard Detail="Anggota" Count={userData.total}/>
+                <CountCard Detail="Anggota" Count={anggotaData.total}/>
                 <CountCard Detail="Performa" Count={lastPerformance[0]?.total_nilai ?? 0}/>
             </div>
             <Carousels/>
