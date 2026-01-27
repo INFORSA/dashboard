@@ -10,12 +10,14 @@ import { ChevronLeftIcon, ChevronRightIcon, PrinterIcon } from "@heroicons/react
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import { useCheckSertifQuery, useGetReviewQuery } from "../../services/staff";
 import RadialChart from "../../components/atoms/charts/RadialCharts";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Profile({ nama, isSidebarOpen }){
     const { username } = useParams();
     const namaAnggota = nama ?? username;
+
+    const navigate = useNavigate();
 
     const currentYear = new Date().getFullYear();
     const startYear = 2025;
@@ -39,7 +41,7 @@ export default function Profile({ nama, isSidebarOpen }){
     const { data: chartData, isLoading: chartLoading, isError: chartError } = useGetLineChartPersonalQuery({username, periode}, {skip: !isUserReady});
     const { data: sertifData, isLoading: sertifLoading, isError: sertifError } = useCheckSertifQuery(nim, {skip: !isNimReady});
     const { data: reviewData, isLoading: reviewLoading, refetch } = useGetReviewQuery(namaAnggota, {skip: !isUserReady});
-    
+
     const nilaiAkhir = chartData ?? [];
     const nilaiNumbers = nilaiAkhir.map((item) => parseFloat(item.total_nilai));
     const totalNilai = nilaiNumbers.reduce((sum, val) => sum + val, 0);
@@ -85,6 +87,12 @@ export default function Profile({ nama, isSidebarOpen }){
     const summaryPenilaian = [
         { key: "total_nilai", label: namaAnggota },
     ];
+
+    useEffect(() => {
+        if (!personalLoading && personalData && personalData.length === 0) {
+            navigate("/", { replace: true });
+        }
+    }, [personalLoading, personalData, navigate]);
 
     if(personalLoading || nilaiLoading || chartLoading || radarChartLoading || reviewLoading || sertifLoading) return <Loading/>
     if(personalError || nilaiError || chartError || sertifError) return <Error/>
