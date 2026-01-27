@@ -3,13 +3,15 @@ import { useRegisterStaffMutation } from '../../../services/regist'; // sesuaika
 import Swal from 'sweetalert2';
 import { Button, Input, Option, Select, Typography } from '@material-tailwind/react';
 import { EyeIcon, EyeSlashIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/24/solid';
-import { useGetDeptQuery } from '../../../services/dept';
+import { useGetDeptQuery, useGetPengurusQuery } from '../../../services/dept';
 import { Link, useNavigate } from 'react-router-dom';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 const AddStaff = () => {
   const [registerStaff] = useRegisterStaffMutation();
   const navigate = useNavigate();
+  const { data: pengurusData } = useGetPengurusQuery();
+  const { data, isLoading } = useGetDeptQuery();
 
   const [form, setForm] = useState({
     username: '',
@@ -17,8 +19,17 @@ const AddStaff = () => {
     gender:'',
     departemen:'',
     gambar:'',
-    password: ''
+    password: '',
+    target_penilai: []
   });
+
+  const selectedDeptName = data?.data?.find(
+        d => String(d.id_depart) === String(form.departemen)
+    )?.nama;
+
+  const filteredPengurus = pengurusData?.data?.filter(
+      item => item.dept === selectedDeptName
+  );
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -39,12 +50,13 @@ const AddStaff = () => {
     formData.append('gender', form.gender);
     formData.append('depart_id', form.departemen); 
     formData.append('gambar', form.gambar);
+    formData.append('target_penilai', form.target_penilai.join(','));
 
     try {
       const response = await registerStaff(formData);
       console.log("Response:", response);
       Swal.fire("Sukses", response.message, "success");
-      setForm({ username: '', nim:'', gender:'', departemen:'', gambar:'', password: '' });
+      setForm({ username: '', nim:'', gender:'', departemen:'', gambar:'', password: '', target_penilai: [] });
       navigate("/permission/user");
     } catch (err) {
       console.error("Register error:", err);
@@ -58,9 +70,6 @@ const AddStaff = () => {
   const handleTogglePasswordVisibility = () => {
       setShowPassword(!showPassword);
     };
-
-  //Dept Data
-  const { data, isLoading } = useGetDeptQuery();
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -146,6 +155,39 @@ const AddStaff = () => {
               label="Gambar"
             />
         </div>
+        {form.departemen && (
+          <div className="border rounded-md px-1">
+            <Typography variant="small" className="font-semibold mb-1 text-gray-700">
+              BPH Penilai
+            </Typography>
+
+            <div className="grid grid-cols-2 gap-1 max-h-32 overflow-y-auto">
+              {filteredPengurus?.map((item) => (
+                <label
+                  key={item.id_pengurus}
+                  className="flex items-center gap-2 text-sm cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-1 focus:ring-blue-500"
+                    value={item.id_pengurus}
+                    checked={form.target_penilai.includes(String(item.id_pengurus))}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setForm(prev => ({
+                        ...prev,
+                        target_penilai: e.target.checked
+                          ? [...prev.target_penilai, value]
+                          : prev.target_penilai.filter(id => id !== value)
+                      }));
+                    }}
+                  />
+                  <span className="text-gray-700">{item.jabatan} – {item.dept}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
         <div className='flex justify-end my-3'>
           <Button color='amber' type="submit">Register</Button>
         </div>

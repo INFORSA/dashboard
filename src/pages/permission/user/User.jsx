@@ -73,6 +73,7 @@ export default function User({role}){
     const periodeList = [
     ...new Set(dataArray.map(item => item.periode))
     ].sort().reverse();
+
     const [selectedYear, setSelectedYear] = useState("");
     const [selectedPeriode, setSelectedPeriode] = useState("");
 

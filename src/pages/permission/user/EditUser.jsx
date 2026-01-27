@@ -21,7 +21,8 @@ const EditUser = () => {
         username:'',
         role:'',
         dept_id:'',
-        jabatan:'',
+        jabatan_bph:'',
+        jabatan_bpi:'',
         keterangan:''
     });
 
@@ -36,7 +37,8 @@ const EditUser = () => {
         formData.append('username', form.username);
         formData.append('role', form.role);
         formData.append('dept_id', form.dept_id);
-        formData.append('jabatan', form.jabatan);
+        formData.append('jabatan_bph', form.jabatan_bph);
+        formData.append('jabatan_bpi', form.jabatan_bpi);
         formData.append('keterangan', form.keterangan);
 
         try {
@@ -51,7 +53,7 @@ const EditUser = () => {
 
     // ketika data datang, isi form awal
     useEffect(() => {
-        if (data) setForm({ id_pengurus: data.id_pengurus, username: data.username, role: data.role, dept_id:data.dept_id, jabatan:data.jabatan, keterangan:data.keterangan});
+        if (data) setForm({ id_pengurus: data.id_pengurus, username: data.username, role: data.role, dept_id:data.dept_id, jabatan_bph:data.jabatan_bph, jabatan_bpi:data.jabatan_bpi, keterangan:data.keterangan});
     }, [data]);
 
     return (
@@ -65,9 +67,9 @@ const EditUser = () => {
                     <Input
                         type="text"
                         name="id_pengurus"
-                        value={form.id_pengurus}
-                        placeholder="ID Pengurus"
-                        label="ID Pengurus"
+                        value={form.role === 2 ? form.id_pengurus : id}
+                        placeholder={form.role === 2 ? "ID Pengurus" : "ID User"}
+                        label={form.role === 2 ? "ID Pengurus" : "ID User"}
                         readOnly
                         className="cursor-not-allowed bg-gray-100 text-gray-700"
                     />
@@ -124,28 +126,42 @@ const EditUser = () => {
                         </Select>
                         </div>
                         <div className="mt-3">
-                        <Input
-                            type="text"
-                            name="jabatan"
-                            value={form.jabatan || ""}
-                            onChange={handleChange}
-                            placeholder="Jabatan"
-                            label="Jabatan"
-                            required
-                        />
-                        </div>
-                        <div className="mt-3">
-                        <Input
-                            type="text"
-                            name="keterangan"
-                            value={form.keterangan || ""}
-                            onChange={handleChange}
-                            placeholder="Nama Panggilan"
-                            label="Nama Panggilan"
-                            required
-                        />
+                            <Input
+                                type="text"
+                                name="jabatan_bph"
+                                value={form.jabatan_bph || ""}
+                                onChange={handleChange}
+                                placeholder="Jabatan"
+                                label="Jabatan"
+                                required
+                            />
                         </div>
                     </>
+                )}
+                {form.role === 1 && (
+                    <div className="mt-3">
+                        <Input
+                        type="text"
+                        name="jabatan_bpi"
+                        value={form.jabatan_bpi || ""}
+                        onChange={handleChange}
+                        placeholder="Jabatan"
+                        label="Jabatan"
+                        />
+                    </div>
+                )}
+
+                {form.role !== 1 && (
+                    <div className="mt-3">
+                        <Input
+                        type="text"
+                        name="keterangan"
+                        value={form.keterangan || ""}
+                        onChange={handleChange}
+                        placeholder="Nama Panggilan"
+                        label="Nama Panggilan"
+                        />
+                    </div>
                 )}
             <div className='flex justify-end my-3'>
                 <Button color='green' type="submit">Simpan</Button>
