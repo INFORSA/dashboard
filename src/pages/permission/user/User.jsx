@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 
 export default function User({role}){
     const [activeTable, setActiveTable] = useState(role && role.nama_role?.toLowerCase() !== "superadmin" ? "anggota" : "user");
+    const [selectedRole, setSelectedRole] = useState("all");
+
     const { data: userData, isLoading: isLoadingUser, refetch: refetchUser, } = useGetUserQuery(undefined, {
         refetchOnMountOrArgChange: true,
     });
@@ -78,6 +80,18 @@ export default function User({role}){
         item.nim?.toString().startsWith(selectedYear.slice(2)) &&
         item.periode === selectedPeriode
     );
+
+    const roleOptions = [
+        "all",
+        ...new Set((userData?.data ?? []).map(item => item.nama_role))
+    ];
+
+    const filteredUserData =
+        selectedRole === "all"
+            ? (userData?.data ?? [])
+            : (userData?.data ?? []).filter(
+                item => item.nama_role === selectedRole
+            );
 
 
     const columnsUser = [
@@ -174,14 +188,29 @@ export default function User({role}){
                         </Button>
                     </div>
                     {activeTable === "user" ? (
-                        <Tables 
-                            title="Tabel Pengguna"
-                            description="List pengguna Dashboard INFORSA"
-                            columns={columnsUser}
-                            rows={userData.data || []}
-                            onEdit={handleEditAdmin}
-                            onRemove={handleRemove}
-                        />
+                        <div className="space-y-3">
+                            <div className="flex gap-3 my-3 w-full">
+                                <Select
+                                label="Filter Role"
+                                value={selectedRole}
+                                onChange={(val) => setSelectedRole(val)}
+                                >
+                                {roleOptions.map((role) => (
+                                    <Option key={role} value={role}>
+                                    {role === "all" ? "Semua Role" : role}
+                                    </Option>
+                                ))}
+                                </Select>
+                            </div>
+                            <Tables 
+                                title="Tabel Pengguna"
+                                description="List pengguna Dashboard INFORSA"
+                                columns={columnsUser}
+                                rows={filteredUserData || []}
+                                onEdit={handleEditAdmin}
+                                onRemove={handleRemove}
+                            />
+                        </div>
                     ):(
                         <div>
                             <div className="flex gap-3 my-3">
