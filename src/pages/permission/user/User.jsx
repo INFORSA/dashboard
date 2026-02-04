@@ -3,7 +3,7 @@ import { Tables } from "../../../components/atoms/Tables";
 import { useDeleteUserMutation, useGetAnggotaQuery, useGetUserQuery } from "../../../services/user";
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HelmetProvider } from "@dr.pogodin/react-helmet";
 import Loading from "../../loading/Loading";
 import Swal from "sweetalert2";
@@ -55,18 +55,35 @@ export default function User({role}){
         }
     };
 
+    const roleOptions = [
+        "all",
+        ...new Set((userData?.data ?? []).map(item => item.nama_role))
+    ];
+
+    const filteredUserData =
+        selectedRole === "all"
+            ? (userData?.data ?? [])
+            : (userData?.data ?? []).filter(
+                item => item.nama_role === selectedRole
+            );
+
     const dataArray = activeTable === "user"
-        ? (userData?.data ?? [])
+        ? (filteredUserData ?? [])
         : (anggotaData?.data ?? []);
     const isLoading = activeTable === "user" ? isLoadingUser : isLoadingAnggota;
 
-    const yearOptions = [...new Set(
-        dataArray.map((item) => {
-            const nim = item.nim?.toString();
-            if (!nim || nim.length < 2) return null;
-            return "20" + nim.slice(0, 2); // "21" -> "2021"
-        }).filter(Boolean) // hapus null/undefined
-    )].sort().reverse(); 
+    const yearOptions = useMemo(() => {
+        if (activeTable === "user") return [];
+
+        return [...new Set(
+            (anggotaData?.data ?? [])
+            .map(item => {
+                const nim = item.nim?.toString();
+                return nim?.length >= 2 ? "20" + nim.slice(0, 2) : null;
+            })
+            .filter(Boolean)
+        )].sort().reverse();
+    }, [anggotaData, activeTable]); 
 
     const periodeList = [
     ...new Set(dataArray.map(item => item.periode))
@@ -80,18 +97,6 @@ export default function User({role}){
         item.nim?.toString().startsWith(selectedYear.slice(2)) &&
         item.periode === selectedPeriode
     );
-
-    const roleOptions = [
-        "all",
-        ...new Set((userData?.data ?? []).map(item => item.nama_role))
-    ];
-
-    const filteredUserData =
-        selectedRole === "all"
-            ? (userData?.data ?? [])
-            : (userData?.data ?? []).filter(
-                item => item.nama_role === selectedRole
-            );
 
 
     const columnsUser = [
@@ -107,10 +112,6 @@ export default function User({role}){
     ];
 
     useEffect(() => {
-        if (!selectedYear && yearOptions.length > 0) {
-            setSelectedYear(yearOptions[0]);
-        }
-
         if (periodeList.length > 0 && !selectedPeriode) {
             setSelectedPeriode(periodeList[0]);
         }
@@ -188,19 +189,13 @@ export default function User({role}){
                         </Button>
                     </div>
                     {activeTable === "user" ? (
-                        <div className="space-y-3">
-                            <div className="flex gap-3 my-3 w-full">
-                                <Select
-                                label="Filter Role"
-                                value={selectedRole}
-                                onChange={(val) => setSelectedRole(val)}
-                                >
-                                {roleOptions.map((role) => (
-                                    <Option key={role} value={role}>
-                                    {role === "all" ? "Semua Role" : role}
-                                    </Option>
-                                ))}
-                                </Select>
+                        <div className="space-y-3 mt-3">
+                            <div className="w-full">
+                                <RoleFilter
+                                    value={selectedRole}
+                                    onChange={setSelectedRole}
+                                    options={roleOptions}
+                                />
                             </div>
                             <Tables 
                                 title="Tabel Pengguna"
@@ -267,4 +262,16 @@ export default function User({role}){
             )}
         </div>
     )
+}
+
+function RoleFilter({ value, onChange, options }) {
+  return (
+    <Select label="Filter Role" value={value} onChange={onChange}>
+      {options.map(role => (
+        <Option key={role} value={role}>
+          {role === "all" ? "Semua Role" : role}
+        </Option>
+      ))}
+    </Select>
+  );
 }
